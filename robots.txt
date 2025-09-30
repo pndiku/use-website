@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /manage
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /auth/
+
+# Allow all public pages
+Allow: /
+Allow: /securities
+Allow: /news/
+Allow: /about
+Allow: /annual-reports
+Allow: /contact

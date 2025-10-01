@@ -1,0 +1,463 @@
+-- MySQL dump 10.13  Distrib 8.0.36, for macos14 (arm64)
+--
+-- Host: localhost    Database: use_db
+-- ------------------------------------------------------
+-- Server version	8.0.36
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `carousel_images`
+--
+
+DROP TABLE IF EXISTS `carousel_images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `carousel_images` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `button_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `button_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `button_text_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `button_link_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sort_order` int NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `carousel_images`
+--
+
+LOCK TABLES `carousel_images` WRITE;
+/*!40000 ALTER TABLE `carousel_images` DISABLE KEYS */;
+INSERT INTO `carousel_images` VALUES (1,'Uganda Securities Exchange',NULL,'http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg','Start Trading','http://bdbdbdb.com','Learn More','http://bdbdbdb.com',0,1,'2025-09-20 17:06:14','2025-09-30 09:40:50'),(2,'East Africa\'s Premier Financial Market',NULL,'http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','Start Trading',NULL,NULL,NULL,0,1,'2025-09-20 17:06:53','2025-09-21 18:17:45'),(3,'Your Gateway to Uganda\'s Financial Market',NULL,'https://images.pexels.com/photos/6801872/pexels-photo-6801872.jpeg?_gl=1*nlziix*_ga*ODg1NjgyODg0LjE3MDEyNTkxODc.*_ga_8JE65Q40S6*czE3NTgzOTg3MTUkbzIwJGcxJHQxNzU4Mzk4NzU0JGoyMSRsMCRoMA..',NULL,NULL,NULL,NULL,0,1,'2025-09-20 17:08:53','2025-09-21 18:41:27');
+/*!40000 ALTER TABLE `carousel_images` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `events`
+--
+
+DROP TABLE IF EXISTS `events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `events` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `event_date` datetime NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `show_on_site` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES (1,'Investment Management Masterclass','Let your money work for you','2025-08-28 15:16:00','Kampala, Uganda',1,1,'2025-08-27 09:17:37','2025-08-27 09:17:37'),(3,'Test Event','bdbdbdbbdbdb','2025-09-08 15:39:00','Kampala, Uganda',1,1,'2025-09-05 09:39:54','2025-09-05 09:39:54'),(4,'Launch','Come one, Come all','2025-09-24 11:35:00','Kampala',1,1,'2025-09-22 05:35:17','2025-09-22 05:35:17');
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `files`
+--
+
+DROP TABLE IF EXISTS `files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `files` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `original_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mime_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` int NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `alt_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `files`
+--
+
+LOCK TABLES `files` WRITE;
+/*!40000 ALTER TABLE `files` DISABLE KEYS */;
+INSERT INTO `files` VALUES (5,'c558563a-417a-4817-be92-0ffad321327b.jpg','pexels-rdne-7947707 (1).jpg','images/c558563a-417a-4817-be92-0ffad321327b.jpg','http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg','image/jpeg','image',292959,NULL,NULL,'2025-09-21 11:04:31','2025-09-21 11:04:31'),(6,'f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','pexels-energepic-com-27411-159888.jpg','images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','image/jpeg','image',585100,NULL,NULL,'2025-09-21 11:07:48','2025-09-21 11:07:48'),(7,'7df237ab-c034-483f-927e-d2db880744cd.webp','temp_lm_img.webp','images/7df237ab-c034-483f-927e-d2db880744cd.webp','http://localhost:8000/images/7df237ab-c034-483f-927e-d2db880744cd.webp','image/webp','image',375252,NULL,NULL,'2025-09-22 06:17:06','2025-09-22 06:17:06');
+/*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `menu_items`
+--
+
+DROP TABLE IF EXISTS `menu_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `menu_items` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_id` bigint unsigned DEFAULT NULL,
+  `sort_order` int NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `opens_new_tab` tinyint(1) NOT NULL DEFAULT '0',
+  `icon` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `menu_items_parent_id_sort_order_index` (`parent_id`,`sort_order`),
+  CONSTRAINT `menu_items_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `menu_items` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `menu_items`
+--
+
+LOCK TABLES `menu_items` WRITE;
+/*!40000 ALTER TABLE `menu_items` DISABLE KEYS */;
+INSERT INTO `menu_items` VALUES (1,'About USE',NULL,NULL,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(2,'Listings',NULL,NULL,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(3,'Investors',NULL,NULL,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(4,'Market Statistics',NULL,NULL,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(5,'Rules & Regulations',NULL,NULL,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(6,'SCD',NULL,NULL,6,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(7,'About USE','/about',1,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(8,'Governance','#governance',1,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(9,'Products and Services','#products-services',1,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(10,'Trading Participants','#trading-participants',1,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(11,'Contact Us','#contact',1,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(12,'How to List','#how-to-list',2,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(13,'Listing Rules','#listing-rules',2,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(14,'Listed Securities','/securities',2,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-22 04:11:21'),(15,'FAQs','#faqs',2,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(16,'How to Invest','#how-to-invest',3,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(17,'Private Transfers','#private-transfers',3,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(18,'Investor FAQs','#investor-faqs',3,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(19,'Corporate Announcements','#corporate-announcements',3,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(20,'Complaints Escalation','#complaints-escalation',3,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(21,'Market Snapshot','#market-snapshot',4,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(22,'Market Performance','#market-performance',4,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(23,'Market Regulations','#market-regulations',5,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(24,'SCD','#scd-regulations',5,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(25,'About thee SCD','#about-scd',6,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 09:10:54'),(26,'Legal and Regulatory Framework','#legal-framework',6,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(27,'Services','#scd-services',6,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(28,'SCD Forms','#scd-forms',6,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(29,'Equities','#equities',14,1,1,0,NULL,'Equity securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(30,'Bonds','#bonds',14,2,1,0,NULL,'Bond securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(33,'dbdbbd','/test',25,1,1,0,NULL,NULL,'2025-09-21 09:12:33','2025-09-21 09:12:33'),(36,'Reports','/annual-reports',1,6,1,0,NULL,NULL,'2025-09-22 06:15:13','2025-09-22 06:15:13');
+/*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2025_08_27_120430_create_news_table',1),(6,'2025_08_27_120641_create_events_table',1),(7,'2025_08_27_122356_create_site_contents_table',2),(8,'2025_09_20_195828_create_carousel_images_table',3),(9,'2025_09_20_201354_add_second_button_to_carousel_images_table',4),(10,'2025_09_20_203232_create_files_table',5),(11,'2025_09_20_205150_add_summary_and_author_to_news_table',6),(12,'2025_09_20_210644_create_menu_items_table',7),(15,'2025_09_21_142144_create_securities_table',8),(16,'2025_09_22_075435_create_news_security_table',9);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `news`
+--
+
+DROP TABLE IF EXISTS `news`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `news` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `summary` text COLLATE utf8mb4_unicode_ci,
+  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `news`
+--
+
+LOCK TABLES `news` WRITE;
+/*!40000 ALTER TABLE `news` DISABLE KEYS */;
+INSERT INTO `news` VALUES (1,'Stay Updated with Uganda Securities Exchange','<p>Check back soon for the latest market news and investment opportunities...</p>',NULL,NULL,'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Kasaija%2C_Matia.jpg/1200px-Kasaija%2C_Matia.jpg',1,'2025-08-27 09:22:12','2025-09-22 06:20:43'),(3,'USE launches new website','<p>USE launches new website</p>',NULL,NULL,'http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg',1,'2025-09-05 09:41:01','2025-09-22 03:59:26');
+/*!40000 ALTER TABLE `news` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `news_security`
+--
+
+DROP TABLE IF EXISTS `news_security`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `news_security` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `news_id` bigint unsigned NOT NULL,
+  `security_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `news_security_news_id_security_id_unique` (`news_id`,`security_id`),
+  KEY `news_security_security_id_foreign` (`security_id`),
+  CONSTRAINT `news_security_news_id_foreign` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `news_security_security_id_foreign` FOREIGN KEY (`security_id`) REFERENCES `securities` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `news_security`
+--
+
+LOCK TABLES `news_security` WRITE;
+/*!40000 ALTER TABLE `news_security` DISABLE KEYS */;
+INSERT INTO `news_security` VALUES (1,3,15,NULL,NULL),(2,1,19,NULL,NULL);
+/*!40000 ALTER TABLE `news_security` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+LOCK TABLES `password_resets` WRITE;
+/*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+LOCK TABLES `personal_access_tokens` WRITE;
+/*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `securities`
+--
+
+DROP TABLE IF EXISTS `securities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `securities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `ticker` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isin` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `issuer_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `security_type` enum('equity','treasury_bill','treasury_bond') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'equity',
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `issued_shares` bigint DEFAULT NULL,
+  `issue_date` date DEFAULT NULL,
+  `rate` decimal(8,4) DEFAULT NULL,
+  `maturity_date` date DEFAULT NULL,
+  `currency` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'UGX',
+  `category` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `securities`
+--
+
+LOCK TABLES `securities` WRITE;
+/*!40000 ALTER TABLE `securities` DISABLE KEYS */;
+INSERT INTO `securities` VALUES (1,'BATU','UG0000000010','British American Tobacco Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(2,'BOBU','UG0000000020','Bank of Baroda (Uganda) Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(3,'DFCU','UG0000000030','DFCU Bank Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(4,'EABL','UG0000000040','East African Breweries Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(5,'JHL','UG0000000050','Jubilee Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(6,'SBU','UG0000000060','Stanbic Bank Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(7,'UCL','UG0000000070','Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(8,'UCL','UG0000000080','Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 17:08:28'),(9,NULL,'UG0001000101',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',50000000000,'2020-01-15',13.5000,'2030-01-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(10,NULL,'UG0001000102',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',75000000000,'2021-06-10',14.2500,'2031-06-10','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(11,NULL,'UG0001000103',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',100000000000,'2022-03-20',15.0000,'2032-03-20','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(12,NULL,'UG0002000201',NULL,'Republic of Uganda','treasury_bill','91-Day Bill',25000000000,'2024-01-15',10.5000,'2024-04-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(13,NULL,'UG0002000202',NULL,'Republic of Uganda','treasury_bill','182-Day Bill',30000000000,'2024-02-01',11.2500,'2024-08-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(14,NULL,'UG0002000203',NULL,'Republic of Uganda','treasury_bill','364-Day Bill',40000000000,'2024-03-01',12.0000,'2025-03-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(15,'BATU',NULL,'British American Tobacco Uganda',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(16,'UCL',NULL,'Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(17,'NIC',NULL,'NIC Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(19,'UA',NULL,'Uganda Airlines','Republic of Uganda','equity',NULL,NULL,NULL,NULL,NULL,'UGX','Government',1,'2025-09-22 06:20:02','2025-09-22 06:20:02');
+/*!40000 ALTER TABLE `securities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `site_contents`
+--
+
+DROP TABLE IF EXISTS `site_contents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `site_contents` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'text',
+  `group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `site_contents_key_unique` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `site_contents`
+--
+
+LOCK TABLES `site_contents` WRITE;
+/*!40000 ALTER TABLE `site_contents` DISABLE KEYS */;
+INSERT INTO `site_contents` VALUES (1,'market_status','open','text',NULL,NULL,'2025-08-27 09:28:38','2025-09-30 09:11:08'),(2,'gateway_title','Your Gateway to Uganda\'s Financial Market','text',NULL,NULL,'2025-08-27 09:31:24','2025-08-27 09:41:18'),(3,'contact_email','info@use.or.ug','text',NULL,NULL,'2025-08-27 09:45:41','2025-08-27 09:45:41'),(4,'hero_headline','Building Uganda Together','text',NULL,NULL,'2025-09-05 09:38:17','2025-09-05 09:38:17'),(5,'contact_phone','+256-312-370815/7/8','text',NULL,NULL,'2025-09-22 04:15:01','2025-09-22 04:15:01'),(6,'contact_address','Plot 3-5 New Port-Bell Road, UAP Nakawa Business Park, Block A, 4th Floor\nP.O.Box 23552, Kampala, Uganda','text',NULL,NULL,'2025-09-22 04:15:01','2025-09-22 04:15:01');
+/*!40000 ALTER TABLE `site_contents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `role` enum('Admin','Accounts','User') NOT NULL DEFAULT 'User',
+  `password` text NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `status` enum('Active','Pending','Disabled') NOT NULL DEFAULT 'Pending',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (35,'Duncan Mudulo','Admin','$2y$10$eSzXVu.3HcbUkgmqklX3zeQVCfrQaLf9baZ8pmA8OgW1PUg8qlgPq','0702681160','webmaster@use.or.ug','Active','2021-11-19 17:24:03','2025-09-30 12:27:06');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-10-01 14:04:42

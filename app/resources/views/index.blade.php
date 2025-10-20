@@ -6,7 +6,7 @@
     <title>Uganda Securities Exchange - Building East Africa's Premier Financial Market</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #0f172a;
             overflow-x: hidden;
@@ -215,28 +215,33 @@
             transform: rotate(225deg);
         }
 
+        /* Level 2 - Dropdown (copied from working test) */
         .dropdown {
             position: absolute;
-            top: calc(100% + 0.5rem);
+            top: 100%;
             left: 0;
             background: white;
+            min-width: 220px;
             border-radius: 12px;
             box-shadow: var(--shadow-xl);
             border: 1px solid var(--border);
-            min-width: 220px;
             padding: 0.5rem;
+            margin-top: 0.5rem;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.2s, visibility 0.2s;
             z-index: 1000;
-            overflow: visible;
+            list-style: none;
         }
 
-        .nav-item:hover .dropdown {
+        /* Show dropdown on nav-item hover */
+        .nav-item:hover > .dropdown {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+        }
+
+        .dropdown > li {
+            position: relative;
         }
 
         .dropdown-item {
@@ -248,81 +253,59 @@
             transition: all 0.2s ease;
             font-size: 0.875rem;
             font-weight: 500;
-            position: relative;
         }
 
         .dropdown-item:hover {
             background: rgba(37, 99, 235, 0.05);
             color: var(--primary-blue);
-            transform: translateX(4px);
         }
 
-        .dropdown-item.has-submenu {
+        .chevron-right {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(-45deg);
+            transition: all 0.2s ease;
+            opacity: 0.7;
+            margin-left: auto;
+            float: right;
+        }
+
+        .has-submenu > .dropdown-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .chevron-right {
-            width: 5px;
-            height: 5px;
-            border-right: 1px solid currentColor;
-            border-bottom: 1px solid currentColor;
-            transform: rotate(-45deg);
-            transition: all 0.2s ease;
-            opacity: 0.7;
-        }
-
-        .dropdown-item:hover .chevron-right {
-            transform: rotate(-45deg) translateX(2px);
-        }
-
-        /* Submenu - RESET VERSION */
+        /* Level 3 - Submenu (copied from working test) */
         .submenu {
-            position: absolute !important;
-            top: 0 !important;
-            left: calc(100% + 5px) !important;
-            background: white !important;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: white;
+            min-width: 200px;
             border-radius: 12px;
             box-shadow: var(--shadow-xl);
-            border: 1px solid var(--border) !important;
-            min-width: 200px !important;
-            padding: 0.5rem !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            transform: translateX(0) !important;
-            transition: none !important;
-            z-index: 1050 !important;
-            display: block !important;
+            border: 1px solid var(--border);
+            padding: 0.5rem;
+            margin-left: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 1001;
+            list-style: none;
         }
 
-        /* Ensure dropdown container doesn't clip submenu */
-        .dropdown {
-            overflow: visible !important;
+        /* Show submenu on parent li hover - KEY SELECTOR */
+        .dropdown > li.has-submenu:hover > .submenu {
+            opacity: 1;
+            visibility: visible;
         }
 
-        /* BROAD TEST: Multiple selectors to catch any structure */
-        .has-submenu:hover .submenu,
-        .dropdown-item:hover .submenu,
-        a.has-submenu:hover .submenu,
-        a.dropdown-item.has-submenu:hover .submenu,
-        [class*="has-submenu"]:hover .submenu {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translateX(0) !important;
-            background: red !important;
-            border: 3px solid black !important;
-            z-index: 9999 !important;
-        }
-
-        /* Also test direct descendant */
-        .has-submenu:hover > .submenu {
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translateX(0) !important;
-            background: red !important;
-            border: 3px solid black !important;
-            z-index: 9999 !important;
+        .submenu > li {
+            list-style: none;
         }
 
         .submenu-item {
@@ -564,7 +547,7 @@
             max-width: 900px;
             animation: heroTextSlide 1s ease-out 0.3s both;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .hero-content p {
@@ -871,7 +854,7 @@
             margin-bottom: 0.75rem;
             line-height: 1;
             letter-spacing: -0.03em;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .market-movers-card {
@@ -1011,7 +994,7 @@
             margin-bottom: 1.5rem;
             letter-spacing: -0.04em;
             line-height: 1.2;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
             position: relative;
         }
 
@@ -1552,7 +1535,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1.5rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .footer-brand p {
@@ -1909,26 +1892,27 @@
 
         // Initialize mobile menu functionality
         document.addEventListener('DOMContentLoaded', () => {
+
             const mobileBtn = document.querySelector('.mobile-menu-btn');
             const navLinks = document.querySelectorAll('.nav-link');
-            
+
             if (mobileBtn) {
                 mobileBtn.addEventListener('click', toggleMobileMenu);
             }
-            
+
             // Add click handlers for mobile dropdown toggles
             navLinks.forEach(link => {
                 if (link.querySelector('.chevron-down')) {
                     link.addEventListener('click', toggleMobileDropdown);
                 }
             });
-            
+
             // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 const menu = document.querySelector('.nav-menu');
                 const mobileBtn = document.querySelector('.mobile-menu-btn');
                 const header = document.querySelector('.header');
-                
+
                 if (menu && menu.classList.contains('active')) {
                     if (!header.contains(e.target)) {
                         menu.classList.remove('active');
@@ -2142,33 +2126,39 @@
                             @if($menuItem->hasActiveChildren()) <span class="chevron-down"></span> @endif
                         </a>
                         @if($menuItem->hasActiveChildren())
-                            <div class="dropdown">
+                            <ul class="dropdown">
                                 @foreach($menuItem->activeChildren as $childItem)
-                                    @if($childItem->hasActiveChildren())
-                                        <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item has-submenu"
-                                           @if($childItem->opens_new_tab) target="_blank" @endif>
-                                            @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
-                                            {{ $childItem->title }}
-                                            <span class="chevron-right"></span>
-                                            <div class="submenu">
-                                                @foreach($childItem->activeChildren as $grandchildItem)
-                                                    <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
-                                                       @if($grandchildItem->opens_new_tab) target="_blank" @endif>
-                                                        @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
-                                                        {{ $grandchildItem->title }}
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        </a>
-                                    @else
+                                    @php
+                                        // Force load the activeChildren relationship
+                                        $childItem->load('activeChildren');
+                                        $grandchildren = $childItem->activeChildren;
+                                        $hasGrandchildren = $grandchildren->count() > 0;
+                                    @endphp
+
+                                    <li class="{{ $hasGrandchildren ? 'has-submenu' : '' }}">
                                         <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item"
                                            @if($childItem->opens_new_tab) target="_blank" @endif>
                                             @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
                                             {{ $childItem->title }}
+                                            @if($hasGrandchildren) <span class="chevron-right"></span> @endif
                                         </a>
-                                    @endif
+
+                                        @if($hasGrandchildren)
+                                            <ul class="submenu">
+                                                @foreach($grandchildren as $grandchildItem)
+                                                    <li>
+                                                        <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
+                                                           @if($grandchildItem->opens_new_tab) target="_blank" @endif>
+                                                            @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
+                                                            {{ $grandchildItem->title }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
                         @endif
                     </li>
                 @endforeach

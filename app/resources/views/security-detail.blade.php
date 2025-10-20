@@ -6,7 +6,7 @@
     <title>{{ $security->ticker ?: $security->isin }} - Security Details - Uganda Securities Exchange</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #0f172a;
             overflow-x: hidden;
@@ -97,7 +97,7 @@
         .logo {
             display: flex;
             align-items: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
             font-size: 1.5rem;
             font-weight: 800;
             background: var(--gradient-primary);
@@ -716,7 +716,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1.5rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .footer-brand p {
@@ -752,7 +752,7 @@
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .footer-links {

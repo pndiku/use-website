@@ -50,7 +50,12 @@ Route::get('/images/{filename}', function ($filename) {
 
 // Public pages
 Route::get('/about', function () {
-    return view('about');
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('about', compact('siteContent', 'menuItems'));
 })->name('about');
 Route::get('/next', function () {
     return view('index-next');
@@ -59,6 +64,134 @@ Route::get('/securities', 'App\Http\Controllers\SecurityController@publicIndex')
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
 Route::get('/news/{id}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
 Route::get('/annual-reports', 'App\Http\Controllers\PageController@annualReports')->name('annual-reports');
+Route::get('/listings/how-to-list', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('how-to-list', compact('siteContent', 'menuItems'));
+})->name('how-to-list');
+Route::get('/listings/listing-rules', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('listing-rules', compact('siteContent', 'menuItems'));
+})->name('listing-rules');
+Route::get('/listings/listing-faqs', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('listing-faqs', compact('siteContent', 'menuItems'));
+})->name('listing-faqs');
+Route::get('/about/governance/structure', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('governance-structure', compact('siteContent', 'menuItems'));
+})->name('governance-structure');
+Route::get('/about/products-and-services/international-securities-identification-number-isin', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('isin', compact('siteContent', 'menuItems'));
+})->name('isin');
+Route::get('/about/trading-participants/custodian-banks', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('custodian-banks', compact('siteContent', 'menuItems'));
+})->name('custodian-banks');
+Route::get('/about/trading-participants/stock-broker-firms', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('stock-broker-firms', compact('siteContent', 'menuItems'));
+})->name('stock-broker-firms');
+Route::get('/about/contact-us', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('contact-us', compact('siteContent', 'menuItems'));
+})->name('contact-us');
+Route::get('/investors/how-to-invest/types-of-investors', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('types-of-investors', compact('siteContent', 'menuItems'));
+})->name('types-of-investors');
+Route::get('/investors/how-to-invest/kyc-requirements', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('kyc-requirements', compact('siteContent', 'menuItems'));
+})->name('kyc-requirements');
+Route::get('/investors/investor-faqs', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('investor-faqs', compact('siteContent', 'menuItems'));
+})->name('investor-faqs');
+Route::get('/scd/about-scd', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('about-scd', compact('siteContent', 'menuItems'));
+})->name('about-scd');
+Route::get('/scd/services/depository', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('depository-services', compact('siteContent', 'menuItems'));
+})->name('depository-services');
+Route::get('/scd/services/clearing-and-settlement', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('clearing-settlement-services', compact('siteContent', 'menuItems'));
+})->name('clearing-settlement-services');
+Route::get('/scd/services/easy-portal', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('easy-portal', compact('siteContent', 'menuItems'));
+})->name('easy-portal');
+Route::get('/scd/services/registry', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('registry-services', compact('siteContent', 'menuItems'));
+})->name('registry-services');
 
 // Admin management routes
 Route::prefix('admin')->group(function () {

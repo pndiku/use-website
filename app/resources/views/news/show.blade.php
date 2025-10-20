@@ -273,6 +273,7 @@
         }
 
         .dropdown {
+            list-style: none;
             position: absolute;
             top: 100%;
             left: 0;
@@ -287,12 +288,17 @@
             transform: translateY(-10px);
             transition: all 0.3s ease;
             z-index: 1000;
+            overflow: visible !important;
         }
 
         .nav-item:hover .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
+        }
+
+        .dropdown > li {
+            position: relative;
         }
 
         .dropdown-item {
@@ -310,10 +316,26 @@
             text-decoration: none;
         }
 
-        .dropdown-item.has-submenu {
+        .dropdown > li:not(.has-submenu) .dropdown-item:hover {
+            transform: translateX(4px);
+        }
+
+        .dropdown > li.has-submenu > .dropdown-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
+        }
+
+        /* Create invisible hover bridge */
+        .dropdown > li.has-submenu::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            bottom: 0;
+            width: 15px;
+            pointer-events: auto;
+            z-index: 1;
         }
 
         .chevron-right {
@@ -330,11 +352,12 @@
             transform: rotate(-45deg) translateX(2px);
         }
 
-        /* Submenu styles */
+        /* Submenu styles - Fixed positioning */
         .submenu {
+            list-style: none;
             position: absolute !important;
             top: 0 !important;
-            left: calc(100% + 5px) !important;
+            left: 100% !important;
             background: white !important;
             border-radius: 12px;
             box-shadow: var(--shadow-xl);
@@ -343,31 +366,32 @@
             padding: 0.5rem !important;
             opacity: 0 !important;
             visibility: hidden !important;
-            transform: translateX(-10px) !important;
-            transition: all 0.3s ease !important;
+            pointer-events: none !important;
+            transform: translateX(-5px) !important;
+            transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease !important;
             z-index: 1050 !important;
             display: block !important;
+            margin-left: 0 !important;
         }
 
-        /* Ensure dropdown container doesn't clip submenu */
-        .dropdown {
-            overflow: visible !important;
-        }
-
-        /* Show submenu on hover */
-        .has-submenu:hover .submenu,
-        .dropdown-item:hover .submenu,
-        a.has-submenu:hover .submenu,
-        a.dropdown-item.has-submenu:hover .submenu {
+        /* Show submenu when hovering over its parent */
+        .dropdown > li.has-submenu:hover > .submenu {
             opacity: 1 !important;
             visibility: visible !important;
             transform: translateX(0) !important;
+            pointer-events: auto !important;
         }
 
-        .has-submenu:hover > .submenu {
+        /* Keep submenu visible when hovering over it */
+        .submenu:hover {
             opacity: 1 !important;
             visibility: visible !important;
             transform: translateX(0) !important;
+            pointer-events: auto !important;
+        }
+
+        .submenu > li {
+            position: relative;
         }
 
         .submenu-item {
@@ -922,33 +946,38 @@
                             @if($menuItem->hasActiveChildren()) <span class="chevron-down"></span> @endif
                         </a>
                         @if($menuItem->hasActiveChildren())
-                            <div class="dropdown">
+                            <ul class="dropdown">
                                 @foreach($menuItem->activeChildren as $childItem)
-                                    @if($childItem->hasActiveChildren())
-                                        <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item has-submenu"
-                                           @if($childItem->opens_new_tab) target="_blank" @endif>
-                                            @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
-                                            {{ $childItem->title }}
-                                            <span class="chevron-right"></span>
-                                            <div class="submenu">
-                                                @foreach($childItem->activeChildren as $grandchildItem)
-                                                    <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
-                                                       @if($grandchildItem->opens_new_tab) target="_blank" @endif>
-                                                        @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
-                                                        {{ $grandchildItem->title }}
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        </a>
-                                    @else
+                                    @php
+                                        $childItem->load('activeChildren');
+                                        $grandchildren = $childItem->activeChildren;
+                                        $hasGrandchildren = $grandchildren->count() > 0;
+                                    @endphp
+
+                                    <li class="{{ $hasGrandchildren ? 'has-submenu' : '' }}">
                                         <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item"
                                            @if($childItem->opens_new_tab) target="_blank" @endif>
                                             @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
                                             {{ $childItem->title }}
+                                            @if($hasGrandchildren) <span class="chevron-right"></span> @endif
                                         </a>
-                                    @endif
+
+                                        @if($hasGrandchildren)
+                                            <ul class="submenu">
+                                                @foreach($grandchildren as $grandchildItem)
+                                                    <li>
+                                                        <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
+                                                           @if($grandchildItem->opens_new_tab) target="_blank" @endif>
+                                                            @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
+                                                            {{ $grandchildItem->title }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
                         @endif
                     </li>
                 @endforeach

@@ -2292,10 +2292,6 @@
             </div>
             <div class="gateway-stats">
                 <div class="stat-card">
-                    <div class="stat-number">UGX 2.1B</div>
-                    <div class="stat-description">Daily Trading Volume</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-number">18+</div>
                     <div class="stat-description">Listed Companies</div>
                 </div>

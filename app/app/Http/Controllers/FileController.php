@@ -87,7 +87,8 @@ class FileController extends Controller
         }
 
         $filePath = $relativePath;
-        $fileUrl = url($relativePath);
+        // Use APP_URL from .env as base URL
+        $fileUrl = config('app.url') . '/' . $relativePath;
 
         // Save to database
         $file = File::create([

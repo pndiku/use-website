@@ -40,11 +40,14 @@ class NewsController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required_if:article_type,article|nullable|string',
             'summary' => 'nullable|string|max:1000',
             'author' => 'nullable|string|max:255',
             'image_url' => 'nullable|url',
             'is_published' => 'boolean',
+            'published_at' => 'nullable|date',
+            'article_type' => 'required|in:article,report',
+            'file_url' => 'required_if:article_type,report|nullable|url',
             'securities' => 'nullable|array',
             'securities.*' => 'exists:securities,id'
         ]);
@@ -95,14 +98,17 @@ class NewsController extends Controller
     public function update(Request $request, $id)
     {
         $news = News::findOrFail($id);
-        
+
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required_if:article_type,article|nullable|string',
             'summary' => 'nullable|string|max:1000',
             'author' => 'nullable|string|max:255',
             'image_url' => 'nullable|url',
             'is_published' => 'boolean',
+            'published_at' => 'nullable|date',
+            'article_type' => 'required|in:article,report',
+            'file_url' => 'required_if:article_type,report|nullable|url',
             'securities' => 'nullable|array',
             'securities.*' => 'exists:securities,id'
         ]);
@@ -137,19 +143,19 @@ class NewsController extends Controller
     /**
      * Display a specific news article for public viewing
      */
-    public function showPublic($id)
+    public function showPublic($slug)
     {
-        $article = News::where('id', $id)
+        $article = News::where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
-            
+
         // Get related articles (latest 3 published articles excluding current one)
         $relatedArticles = News::published()
-            ->where('id', '!=', $id)
+            ->where('id', '!=', $article->id)
             ->latest()
             ->take(3)
             ->get();
-            
+
         // Fetch site content for consistent branding
         $siteContent = SiteContent::all()->pluck('value', 'key')->toArray();
 

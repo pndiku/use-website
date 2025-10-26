@@ -1353,26 +1353,32 @@
                 <div class="news-grid">
                     @foreach($relatedNews as $article)
                     <article class="news-card">
-                        @if($article->image_url)
+                        @if($article->article_type === 'report')
+                        <div class="news-image" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); height: 200px;">
+                            <i class="fas fa-file-pdf" style="font-size: 4rem; color: white; opacity: 0.9;"></i>
+                        </div>
+                        @elseif($article->image_url)
                         <div class="news-image">
                             <img src="{{ $article->image_url }}" alt="{{ $article->title }}" loading="lazy">
                         </div>
                         @endif
                         <div class="news-content">
                             <div class="news-meta">
-                                <time class="news-date">{{ $article->created_at->format('M d, Y') }}</time>
-                                @if($article->author)
+                                <time class="news-date">{{ $article->getDisplayDate()->format('M d, Y') }}</time>
+                                @if($article->article_type === 'report')
+                                <span class="news-author">Report</span>
+                                @elseif($article->author)
                                 <span class="news-author">by {{ $article->author }}</span>
                                 @endif
                             </div>
                             <h4 class="news-title">
-                                <a href="{{ route('news.article', $article->id) }}">{{ $article->title }}</a>
+                                <a href="{{ route('news.article', $article->slug) }}">{{ $article->title }}</a>
                             </h4>
                             @if($article->summary)
                             <p class="news-summary">{{ Str::limit($article->summary, 120) }}</p>
                             @endif
-                            <a href="{{ route('news.article', $article->id) }}" class="news-link">
-                                Read More <i class="fas fa-arrow-right"></i>
+                            <a href="{{ route('news.article', $article->slug) }}" class="news-link">
+                                {{ $article->article_type === 'report' ? 'Download Report' : 'Read More' }} <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </article>

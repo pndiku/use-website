@@ -62,8 +62,107 @@ Route::get('/next', function () {
 })->name('index-next');
 Route::get('/securities', 'App\Http\Controllers\SecurityController@publicIndex')->name('securities');
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
-Route::get('/news/{id}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
+Route::get('/news/{slug}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
 Route::get('/annual-reports', 'App\Http\Controllers\PageController@annualReports')->name('annual-reports');
+Route::get('/market-statistics/market-snapshot', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('market-snapshot', compact('siteContent', 'menuItems'));
+})->name('market-snapshot');
+Route::get('/market-statistics/market-performance', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $reports = \App\Models\MarketPerformance::orderBy('published_date', 'desc')->get();
+    return view('market-performance', compact('siteContent', 'menuItems', 'reports'));
+})->name('market-performance');
+Route::get('/listed/{stock}', function ($stock) {
+    // Convert underscores back to spaces for stock symbols like "AIRTEL UGANDA"
+    $stock = str_replace('_', ' ', $stock);
+
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('stock-detail', compact('siteContent', 'menuItems', 'stock'));
+})->name('stock.detail');
+
+// Proxy endpoint for stock data to avoid CORS issues
+Route::get('/api/stock-data/{stock}', function ($stock) {
+    // Convert underscores back to spaces for stock symbols like "AIRTEL UGANDA"
+    $stock = str_replace('_', ' ', $stock);
+
+    $isIndex = in_array($stock, ['ALSI', 'LCI']);
+
+    // URL encode the stock parameter for the API call
+    $encodedStock = urlencode($stock);
+
+    if ($isIndex) {
+        $url = "https://scd.use.or.ug/data/index.php?index={$encodedStock}";
+    } else {
+        $url = "https://scd.use.or.ug/data/stock.php?stock={$encodedStock}";
+    }
+
+    try {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_ENCODING, ''); // Handle compression
+
+        $response = curl_exec($ch);
+        $curlError = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($curlError) {
+            return response()->json(['error' => 'CURL error: ' . $curlError], 500);
+        }
+
+        if ($httpCode === 200 && $response) {
+            // The API returns data wrapped like this: ([[data]]);
+            // We need to strip the outer ( and ); to get [[data]]
+            $response = trim($response);
+
+            // Remove leading ( and trailing );
+            if (substr($response, 0, 1) === '(') {
+                $response = substr($response, 1);
+            }
+            if (substr($response, -2) === ');') {
+                $response = substr($response, 0, -2);
+            } elseif (substr($response, -1) === ')') {
+                $response = substr($response, 0, -1);
+            }
+
+            // Validate JSON
+            $decoded = json_decode($response);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json([
+                    'error' => 'Invalid JSON received from API',
+                    'json_error' => json_last_error_msg(),
+                    'first_100' => substr($response, 0, 100),
+                    'last_100' => substr($response, -100)
+                ], 500);
+            }
+
+            return response()->json($decoded)
+                ->header('Access-Control-Allow-Origin', '*');
+        }
+
+        return response()->json(['error' => 'Failed to fetch data', 'http_code' => $httpCode], 500);
+    } catch (\Exception $e) {
+        \Log::error('Stock data fetch error: ' . $e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
 Route::get('/listings/how-to-list', function () {
     $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
     $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
@@ -209,6 +308,7 @@ Route::prefix('admin')->group(function () {
     Route::get('securities-sectors', 'App\Http\Controllers\SecurityController@getSectors')->name('securities.sectors');
     Route::get('market-summary', 'App\Http\Controllers\SecurityController@getMarketSummary')->name('market.summary');
     Route::resource('users', 'App\Http\Controllers\UserController');
+    Route::resource('market-performance', 'App\Http\Controllers\MarketPerformanceController');
 });
 
 

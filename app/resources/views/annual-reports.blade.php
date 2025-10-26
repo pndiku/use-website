@@ -96,49 +96,17 @@
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.03em;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--gradient-accent);
-            border-radius: 1px;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+        .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.3s ease;
         }
 
-        .logo:hover::after {
-            transform: scaleX(1);
-        }
-
-        .logo:hover {
+        .logo:hover img {
             transform: translateY(-1px);
-        }
-
-        .logo::before {
-            content: "";
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-light) 100%);
-            margin-right: 8px;
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
         }
 
         .market-status {
@@ -404,17 +372,20 @@
 
         /* Main Content */
         .main-content {
-            margin-top: 2rem;
+            margin-top: 0;
             min-height: 100vh;
         }
 
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-dark) 100%);
+            background: var(--gradient-primary);
             color: white;
-            padding: 4rem 0;
+            padding: 12rem 0 4rem;
             position: relative;
             overflow: hidden;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-top: 0;
         }
 
         .hero-section::before {
@@ -885,9 +856,19 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 8rem 0 3rem;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero-section {
-                padding: 3rem 0;
+                padding: 8rem 0 3rem;
             }
 
             .hero-title {
@@ -926,7 +907,9 @@
     <!-- Header - EXACT COPY FROM INDEX -->
     <header class="header" id="header">
         <nav class="nav-container">
-            <div class="logo">USE</div>
+            <a href="/" class="logo">
+                <img src="/images/logo.PNG" alt="Uganda Securities Exchange">
+            </a>
             <div class="market-status">
                 <span class="status-indicator {{ ($siteContent['market_status'] ?? 'open') == 'open' ? 'open' : 'closed' }}"></span>
                 <span class="status-text">{{ ucfirst($siteContent['market_status'] ?? 'Market Open') }}</span>

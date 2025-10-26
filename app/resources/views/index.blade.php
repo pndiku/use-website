@@ -2248,16 +2248,20 @@
             <div class="news-grid">
                 @if($latestNews && $latestNews->count() > 0)
                     @foreach($latestNews as $article)
-                    <a href="{{ route('news.article', $article->id) }}" class="news-item">
-                        @if($article->image_url)
+                    <a href="{{ route('news.article', $article->slug) }}" class="news-item">
+                        @if($article->article_type === 'report')
+                        <div class="news-image" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);">
+                            <i class="fas fa-file-pdf" style="font-size: 4rem; color: white; opacity: 0.9;"></i>
+                        </div>
+                        @elseif($article->image_url)
                         <div class="news-image" style="background-image: url('{{ $article->image_url }}'); background-size: cover; background-position: center;"></div>
                         @else
                         <div class="news-image"></div>
                         @endif
                         <div class="news-content">
-                            <div class="news-meta">{{ $article->created_at->format('F j, Y') }} • Market News</div>
+                            <div class="news-meta">{{ $article->getDisplayDate()->format('F j, Y') }} • {{ $article->article_type === 'report' ? 'Report' : 'Market News' }}</div>
                             <h3>{{ $article->title }}</h3>
-                            <p class="news-excerpt">{{ Str::limit($article->content, 120, '...') }}</p>
+                            <p class="news-excerpt">{{ $article->article_type === 'report' ? Str::limit($article->summary ?? 'Download report', 120, '...') : Str::limit($article->content, 120, '...') }}</p>
                         </div>
                     </a>
                     @endforeach

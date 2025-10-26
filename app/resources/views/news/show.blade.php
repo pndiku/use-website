@@ -15,8 +15,10 @@
     <meta property="og:image" content="{{ $article->image_url }}">
     @endif
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -74,16 +76,17 @@
         }
 
         body {
-            font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-secondary);
-            padding-top: 120px;
+            color: #0f172a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            background: var(--surface-secondary);
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-weight: 600;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 700;
             letter-spacing: -0.02em;
         }
 
@@ -129,70 +132,38 @@
         .logo {
             display: flex;
             align-items: center;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.03em;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--gradient-accent);
-            border-radius: 1px;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+        .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.3s ease;
         }
 
-        .logo:hover::after {
-            transform: scaleX(1);
-        }
-
-        .logo:hover {
+        .logo:hover img {
             transform: translateY(-1px);
-        }
-
-        .logo::before {
-            content: "";
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-light) 100%);
-            margin-right: 8px;
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
         }
 
         .market-status {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
+            background: rgba(248, 250, 252, 0.8);
             padding: 0.5rem 1rem;
-            background: rgba(0, 128, 199, 0.1);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 128, 199, 0.2);
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            flex-shrink: 0;
+            min-width: fit-content;
         }
 
         .status-indicator {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--use-green);
-            animation: pulse 2s infinite;
+            background: #ef4444;
+            animation: statusPulse 2s infinite;
         }
 
         .status-indicator.open {
@@ -204,18 +175,21 @@
             animation: none;
         }
 
-        @keyframes pulse {
+        @keyframes statusPulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
         }
 
         .status-text {
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-primary);
         }
 
         .status-time {
+            font-size: 0.75rem;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .nav-menu {
@@ -225,7 +199,8 @@
             background: rgba(248, 250, 252, 0.8);
             padding: 0.375rem;
             border-radius: 12px;
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
         }
 
         .nav-item {
@@ -438,21 +413,37 @@
         /* Article Content */
         .article-container {
             max-width: 800px;
-            margin: 3rem auto;
+            margin: 0 auto;
             padding: 0 2rem;
+            background: transparent;
         }
 
         .breadcrumb {
+            margin-bottom: 0;
+            background: var(--gradient-primary);
+            padding: 10rem 0 1.5rem 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 0;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .breadcrumb-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
         }
 
         .breadcrumb a {
-            color: var(--primary);
+            color: white;
             text-decoration: none;
         }
 
@@ -462,32 +453,43 @@
 
         .article-header {
             margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            padding: 0 2rem 3rem 2rem;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 0;
+        }
+
+        .article-header-content {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .article-title {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 1rem;
-            color: var(--text-primary);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: white;
         }
 
         .article-meta {
             display: flex;
             align-items: center;
+            color: rgba(255, 255, 255, 0.9);
             gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
         .article-date {
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.95rem;
         }
 
@@ -549,7 +551,7 @@
         }
 
         .section-title {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 1.8rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
@@ -614,7 +616,7 @@
         }
 
         .related-title {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -716,7 +718,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 1.5rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .footer-brand p {
@@ -752,7 +754,7 @@
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Titillium Web', sans-serif;
         }
 
         .footer-links {
@@ -797,14 +799,19 @@
                 height: 56px;
             }
 
-            .logo {
-                font-size: 1.25rem;
+            .logo img {
+                height: 50px;
             }
 
             .market-status {
                 padding: 0.375rem 0.75rem;
-                font-size: 0.75rem;
-                gap: 0.5rem;
+                order: -1;
+                margin-left: auto;
+                margin-right: 0.5rem;
+            }
+
+            .status-time {
+                display: none;
             }
 
             .mobile-menu-btn {
@@ -846,6 +853,10 @@
                 margin: 1.5rem auto;
             }
 
+            .article-header {
+                padding: 0 1rem 2rem 1rem;
+            }
+
             .article-title {
                 font-size: 2rem;
                 line-height: 1.1;
@@ -882,6 +893,10 @@
         }
 
         @media (max-width: 480px) {
+            .article-header {
+                padding: 0 1rem 1.5rem 1rem;
+            }
+
             .article-title {
                 font-size: 1.75rem;
             }
@@ -892,6 +907,11 @@
 
             .breadcrumb {
                 font-size: 0.8rem;
+                padding: 8rem 0 1.5rem 0;
+            }
+
+            .breadcrumb-content {
+                padding: 0 1rem;
             }
 
             .article-image {
@@ -929,7 +949,9 @@
     <!-- Header -->
     <header class="header" id="header">
         <nav class="nav-container">
-            <div class="logo">USE</div>
+            <a href="/" class="logo">
+                <img src="/images/logo.PNG" alt="Uganda Securities Exchange">
+            </a>
             <div class="market-status">
                 <span class="status-indicator {{ ($siteContent['market_status'] ?? 'open') == 'open' ? 'open' : 'closed' }}"></span>
                 <span class="status-text">{{ ucfirst($siteContent['market_status'] ?? 'Market Open') }}</span>
@@ -993,23 +1015,27 @@
     <main class="article-container">
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a href="/">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <a href="/#news">News</a>
-            <i class="fas fa-chevron-right"></i>
-            <span>{{ Str::limit($article->title, 50) }}</span>
+            <div class="breadcrumb-content">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/#news">News</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ Str::limit($article->title, 50) }}</span>
+            </div>
         </nav>
 
 
         <!-- Article Header -->
         <div class="article-header">
-            <h1 class="article-title">{{ $article->title }}</h1>
-            <div class="article-meta">
-                <span class="article-date">
-                    <i class="fas fa-calendar"></i>
-                    {{ $article->created_at->format('F j, Y') }}
-                </span>
-                <span class="article-badge">Market News</span>
+            <div class="article-header-content">
+                <h1 class="article-title">{{ $article->title }}</h1>
+                <div class="article-meta">
+                    <span class="article-date">
+                        <i class="fas fa-calendar"></i>
+                        {{ $article->getDisplayDate()->format('F j, Y') }}
+                    </span>
+                    <span class="article-badge">{{ $article->isReport() ? 'Report' : 'Market News' }}</span>
+                </div>
             </div>
         </div>
 
@@ -1020,7 +1046,26 @@
 
         <!-- Article Content -->
         <div class="article-content">
-            {!! nl2br(e($article->content)) !!}
+            @if($article->isReport() && $article->file_url)
+                <!-- Report Download Section -->
+                <div style="text-align: center; padding: 2rem 0;">
+                    <i class="fas fa-file-pdf" style="font-size: 4rem; color: var(--use-red); margin-bottom: 1.5rem;"></i>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Download Report</h3>
+                    @if($article->summary)
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary);">{{ $article->summary }}</p>
+                    @endif
+                    <a href="{{ $article->file_url }}"
+                       target="_blank"
+                       download
+                       style="display: inline-flex; align-items: center; gap: 0.75rem; background: var(--gradient-primary); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1.1rem; box-shadow: var(--shadow-md); transition: all 0.3s ease;">
+                        <i class="fas fa-download"></i>
+                        Download PDF Report
+                    </a>
+                </div>
+            @else
+                <!-- Regular Article Content -->
+                {!! nl2br(e($article->content)) !!}
+            @endif
         </div>
 
         <!-- Related Articles -->
@@ -1029,9 +1074,11 @@
             <h2 class="section-title">Related Articles</h2>
             <div class="related-articles">
                 @foreach($relatedArticles as $related)
-                <a href="{{ route('news.article', $related->id) }}" class="related-card">
-                    <div class="related-image">
-                        @if($related->image_url)
+                <a href="{{ route('news.article', $related->slug) }}" class="related-card">
+                    <div class="related-image" @if($related->article_type === 'report') style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);" @endif>
+                        @if($related->article_type === 'report')
+                            <i class="fas fa-file-pdf"></i>
+                        @elseif($related->image_url)
                             <img src="{{ $related->image_url }}" alt="{{ $related->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                         @else
                             <i class="fas fa-newspaper"></i>
@@ -1039,8 +1086,8 @@
                     </div>
                     <div class="related-content">
                         <h3 class="related-title">{{ $related->title }}</h3>
-                        <p class="related-excerpt">{{ Str::limit(strip_tags($related->content), 120) }}</p>
-                        <span class="related-date">{{ $related->created_at->format('M j, Y') }}</span>
+                        <p class="related-excerpt">{{ $related->article_type === 'report' ? Str::limit($related->summary ?? 'Download report', 120) : Str::limit(strip_tags($related->content), 120) }}</p>
+                        <span class="related-date">{{ $related->getDisplayDate()->format('M j, Y') }}@if($related->article_type === 'report') • Report @endif</span>
                     </div>
                 </a>
                 @endforeach
@@ -1055,7 +1102,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3>Uganda Securities Exchange</h3>
-                    <p>Driving Uganda's capital markets forward with innovation, transparency, and excellence. Building the future of African finance.</p>
+                    <p>Building East Africa's premier financial market through innovative trading solutions, comprehensive market data, and professional investment services.</p>
                     <div class="social-links">
                         <a href="#" class="social-link" aria-label="Facebook">
                             <i class="fab fa-facebook-f"></i>
@@ -1073,35 +1120,44 @@
                 </div>
 
                 <div class="footer-section">
-                    <h4>Markets</h4>
+                    <h4>Quick Links</h4>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">Equities</a>
-                        <a href="#" class="footer-link">Bonds</a>
+                        <a href="#" class="footer-link">About USE</a>
+                        <a href="#" class="footer-link">How to Invest</a>
+                        <a href="#" class="footer-link">Listed Securities</a>
                         <a href="#" class="footer-link">Market Data</a>
-                        <a href="#" class="footer-link">Listed Companies</a>
-                        <a href="#" class="footer-link">Trading Hours</a>
+                        <a href="#" class="footer-link">Trading Rules</a>
                     </div>
                 </div>
 
                 <div class="footer-section">
                     <h4>Services</h4>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">Listing Services</a>
-                        <a href="#" class="footer-link">Market Making</a>
-                        <a href="#" class="footer-link">Clearing & Settlement</a>
-                        <a href="#" class="footer-link">Registry Services</a>
-                        <a href="#" class="footer-link">Training</a>
+                        <a href="#" class="footer-link">Securities Trading</a>
+                        <a href="#" class="footer-link">Corporate Listings</a>
+                        <a href="#" class="footer-link">Investment Advisory</a>
+                        <a href="#" class="footer-link">Investor Education</a>
+                        <a href="#" class="footer-link">Market Research</a>
                     </div>
                 </div>
 
                 <div class="footer-section">
-                    <h4>Resources</h4>
+                    <h4>Contact Info</h4>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">Market Reports</a>
-                        <a href="#" class="footer-link">Investor Education</a>
-                        <a href="#" class="footer-link">Downloads</a>
-                        <a href="#" class="footer-link">Contact</a>
-                        <a href="#" class="footer-link">Support</a>
+                        <a href="mailto:{{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}" class="footer-link">
+                            <i class="fas fa-envelope"></i> {{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}
+                        </a>
+                        <a href="tel:{{ $siteContent['contact_phone'] ?? '+256414230738' }}" class="footer-link">
+                            <i class="fas fa-phone"></i> {{ $siteContent['contact_phone'] ?? '+256 414 230 738' }}
+                        </a>
+                        <div class="footer-link">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ $siteContent['contact_address'] ?? 'Uganda Securities Exchange, Plot 24/26 Kampala Road, Kampala, Uganda' }}
+                        </div>
+                        <div class="footer-link">
+                            <i class="fas fa-clock"></i>
+                            Trading Hours: {{ $siteContent['trading_hours'] ?? '9:00 AM - 3:00 PM EAT' }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1111,8 +1167,10 @@
                     <p>&copy; {{ date('Y') }} Uganda Securities Exchange. All rights reserved.</p>
                 </div>
                 <div>
-                    <a href="#" class="footer-link">Privacy Policy</a> |
-                    <a href="#" class="footer-link">Terms of Service</a> |
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <span style="margin: 0 1rem; color: #64748b;">|</span>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <span style="margin: 0 1rem; color: #64748b;">|</span>
                     <a href="#" class="footer-link">Disclaimer</a>
                 </div>
             </div>

@@ -409,7 +409,7 @@
 
         /* Main Content */
         .main-content {
-            padding-top: 8rem;
+            padding-top: 0;
             min-height: 100vh;
             background: var(--surface-secondary);
         }
@@ -423,14 +423,23 @@
         /* Hero Section */
         .hero-section {
             text-align: center;
-            padding: 4rem 0;
-            margin-bottom: 3rem;
+            padding: 12rem 2rem 4rem;
+            margin-bottom: 4rem;
+            margin-top: 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background: var(--gradient-primary);
+            color: white;
         }
 
         .hero-title {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 700;
-            color: var(--text-primary);
+            color: white;
             margin-bottom: 1rem;
             letter-spacing: -0.03em;
             line-height: 1.2;
@@ -438,7 +447,7 @@
 
         .hero-subtitle {
             font-size: 1.125rem;
-            color: var(--text-secondary);
+            color: rgba(255, 255, 255, 0.9);
             max-width: 640px;
             margin: 0 auto;
             line-height: 1.7;
@@ -1012,6 +1021,10 @@
             .performance-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .market-status {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1057,6 +1070,14 @@
 
             .container {
                 padding: 0 1rem;
+            }
+
+            .hero-section {
+                padding: 10rem 1.5rem 3rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
             }
 
             .stats-grid {
@@ -1106,11 +1127,15 @@
 
         @media (max-width: 480px) {
             .main-content {
-                padding-top: 6rem;
+                padding-top: 0;
             }
 
             .hero-title {
                 font-size: 2rem;
+            }
+
+            .hero-section {
+                padding: 10rem 1rem 3rem;
             }
 
             .securities-table th:nth-child(n+3),

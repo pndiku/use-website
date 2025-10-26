@@ -695,6 +695,10 @@
                         <i class="fas fa-folder-open"></i>
                         <span>File Repository</span>
                     </a>
+                    <a href="#" class="nav-item" data-section="market-performance">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Market Performance</span>
+                    </a>
                     <a href="#" class="nav-item" data-section="menu">
                         <i class="fas fa-bars"></i>
                         <span>Navigation Menu</span>
@@ -835,6 +839,13 @@
                                                 <input type="text" id="newsTitle" class="form-control" required>
                                             </div>
                                             <div class="form-group">
+                                                <label class="form-label">Type</label>
+                                                <select id="newsType" class="form-control" onchange="toggleNewsContentFields()">
+                                                    <option value="article">Article</option>
+                                                    <option value="report">Report (PDF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="form-label">Summary/Excerpt</label>
                                                 <textarea id="newsSummary" class="form-control" placeholder="Brief summary for homepage..." style="min-height: 80px;"></textarea>
                                             </div>
@@ -850,6 +861,16 @@
                                                 <input type="text" id="newsAuthor" class="form-control" placeholder="Author name">
                                             </div>
                                             <div class="form-group">
+                                                <label class="form-label">Published Date (Optional)</label>
+                                                <input type="datetime-local" id="newsPublishedAt" class="form-control">
+                                                <small class="text-muted">Leave empty to use current date/time</small>
+                                            </div>
+                                            <div class="form-group" id="newsFileGroup" style="display: none;">
+                                                <label class="form-label">PDF Report File URL</label>
+                                                <input type="url" id="newsFileUrl" class="form-control" placeholder="Paste file URL here (e.g., https://example.com/uploads/report.pdf)">
+                                                <small class="text-muted">Copy the file URL from Files section and paste it here</small>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="form-label">Related Securities</label>
                                                 <select id="newsSecurities" class="form-control" multiple style="height: 100px;">
                                                     <!-- Securities will be loaded here -->
@@ -863,10 +884,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group" id="newsContentGroup">
                                                 <label class="form-label">Content</label>
                                                 <div id="newsContent" style="min-height: 300px; background: white; border: 1px solid #ddd; border-radius: 4px;"></div>
-                                                <input type="hidden" id="newsContentInput" name="content" required>
+                                                <input type="hidden" id="newsContentInput" name="content">
                                             </div>
                                         </div>
                                     </div>
@@ -917,6 +938,13 @@
                                                 <input type="text" id="editNewsTitle" class="form-control" required>
                                             </div>
                                             <div class="form-group">
+                                                <label class="form-label">Type</label>
+                                                <select id="editNewsType" class="form-control" onchange="toggleEditNewsContentFields()">
+                                                    <option value="article">Article</option>
+                                                    <option value="report">Report (PDF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="form-label">Summary/Excerpt</label>
                                                 <textarea id="editNewsSummary" class="form-control" style="min-height: 80px;"></textarea>
                                             </div>
@@ -932,6 +960,16 @@
                                                 <input type="text" id="editNewsAuthor" class="form-control">
                                             </div>
                                             <div class="form-group">
+                                                <label class="form-label">Published Date (Optional)</label>
+                                                <input type="datetime-local" id="editNewsPublishedAt" class="form-control">
+                                                <small class="text-muted">Leave empty to use current date/time</small>
+                                            </div>
+                                            <div class="form-group" id="editNewsFileGroup" style="display: none;">
+                                                <label class="form-label">PDF Report File URL</label>
+                                                <input type="url" id="editNewsFileUrl" class="form-control" placeholder="Paste file URL here (e.g., https://example.com/uploads/report.pdf)">
+                                                <small class="text-muted">Copy the file URL from Files section and paste it here</small>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="form-label">Related Securities</label>
                                                 <select id="editNewsSecurities" class="form-control" multiple style="height: 100px;">
                                                     <!-- Securities will be loaded here -->
@@ -945,10 +983,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="form-group" id="editNewsContentGroup">
                                                 <label class="form-label">Content</label>
                                                 <div id="editNewsContent" style="min-height: 300px; background: white; border: 1px solid #ddd; border-radius: 4px;"></div>
-                                                <input type="hidden" id="editNewsContentInput" name="content" required>
+                                                <input type="hidden" id="editNewsContentInput" name="content">
                                             </div>
                                         </div>
                                     </div>
@@ -1470,6 +1508,69 @@
                             </div>
                             <div class="card-body">
                                 <div id="fileDetailsContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Performance Section -->
+                <div id="market-performance-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add Market Performance Report Form -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="marketPerformanceFormTitle">Add Market Performance Report</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="marketPerformanceForm">
+                                    @csrf
+                                    <input type="hidden" id="marketPerformanceId">
+                                    <div class="form-group">
+                                        <label class="form-label">Report Title *</label>
+                                        <input type="text" id="marketPerformanceTitle" class="form-control" placeholder="e.g., Market Performance Report Q1 2025" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="marketPerformanceFileUrl" class="form-control" placeholder="https://example.com/report.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="openFileRepositoryForMarketPerformance()">
+                                                <i class="fas fa-folder-open"></i> Browse Files
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">
+                                            Upload the PDF to File Repository first, then paste the URL here or browse files
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="marketPerformanceFileSize" class="form-control" placeholder="e.g., 2.5 MB">
+                                        <small class="form-text text-muted">Optional - e.g., 1.2 MB, 500 KB</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="marketPerformancePublishedDate" class="form-control">
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="marketPerformanceSubmitText">Add Report</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" onclick="resetMarketPerformanceForm()" style="display: none;" id="marketPerformanceCancelBtn">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Market Performance Reports List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Market Performance Reports</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="marketPerformanceList" class="table-container">
+                                    <p class="text-muted">Loading reports...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2880,6 +2981,36 @@
             }, 100);
         });
 
+        // Toggle content fields based on article type (create form)
+        function toggleNewsContentFields() {
+            const type = document.getElementById('newsType').value;
+            const contentGroup = document.getElementById('newsContentGroup');
+            const fileGroup = document.getElementById('newsFileGroup');
+
+            if (type === 'report') {
+                contentGroup.style.display = 'none';
+                fileGroup.style.display = 'block';
+            } else {
+                contentGroup.style.display = 'block';
+                fileGroup.style.display = 'none';
+            }
+        }
+
+        // Toggle content fields based on article type (edit form)
+        function toggleEditNewsContentFields() {
+            const type = document.getElementById('editNewsType').value;
+            const contentGroup = document.getElementById('editNewsContentGroup');
+            const fileGroup = document.getElementById('editNewsFileGroup');
+
+            if (type === 'report') {
+                contentGroup.style.display = 'none';
+                fileGroup.style.display = 'block';
+            } else {
+                contentGroup.style.display = 'block';
+                fileGroup.style.display = 'none';
+            }
+        }
+
         // Function to handle file repository integration
         function openFileRepository(targetInputId) {
             // Switch to files section
@@ -2921,13 +3052,17 @@
             const selectedSecurities = Array.from(document.getElementById('newsSecurities').selectedOptions)
                 .map(option => option.value);
 
+            const articleType = document.getElementById('newsType').value;
             const formData = {
                 title: document.getElementById('newsTitle').value,
-                content: document.getElementById('newsContentInput').value,
+                content: articleType === 'article' ? document.getElementById('newsContentInput').value : '',
                 summary: document.getElementById('newsSummary').value,
                 image_url: document.getElementById('newsImageUrl').value,
                 author: document.getElementById('newsAuthor').value,
                 is_published: document.getElementById('newsPublished').checked,
+                published_at: document.getElementById('newsPublishedAt').value || null,
+                article_type: articleType,
+                file_url: articleType === 'report' ? (document.getElementById('newsFileUrl').value || null) : null,
                 securities: selectedSecurities,
                 _token: document.querySelector('input[name="_token"]').value
             };
@@ -2976,13 +3111,17 @@
             const selectedSecurities = Array.from(document.getElementById('editNewsSecurities').selectedOptions)
                 .map(option => option.value);
 
+            const editArticleType = document.getElementById('editNewsType').value;
             const formData = {
                 title: document.getElementById('editNewsTitle').value,
-                content: document.getElementById('editNewsContentInput').value,
+                content: editArticleType === 'article' ? document.getElementById('editNewsContentInput').value : '',
                 summary: document.getElementById('editNewsSummary').value,
                 image_url: document.getElementById('editNewsImageUrl').value,
                 author: document.getElementById('editNewsAuthor').value,
                 is_published: document.getElementById('editNewsPublished').checked,
+                published_at: document.getElementById('editNewsPublishedAt').value || null,
+                article_type: editArticleType,
+                file_url: editArticleType === 'report' ? (document.getElementById('editNewsFileUrl').value || null) : null,
                 securities: selectedSecurities,
                 _token: document.querySelector('input[name="_token"]').value
             };
@@ -3135,6 +3274,28 @@
                 document.getElementById('editNewsImageUrl').value = article.image_url || '';
                 document.getElementById('editNewsAuthor').value = article.author || '';
                 document.getElementById('editNewsPublished').checked = article.is_published;
+
+                // Set published_at if it exists (convert to datetime-local format)
+                if (article.published_at) {
+                    const date = new Date(article.published_at);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    document.getElementById('editNewsPublishedAt').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                } else {
+                    document.getElementById('editNewsPublishedAt').value = '';
+                }
+
+                // Set article type
+                document.getElementById('editNewsType').value = article.article_type || 'article';
+
+                // Set file URL if it's a report
+                document.getElementById('editNewsFileUrl').value = article.file_url || '';
+
+                // Toggle content fields based on type
+                toggleEditNewsContentFields();
 
                 // Set selected securities
                 const editSecuritiesSelect = document.getElementById('editNewsSecurities');
@@ -3728,6 +3889,196 @@
                 showNotification('Error: ' + error.message, 'error');
             }
         }
+
+        // ===========================
+        // Market Performance Functions
+        // ===========================
+
+        // Load market performance reports
+        async function loadMarketPerformance() {
+            try {
+                const response = await fetch('/admin/market-performance');
+                const reports = await response.json();
+
+                const listContainer = document.getElementById('marketPerformanceList');
+
+                if (reports.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No market performance reports yet.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${reports.map(report => `
+                                <tr>
+                                    <td>
+                                        <a href="${report.file_url}" target="_blank" style="color: var(--primary-blue); text-decoration: none;">
+                                            <i class="fas fa-file-pdf"></i> ${report.title}
+                                        </a>
+                                    </td>
+                                    <td>${report.file_size || 'N/A'}</td>
+                                    <td>${report.published_date ? new Date(report.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <button onclick="editMarketPerformance(${report.id})" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deleteMarketPerformance(${report.id})" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading market performance reports:', error);
+                document.getElementById('marketPerformanceList').innerHTML =
+                    '<p class="text-danger">Error loading reports. Please try again.</p>';
+            }
+        }
+
+        // Handle market performance form submission
+        document.getElementById('marketPerformanceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('marketPerformanceId').value;
+            const formData = {
+                title: document.getElementById('marketPerformanceTitle').value,
+                file_url: document.getElementById('marketPerformanceFileUrl').value,
+                file_size: document.getElementById('marketPerformanceFileSize').value || null,
+                published_date: document.getElementById('marketPerformancePublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/market-performance/${id}` : '/admin/market-performance';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
+                                       document.querySelector('input[name="_token"]').value
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Report updated successfully!' : 'Report added successfully!');
+                    resetMarketPerformanceForm();
+                    loadMarketPerformance();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save report');
+                }
+            } catch (error) {
+                showNotification('Error: ' + error.message, 'error');
+            }
+        });
+
+        // Edit market performance report
+        async function editMarketPerformance(id) {
+            try {
+                const response = await fetch(`/admin/market-performance/${id}`);
+                const report = await response.json();
+
+                document.getElementById('marketPerformanceId').value = report.id;
+                document.getElementById('marketPerformanceTitle').value = report.title;
+                document.getElementById('marketPerformanceFileUrl').value = report.file_url;
+                document.getElementById('marketPerformanceFileSize').value = report.file_size || '';
+
+                // Format datetime for datetime-local input
+                if (report.published_date) {
+                    const date = new Date(report.published_date);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    document.getElementById('marketPerformancePublishedDate').value =
+                        `${year}-${month}-${day}T${hours}:${minutes}`;
+                }
+
+                document.getElementById('marketPerformanceFormTitle').textContent = 'Edit Market Performance Report';
+                document.getElementById('marketPerformanceSubmitText').textContent = 'Update Report';
+                document.getElementById('marketPerformanceCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('marketPerformanceForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                showNotification('Error loading report: ' + error.message, 'error');
+            }
+        }
+
+        // Delete market performance report
+        async function deleteMarketPerformance(id) {
+            if (!confirm('Are you sure you want to delete this market performance report?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/market-performance/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
+                                       document.querySelector('input[name="_token"]').value
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Report deleted successfully!');
+                    loadMarketPerformance();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete report');
+                }
+            } catch (error) {
+                showNotification('Error: ' + error.message, 'error');
+            }
+        }
+
+        // Reset market performance form
+        function resetMarketPerformanceForm() {
+            document.getElementById('marketPerformanceForm').reset();
+            document.getElementById('marketPerformanceId').value = '';
+            document.getElementById('marketPerformanceFormTitle').textContent = 'Add Market Performance Report';
+            document.getElementById('marketPerformanceSubmitText').textContent = 'Add Report';
+            document.getElementById('marketPerformanceCancelBtn').style.display = 'none';
+        }
+
+        // Open file repository for market performance
+        function openFileRepositoryForMarketPerformance() {
+            // Switch to files section
+            document.querySelector('[data-section="files"]').click();
+            setTimeout(() => {
+                loadFiles();
+
+                // Show instruction
+                showNotification('Select a file and copy its URL to use in the Market Performance report', 'info');
+
+                // Store that we came from market performance
+                window.marketPerformanceFileSelection = true;
+            }, 100);
+        }
+
+        // Load market performance when section is shown
+        document.querySelector('[data-section="market-performance"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadMarketPerformance();
+            }, 100);
+        });
     </script>
 </body>
 </html>

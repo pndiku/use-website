@@ -221,9 +221,9 @@
         .hero {
             background: var(--gradient-primary);
             color: white;
-            padding: 10rem 0 4rem;
+            padding: 12rem 0 4rem;
             text-align: center;
-            margin-top: 5rem;
+            margin-top: 0;
         }
 
         .hero-container {

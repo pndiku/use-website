@@ -24,6 +24,7 @@
             color: #0f172a;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            background: linear-gradient(180deg, var(--use-blue) 0%, var(--use-blue-light) 15%, var(--surface-secondary) 15%, var(--surface-secondary) 100%);
         }
 
         :root {

@@ -45,7 +45,7 @@ CREATE TABLE `carousel_images` (
 
 LOCK TABLES `carousel_images` WRITE;
 /*!40000 ALTER TABLE `carousel_images` DISABLE KEYS */;
-INSERT INTO `carousel_images` VALUES (1,'Uganda Securities Exchange',NULL,'https://images.pexels.com/photos/7567222/pexels-photo-7567222.jpeg','Start Trading','https://demo.use.org/investors/investor-faqs','Learn More','http://bdbdbdb.com',0,1,'2025-09-20 17:06:14','2025-10-21 05:38:14'),(2,'East Africa\'s Premier Financial Market',NULL,'http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','Start Trading',NULL,NULL,NULL,0,1,'2025-09-20 17:06:53','2025-09-21 18:17:45'),(3,'Your Gateway to Uganda\'s Financial Market',NULL,'https://images.pexels.com/photos/6801872/pexels-photo-6801872.jpeg?_gl=1*nlziix*_ga*ODg1NjgyODg0LjE3MDEyNTkxODc.*_ga_8JE65Q40S6*czE3NTgzOTg3MTUkbzIwJGcxJHQxNzU4Mzk4NzU0JGoyMSRsMCRoMA..',NULL,NULL,NULL,NULL,0,1,'2025-09-20 17:08:53','2025-09-21 18:41:27');
+INSERT INTO `carousel_images` VALUES (1,'Uganda Securities Exchange',NULL,'https://demo.use.or.ug/images/c558563a-417a-4817-be92-0ffad321327b.jpg','Start Trading','https://demo.use.org/investors/investor-faqs','Learn More','http://bdbdbdb.com',0,1,'2025-09-20 17:06:14','2025-10-26 08:40:04'),(2,'East Africa\'s Premier Financial Market',NULL,'https://images.pexels.com/photos/33691593/pexels-photo-33691593.jpeg','Start Trading',NULL,NULL,NULL,0,1,'2025-09-20 17:06:53','2025-10-26 08:40:28'),(3,'Your Gateway to Uganda\'s Financial Market',NULL,'https://images.pexels.com/photos/14393766/pexels-photo-14393766.jpeg',NULL,NULL,NULL,NULL,0,1,'2025-09-20 17:08:53','2025-10-26 08:40:59');
 /*!40000 ALTER TABLE `carousel_images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `files` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,8 +139,37 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (5,'c558563a-417a-4817-be92-0ffad321327b.jpg','pexels-rdne-7947707 (1).jpg','images/c558563a-417a-4817-be92-0ffad321327b.jpg','http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg','image/jpeg','image',292959,NULL,NULL,'2025-09-21 11:04:31','2025-09-21 11:04:31'),(6,'f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','pexels-energepic-com-27411-159888.jpg','images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','image/jpeg','image',585100,NULL,NULL,'2025-09-21 11:07:48','2025-09-21 11:07:48'),(7,'7df237ab-c034-483f-927e-d2db880744cd.webp','temp_lm_img.webp','images/7df237ab-c034-483f-927e-d2db880744cd.webp','http://localhost:8000/images/7df237ab-c034-483f-927e-d2db880744cd.webp','image/webp','image',375252,NULL,NULL,'2025-09-22 06:17:06','2025-09-22 06:17:06');
+INSERT INTO `files` VALUES (5,'c558563a-417a-4817-be92-0ffad321327b.jpg','pexels-rdne-7947707 (1).jpg','images/c558563a-417a-4817-be92-0ffad321327b.jpg','http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg','image/jpeg','image',292959,NULL,NULL,'2025-09-21 11:04:31','2025-09-21 11:04:31'),(6,'f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','pexels-energepic-com-27411-159888.jpg','images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','image/jpeg','image',585100,NULL,NULL,'2025-09-21 11:07:48','2025-09-21 11:07:48'),(7,'7df237ab-c034-483f-927e-d2db880744cd.webp','temp_lm_img.webp','images/7df237ab-c034-483f-927e-d2db880744cd.webp','http://localhost:8000/images/7df237ab-c034-483f-927e-d2db880744cd.webp','image/webp','image',375252,NULL,NULL,'2025-09-22 06:17:06','2025-09-22 06:17:06'),(8,'a7138055-f5f9-4394-b729-4a64e639e42e.pdf','PDF-Listings.pdf','uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 17:17:17','2025-10-25 17:17:17'),(10,'ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','PDF-Listings.pdf','uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','https://demo.use.or.ug/uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 18:42:49','2025-10-25 18:42:49');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `market_performance`
+--
+
+DROP TABLE IF EXISTS `market_performance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `market_performance` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `published_date` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `market_performance`
+--
+
+LOCK TABLES `market_performance` WRITE;
+/*!40000 ALTER TABLE `market_performance` DISABLE KEYS */;
+INSERT INTO `market_performance` VALUES (1,'Market Performance in July 2025.pdf','https://demo.use.or.ug/uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','100mb','2025-10-21 13:26:00','2025-10-26 07:22:59','2025-10-26 07:26:11');
+/*!40000 ALTER TABLE `market_performance` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -174,7 +203,7 @@ CREATE TABLE `menu_items` (
 
 LOCK TABLES `menu_items` WRITE;
 /*!40000 ALTER TABLE `menu_items` DISABLE KEYS */;
-INSERT INTO `menu_items` VALUES (1,'About USE',NULL,NULL,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(2,'Listings',NULL,NULL,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(3,'Investors',NULL,NULL,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(4,'Market Statistics',NULL,NULL,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:13:12'),(5,'Rules & Regulations',NULL,NULL,6,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:07:02'),(6,'SCD',NULL,NULL,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:13:25'),(7,'About USE','/about',1,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(8,'Governance','#governance',1,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(9,'Products and Services','#products-services',1,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(10,'Trading Participants','#trading-participants',1,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(11,'Contact Us','/about/contact-us',1,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 18:50:04'),(12,'How to List','/listings/how-to-list',2,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:44:01'),(13,'Listing Rules','/listings/listing-rules',2,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:44:17'),(14,'Listed Securities','/securities',2,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-22 04:11:21'),(15,'FAQs','/listings/listing-faqs',2,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:54:56'),(16,'How to Invest','#how-to-invest',3,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(17,'Private Transfers','#private-transfers',3,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(18,'Investor FAQs','/investors/investor-faqs',3,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 18:59:09'),(19,'Corporate Announcements','#corporate-announcements',3,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(20,'Complaints Escalation','#complaints-escalation',3,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(21,'Market Snapshot','#market-snapshot',4,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(22,'Market Performance','#market-performance',4,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(23,'Market Regulations','#market-regulations',5,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(24,'SCD','#scd-regulations',5,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(25,'About the SCD','/scd/about-scd',6,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:07:58'),(26,'Legal and Regulatory Framework','#legal-framework',6,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(27,'Services','#scd-services',6,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(28,'SCD Forms','#scd-forms',6,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(29,'Equities','#equities',14,1,1,0,NULL,'Equity securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(30,'Bonds','#bonds',14,2,1,0,NULL,'Bond securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(36,'Reports','/annual-reports',1,6,1,0,NULL,NULL,'2025-09-22 06:15:13','2025-09-22 06:15:13'),(37,'Governance Structure','/about/governance/structure',8,1,1,0,NULL,NULL,'2025-10-19 18:47:08','2025-10-19 19:12:41'),(38,'International Securities Identification Number (ISIN)','/about/products-and-services/international-securities-identification-number-isin',9,1,1,0,NULL,NULL,'2025-10-20 18:26:52','2025-10-20 18:26:52'),(39,'Stock Broker Firms','/about/trading-participants/stock-broker-firms',10,1,1,0,NULL,NULL,'2025-10-20 18:34:14','2025-10-20 18:34:14'),(40,'Custodian Banks','/about/trading-participants/custodian-banks',10,2,1,0,NULL,NULL,'2025-10-20 18:34:52','2025-10-20 18:34:52'),(41,'Types of Investors','/investors/how-to-invest/types-of-investors',16,1,1,0,NULL,NULL,'2025-10-20 18:54:43','2025-10-20 18:54:43'),(42,'KYC Requirements','/investors/how-to-invest/kyc-requirements',16,2,1,0,NULL,NULL,'2025-10-20 18:55:21','2025-10-20 18:55:21'),(43,'Depository','/scd/services/depository',27,1,1,0,NULL,NULL,'2025-10-20 19:09:37','2025-10-20 19:09:37'),(44,'Clearing and Settlement','/scd/services/clearing-and-settlement',27,2,1,0,NULL,NULL,'2025-10-20 19:10:26','2025-10-20 19:10:26'),(45,'Easy Portal','/scd/services/easy-portal',27,3,1,0,NULL,NULL,'2025-10-20 19:11:07','2025-10-20 19:11:07'),(46,'Registry','/scd/services/registry',27,4,1,0,NULL,NULL,'2025-10-20 19:12:00','2025-10-20 19:12:00');
+INSERT INTO `menu_items` VALUES (1,'About USE',NULL,NULL,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(2,'Listings',NULL,NULL,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(3,'Investors',NULL,NULL,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(4,'Market Statistics',NULL,NULL,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:13:12'),(5,'Rules & Regulations',NULL,NULL,6,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:07:02'),(6,'SCD',NULL,NULL,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:13:25'),(7,'About USE','/about',1,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(8,'Governance','#governance',1,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(9,'Products and Services','#products-services',1,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(10,'Trading Participants','#trading-participants',1,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(11,'Contact Us','/about/contact-us',1,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 18:50:04'),(12,'How to List','/listings/how-to-list',2,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:44:01'),(13,'Listing Rules','/listings/listing-rules',2,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:44:17'),(14,'Listed Securities','/securities',2,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-22 04:11:21'),(15,'FAQs','/listings/listing-faqs',2,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-19 17:54:56'),(16,'How to Invest','#how-to-invest',3,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(17,'Private Transfers','#private-transfers',3,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(18,'Investor FAQs','/investors/investor-faqs',3,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 18:59:09'),(19,'Corporate Announcements','#corporate-announcements',3,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(20,'Complaints Escalation','#complaints-escalation',3,5,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(21,'Market Snapshot','/market-statistics/market-snapshot',4,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-26 07:30:37'),(22,'Market Performance','/market-statistics/market-performance',4,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-26 07:30:53'),(23,'Market Regulations','#market-regulations',5,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(24,'SCD','#scd-regulations',5,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(25,'About the SCD','/scd/about-scd',6,1,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-10-20 19:07:58'),(26,'Legal and Regulatory Framework','#legal-framework',6,2,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(27,'Services','#scd-services',6,3,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(28,'SCD Forms','#scd-forms',6,4,1,0,NULL,NULL,'2025-09-21 07:12:58','2025-09-21 07:12:58'),(29,'Equities','#equities',14,1,1,0,NULL,'Equity securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(30,'Bonds','#bonds',14,2,1,0,NULL,'Bond securities trading','2025-09-21 07:31:50','2025-09-21 07:31:50'),(36,'Reports','/annual-reports',1,6,1,0,NULL,NULL,'2025-09-22 06:15:13','2025-09-22 06:15:13'),(37,'Governance Structure','/about/governance/structure',8,1,1,0,NULL,NULL,'2025-10-19 18:47:08','2025-10-19 19:12:41'),(38,'International Securities Identification Number (ISIN)','/about/products-and-services/international-securities-identification-number-isin',9,1,1,0,NULL,NULL,'2025-10-20 18:26:52','2025-10-20 18:26:52'),(39,'Stock Broker Firms','/about/trading-participants/stock-broker-firms',10,1,1,0,NULL,NULL,'2025-10-20 18:34:14','2025-10-20 18:34:14'),(40,'Custodian Banks','/about/trading-participants/custodian-banks',10,2,1,0,NULL,NULL,'2025-10-20 18:34:52','2025-10-20 18:34:52'),(41,'Types of Investors','/investors/how-to-invest/types-of-investors',16,1,1,0,NULL,NULL,'2025-10-20 18:54:43','2025-10-20 18:54:43'),(42,'KYC Requirements','/investors/how-to-invest/kyc-requirements',16,2,1,0,NULL,NULL,'2025-10-20 18:55:21','2025-10-20 18:55:21'),(43,'Depository','/scd/services/depository',27,1,1,0,NULL,NULL,'2025-10-20 19:09:37','2025-10-20 19:09:37'),(44,'Clearing and Settlement','/scd/services/clearing-and-settlement',27,2,1,0,NULL,NULL,'2025-10-20 19:10:26','2025-10-20 19:10:26'),(45,'Easy Portal','/scd/services/easy-portal',27,3,1,0,NULL,NULL,'2025-10-20 19:11:07','2025-10-20 19:11:07'),(46,'Registry','/scd/services/registry',27,4,1,0,NULL,NULL,'2025-10-20 19:12:00','2025-10-20 19:12:00');
 /*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +219,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,7 +228,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2025_08_27_120430_create_news_table',1),(6,'2025_08_27_120641_create_events_table',1),(7,'2025_08_27_122356_create_site_contents_table',2),(8,'2025_09_20_195828_create_carousel_images_table',3),(9,'2025_09_20_201354_add_second_button_to_carousel_images_table',4),(10,'2025_09_20_203232_create_files_table',5),(11,'2025_09_20_205150_add_summary_and_author_to_news_table',6),(12,'2025_09_20_210644_create_menu_items_table',7),(15,'2025_09_21_142144_create_securities_table',8),(16,'2025_09_22_075435_create_news_security_table',9);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2025_08_27_120430_create_news_table',1),(6,'2025_08_27_120641_create_events_table',1),(7,'2025_08_27_122356_create_site_contents_table',2),(8,'2025_09_20_195828_create_carousel_images_table',3),(9,'2025_09_20_201354_add_second_button_to_carousel_images_table',4),(10,'2025_09_20_203232_create_files_table',5),(11,'2025_09_20_205150_add_summary_and_author_to_news_table',6),(12,'2025_09_20_210644_create_menu_items_table',7),(15,'2025_09_21_142144_create_securities_table',8),(16,'2025_09_22_075435_create_news_security_table',9),(17,'2025_09_30_121950_add_role_to_users_table',10),(18,'2025_10_25_000000_add_article_type_and_file_to_news_table',10),(19,'2025_10_25_000001_change_file_id_to_file_url_in_news_table',11);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,15 +242,20 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci,
   `summary` text COLLATE utf8mb4_unicode_ci,
   `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_published` tinyint(1) NOT NULL DEFAULT '1',
+  `published_at` datetime DEFAULT NULL,
+  `article_type` enum('article','report') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'article',
+  `file_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +264,7 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (1,'Stay Updated with Uganda Securities Exchange','<p>Check back soon for the latest market news and investment opportunities...</p>',NULL,NULL,'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Kasaija%2C_Matia.jpg/1200px-Kasaija%2C_Matia.jpg',1,'2025-08-27 09:22:12','2025-09-22 06:20:43'),(3,'USE launches new website','<p>USE launches new website</p>',NULL,NULL,'http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg',1,'2025-09-05 09:41:01','2025-09-22 03:59:26');
+INSERT INTO `news` VALUES (4,'BOBU - Annual Report & Financial Statements for the Year Ended 31st December 2024','bobu-annual-report-financial-statements-for-the-year-ended-31st-december-2024',NULL,NULL,NULL,NULL,1,NULL,'report','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','2025-10-25 18:23:40','2025-10-25 18:53:43'),(5,'BOBU - Annual Report & Financial Statements for the Year Ended 31st December 2024','bobu-annual-report-financial-statements-for-the-year-ended-31st-december-2024-1',NULL,NULL,NULL,NULL,1,'2025-09-26 00:54:00','report','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','2025-10-25 18:54:48','2025-10-25 18:54:48');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +295,6 @@ CREATE TABLE `news_security` (
 
 LOCK TABLES `news_security` WRITE;
 /*!40000 ALTER TABLE `news_security` DISABLE KEYS */;
-INSERT INTO `news_security` VALUES (1,3,15,NULL,NULL),(2,1,19,NULL,NULL);
 /*!40000 ALTER TABLE `news_security` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -355,7 +388,7 @@ CREATE TABLE `securities` (
 
 LOCK TABLES `securities` WRITE;
 /*!40000 ALTER TABLE `securities` DISABLE KEYS */;
-INSERT INTO `securities` VALUES (1,'BATU','UG0000000010','British American Tobacco Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(2,'BOBU','UG0000000020','Bank of Baroda (Uganda) Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(3,'DFCU','UG0000000030','DFCU Bank Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(4,'EABL','UG0000000040','East African Breweries Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(5,'JHL','UG0000000050','Jubilee Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(6,'SBU','UG0000000060','Stanbic Bank Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(7,'UCL','UG0000000070','Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(8,'UCL','UG0000000080','Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 17:08:28'),(9,NULL,'UG0001000101',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',50000000000,'2020-01-15',13.5000,'2030-01-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(10,NULL,'UG0001000102',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',75000000000,'2021-06-10',14.2500,'2031-06-10','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(11,NULL,'UG0001000103',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',100000000000,'2022-03-20',15.0000,'2032-03-20','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(12,NULL,'UG0002000201',NULL,'Republic of Uganda','treasury_bill','91-Day Bill',25000000000,'2024-01-15',10.5000,'2024-04-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(13,NULL,'UG0002000202',NULL,'Republic of Uganda','treasury_bill','182-Day Bill',30000000000,'2024-02-01',11.2500,'2024-08-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(14,NULL,'UG0002000203',NULL,'Republic of Uganda','treasury_bill','364-Day Bill',40000000000,'2024-03-01',12.0000,'2025-03-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(15,'BATU',NULL,'British American Tobacco Uganda',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(16,'UCL',NULL,'Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(17,'NIC',NULL,'NIC Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(19,'UA',NULL,'Uganda Airlines','Republic of Uganda','equity',NULL,NULL,NULL,NULL,NULL,'UGX','Government',1,'2025-09-22 06:20:02','2025-09-22 06:20:02');
+INSERT INTO `securities` VALUES (1,'BATU','UG0000000010','British American Tobacco Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(2,'BOBU','UG0000000020','Bank of Baroda (Uganda) Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(3,'DFCU','UG0000000030','DFCU Bank Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(4,'EABL','UG0000000040','East African Breweries Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(5,'JHL','UG0000000050','Jubilee Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(6,'SBU','UG0000000060','Stanbic Bank Uganda Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(9,NULL,'UG0001000101',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',50000000000,'2020-01-15',13.5000,'2030-01-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(10,NULL,'UG0001000102',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',75000000000,'2021-06-10',14.2500,'2031-06-10','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(11,NULL,'UG0001000103',NULL,'Republic of Uganda','treasury_bond','Fixed Rate Bond',100000000000,'2022-03-20',15.0000,'2032-03-20','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(12,NULL,'UG0002000201',NULL,'Republic of Uganda','treasury_bill','91-Day Bill',25000000000,'2024-01-15',10.5000,'2024-04-15','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(13,NULL,'UG0002000202',NULL,'Republic of Uganda','treasury_bill','182-Day Bill',30000000000,'2024-02-01',11.2500,'2024-08-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(14,NULL,'UG0002000203',NULL,'Republic of Uganda','treasury_bill','364-Day Bill',40000000000,'2024-03-01',12.0000,'2025-03-01','UGX','Government',1,'2025-09-21 12:13:48','2025-09-21 12:13:48'),(15,'BATU',NULL,'British American Tobacco Uganda',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(16,'UCL',NULL,'Uganda Clays Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(17,'NIC',NULL,'NIC Holdings Limited',NULL,'equity',NULL,NULL,NULL,NULL,NULL,'UGX',NULL,1,'2025-09-21 16:59:19','2025-09-21 17:08:28'),(19,'UA',NULL,'Uganda Airlines','Republic of Uganda','equity',NULL,NULL,NULL,NULL,NULL,'UGX','Government',1,'2025-09-22 06:20:02','2025-09-22 06:20:02');
 /*!40000 ALTER TABLE `securities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -432,6 +465,7 @@ CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -460,4 +494,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-21 11:38:58
+-- Dump completed on 2025-10-26 23:56:26

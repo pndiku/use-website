@@ -41,6 +41,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'event_date' => 'required|date',
             'location' => 'nullable|string|max:255',
+            'image_url' => 'nullable|url|max:500',
             'is_active' => 'boolean',
             'show_on_site' => 'boolean'
         ]);
@@ -88,6 +89,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'event_date' => 'required|date',
             'location' => 'nullable|string|max:255',
+            'image_url' => 'nullable|url|max:500',
             'is_active' => 'boolean',
             'show_on_site' => 'boolean'
         ]);

@@ -611,60 +611,91 @@
 
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-            color: white;
-            padding: 5rem 0 2rem;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: #001e2f;
+            padding: 4rem 2rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .footer-brand h3 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-            font-family: 'Titillium Web', sans-serif;
+        .footer-brand {
+            max-width: 300px;
         }
 
-        .footer-brand p {
-            color: #94a3b8;
-            line-height: 1.6;
+        .footer-logo {
+            height: 100px;
             margin-bottom: 1.5rem;
         }
 
-        .social-links {
+        .footer-address {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-contact {
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--use-blue-light);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-social {
             display: flex;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .social-link {
-            width: 36px;
-            height: 36px;
+        .social-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
             display: flex;
@@ -675,41 +706,38 @@
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
+        .social-icon:hover {
             background: var(--use-blue);
             transform: translateY(-2px);
         }
 
-        .footer-section h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .footer-link {
-            color: #94a3b8;
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-link:hover {
-            color: var(--use-blue-light);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #334155;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #94a3b8;
-            font-size: 0.875rem;
+        .footer-legal a:hover {
+            color: var(--use-yellow);
         }
 
         /* Responsive Design */
@@ -720,8 +748,171 @@
         }
 
         @media (max-width: 768px) {
-            .mobile-menu-btn {
+                        .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                order: 1;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 55px;
                 display: block;
+            }
+
+            .market-status {
+                display: none !important;
+            }
+
+            .status-indicator {
+                flex-shrink: 0;
+            }
+
+            .status-text {
+                flex-shrink: 0;
+            }
+
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem;
+                height: 72px;
+                gap: 0.5rem;
+            }
+
+            .nav-menu {
+                order: 4;
+            }
+
+            .nav-menu {
+                display: flex;
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0.5rem;
+                right: 0.5rem;
+                background: white;
+                border-radius: 16px;
+                box-shadow: var(--shadow-xl);
+                border: 1px solid var(--border);
+                padding: 0.5rem;
+                flex-direction: column;
+                gap: 0;
+                max-height: calc(100vh - 100px);
+                overflow-y: auto;
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+                pointer-events: none;
+            }
+
+            .nav-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-item {
+                width: 100%;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link {
+                padding: 0.875rem 1rem;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .nav-link:hover {
+                background: var(--surface);
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                box-shadow: none;
+                border: none;
+                margin-top: 0;
+                border-radius: 0;
+                background: var(--surface);
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
+            }
+
+            .dropdown.active {
+                opacity: 1;
+                visibility: visible;
+                max-height: 1000px;
+                display: block;
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid var(--border-light);
+                justify-content: space-between;
+                font-size: 0.85rem;
+            }
+
+            .dropdown li:last-child .dropdown-item {
+                border-bottom: none;
+            }
+
+            .submenu {
+                position: static;
+                background: #f8fafc;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
+            }
+
+            .submenu.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-height: 800px !important;
+                display: block !important;
+            }
+
+            .submenu-item {
+                padding: 0.625rem 2rem;
+                font-size: 0.8rem;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .submenu li:last-child .submenu-item {
+                border-bottom: none;
+            }
+
+            .chevron-down,
+            .chevron-right {
+                font-size: 0.7rem;
+                transition: transform 0.3s ease;
             }
 
             .nav-menu {
@@ -775,65 +966,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <a href="/" class="logo">
-                <img src="/images/logo.PNG" alt="Uganda Securities Exchange">
-            </a>
-            <div class="market-status">
-                <span class="status-indicator {{ ($siteContent['market_status'] ?? 'open') == 'open' ? 'open' : 'closed' }}"></span>
-                <span class="status-text">{{ ucfirst($siteContent['market_status'] ?? 'Market Open') }}</span>
-                <span class="status-time">{{ $siteContent['trading_hours'] ?? '9:00 AM - 3:00 PM EAT' }}</span>
-            </div>
-            <ul class="nav-menu">
-                @foreach($menuItems as $menuItem)
-                    <li class="nav-item">
-                        <a href="{{ $menuItem->url ?: '#' }}" class="nav-link"
-                           @if($menuItem->opens_new_tab) target="_blank" @endif>
-                            @if($menuItem->icon) <i class="{{ $menuItem->icon }}"></i> @endif
-                            {{ $menuItem->title }}
-                            @if($menuItem->hasActiveChildren()) <span class="chevron-down"></span> @endif
-                        </a>
-                        @if($menuItem->hasActiveChildren())
-                            <ul class="dropdown">
-                                @foreach($menuItem->activeChildren as $childItem)
-                                    @php
-                                        $childItem->load('activeChildren');
-                                        $grandchildren = $childItem->activeChildren;
-                                        $hasGrandchildren = $grandchildren->count() > 0;
-                                    @endphp
-
-                                    <li class="{{ $hasGrandchildren ? 'has-submenu' : '' }}">
-                                        <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item"
-                                           @if($childItem->opens_new_tab) target="_blank" @endif>
-                                            @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
-                                            {{ $childItem->title }}
-                                            @if($hasGrandchildren) <span class="chevron-right"></span> @endif
-                                        </a>
-
-                                        @if($hasGrandchildren)
-                                            <ul class="submenu">
-                                                @foreach($grandchildren as $grandchildItem)
-                                                    <li>
-                                                        <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
-                                                           @if($grandchildItem->opens_new_tab) target="_blank" @endif>
-                                                            @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
-                                                            {{ $grandchildItem->title }}
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
-            <button class="mobile-menu-btn">☰</button>
-        </nav>
-    </header>
+    @include('partials.header')
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1060,88 +1193,7 @@
                 </a>
             </div>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <h3>Uganda Securities Exchange</h3>
-                    <p>Building East Africa's premier financial market through innovative trading solutions, comprehensive market data, and professional investment services.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="YouTube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <div class="footer-links">
-                        <a href="{{ route('about') }}" class="footer-link">About USE</a>
-                        <a href="{{ route('how-to-list') }}" class="footer-link">How to List</a>
-                        <a href="{{ route('securities') }}" class="footer-link">Listed Securities</a>
-                        <a href="#" class="footer-link">Market Data</a>
-                        <a href="#" class="footer-link">Trading Rules</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Securities Trading</a>
-                        <a href="#" class="footer-link">Corporate Listings</a>
-                        <a href="#" class="footer-link">Investment Advisory</a>
-                        <a href="#" class="footer-link">Investor Education</a>
-                        <a href="#" class="footer-link">Market Research</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <div class="footer-links">
-                        <a href="mailto:{{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}" class="footer-link">
-                            <i class="fas fa-envelope"></i> {{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}
-                        </a>
-                        <a href="tel:{{ $siteContent['contact_phone'] ?? '+256414230738' }}" class="footer-link">
-                            <i class="fas fa-phone"></i> {{ $siteContent['contact_phone'] ?? '+256 414 230 738' }}
-                        </a>
-                        <div class="footer-link">
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ $siteContent['contact_address'] ?? 'Uganda Securities Exchange, Plot 24/26 Kampala Road, Kampala, Uganda' }}
-                        </div>
-                        <div class="footer-link">
-                            <i class="fas fa-clock"></i>
-                            Trading Hours: {{ $siteContent['trading_hours'] ?? '9:00 AM - 3:00 PM EAT' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div>
-                    <p>&copy; {{ date('Y') }} Uganda Securities Exchange. All rights reserved.</p>
-                </div>
-                <div>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Disclaimer</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    </main> @include('partials.footer')
 
     <script>
         // Header scroll behavior
@@ -1154,5 +1206,159 @@
             }
         });
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            console.log('toggleMobileMenu called');
+            const menu = document.querySelector('.nav-menu');
+            console.log('menu element:', menu);
+            if (menu) {
+                menu.classList.toggle('active');
+                console.log('menu active state:', menu.classList.contains('active'));
+            } else {
+                console.error('nav-menu not found!');
+            }
+        }
+
+        // Mobile dropdown toggle
+        let lastDropdownToggle = 0;
+        function toggleMobileDropdown(event) {
+            console.log('>>> toggleMobileDropdown called <<<');
+            console.log('Window width:', window.innerWidth);
+
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Prevent rapid double-clicks
+                const now = Date.now();
+                if (now - lastDropdownToggle < 300) {
+                    console.log('⚠️ Too fast, ignoring');
+                    return;
+                }
+                lastDropdownToggle = now;
+
+                const dropdown = event.currentTarget.nextElementSibling;
+                const chevron = event.currentTarget.querySelector('.chevron-down');
+
+                console.log('Dropdown element:', dropdown);
+                console.log('Has dropdown class:', dropdown?.classList.contains('dropdown'));
+                console.log('Chevron found:', !!chevron);
+
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    const wasActive = dropdown.classList.contains('active');
+                    dropdown.classList.toggle('active');
+                    console.log('Dropdown toggled from', wasActive, 'to', dropdown.classList.contains('active'));
+
+                    if (chevron) {
+                        chevron.style.transform = dropdown.classList.contains('active')
+                            ? 'rotate(225deg)'
+                            : 'rotate(45deg)';
+                        console.log('Chevron rotated');
+                    }
+
+                    // List all dropdown items for debugging
+                    const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+                    console.log('Dropdown contains', dropdownItems.length, 'items');
+                    dropdownItems.forEach((item, index) => {
+                        const hasSubmenu = item.parentElement.classList.contains('has-submenu');
+                        const hasChevron = !!item.querySelector('.chevron-right');
+                        console.log(`  Item ${index + 1}:`, item.textContent.trim(), '- has-submenu:', hasSubmenu, '- has chevron-right:', hasChevron);
+                    });
+                }
+            }
+        }
+
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded - Initializing mobile menu');
+
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const menu = document.querySelector('.nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            console.log('Mobile button found:', mobileBtn);
+            console.log('Menu found:', menu);
+
+            // Add click handlers for mobile dropdown toggles
+            navLinks.forEach(link => {
+                if (link.querySelector('.chevron-down')) {
+                    link.addEventListener('click', toggleMobileDropdown);
+                }
+            });
+
+            // Use event delegation for submenu toggles
+            document.body.addEventListener('click', function(e) {
+                // Only on mobile
+                if (window.innerWidth > 768) return;
+
+                // Check if we clicked on a dropdown-item
+                const dropdownItem = e.target.closest('.dropdown-item');
+                if (!dropdownItem) return;
+
+                // Check if this dropdown-item has a submenu
+                const parentLi = dropdownItem.parentElement;
+                const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
+
+                console.log('🔵 Clicked on dropdown-item:', dropdownItem.textContent.trim());
+                console.log('🔵 Parent li has has-submenu class:', hasSubmenuClass);
+
+                if (hasSubmenuClass) {
+                    const submenu = parentLi.querySelector('.submenu');
+                    const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    console.log('🔵 Submenu found:', !!submenu);
+                    console.log('🔵 Chevron found:', !!chevron);
+
+                    // Prevent navigation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (submenu) {
+                        const wasActive = submenu.classList.contains('active');
+                        submenu.classList.toggle('active');
+                        console.log('✅ Submenu toggled from', wasActive, 'to', submenu.classList.contains('active'));
+
+                        if (chevron) {
+                            chevron.style.transform = submenu.classList.contains('active')
+                                ? 'rotate(45deg)'
+                                : 'rotate(-45deg)';
+                            console.log('✅ Chevron rotated');
+                        }
+                    } else {
+                        console.log('❌ No submenu element found');
+                    }
+                }
+            }, false);
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const menu = document.querySelector('.nav-menu');
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
+                const header = document.querySelector('.header');
+
+                // Only close if clicking completely outside the header
+                if (menu && menu.classList.contains('active')) {
+                    if (!header.contains(e.target)) {
+                        console.log('🔴 Closing menu - clicked outside header');
+                        menu.classList.remove('active');
+                        // Close all dropdowns and submenus
+                        document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // Reset all chevrons
+                        document.querySelectorAll('.chevron-down, .chevron-right').forEach(chevron => {
+                            if (chevron.classList.contains('chevron-down')) {
+                                chevron.style.transform = 'rotate(45deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(-45deg)';
+                            }
+                        });
+                    }
+                }
+            }, true); // Use capture phase
+        });
+    </script>
+
 </body>
 </html>

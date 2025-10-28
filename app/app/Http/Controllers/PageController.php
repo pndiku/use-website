@@ -70,6 +70,42 @@ class PageController extends Controller
 
     }
 
+    public function homeNew(){
+        if (session()->has('user')) {
+            return redirect('/manage');
+        } else {
+            // Fetch upcoming events
+            $upcomingEvents = Event::active()
+                ->visible()
+                ->upcoming()
+                ->orderByDate()
+                ->take(4)
+                ->get();
+
+            // Fetch latest news
+            $latestNews = News::published()
+                ->latest()
+                ->take(4)
+                ->get();
+
+            // Fetch site content settings
+            $siteContent = SiteContent::all()->pluck('value', 'key')->toArray();
+
+            // Fetch carousel images
+            $carouselImages = CarouselImage::active()
+                ->ordered()
+                ->get();
+
+            // Fetch menu items with 3-level hierarchy
+            $menuItems = MenuItem::with('activeChildren.activeChildren')
+                ->mainMenu()
+                ->active()
+                ->get();
+
+            return view('home', compact('upcomingEvents', 'latestNews', 'siteContent', 'carouselImages', 'menuItems'));
+        }
+    }
+
 
     public function reg(){
         return view('register');

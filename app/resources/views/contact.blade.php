@@ -424,39 +424,171 @@
 
         /* Footer */
         .footer {
-            background: #1e293b;
+            background: #001e2f;
+            padding: 4rem 2rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            height: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-address {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section-title {
+            font-size: 1rem;
+            font-weight: 700;
             color: white;
-            padding: 3rem 0 2rem;
-        }
-
-        .footer-content {
-            text-align: center;
-        }
-
-        .footer-content p {
-            color: #94a3b8;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
+            list-style: none;
         }
 
-        .footer-link {
-            color: #94a3b8;
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-contact {
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--use-blue-light);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--use-blue);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-link:hover {
-            color: var(--primary-blue);
+        .footer-legal a:hover {
+            color: var(--use-yellow);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                order: 1;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 55px;
+                display: block;
+            }
+
+            .market-status {
+                display: none !important;
+            }
+
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem;
+                height: 72px;
+                gap: 0.5rem;
+            }
+
             .contact-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -483,28 +615,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <a href="/" class="logo">USE</a>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/listings" class="nav-link">Listings</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/investors" class="nav-link">Investors</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/contact" class="nav-link active">Contact</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    @include('partials.header')
 
     <!-- Main Content -->
     <main class="main-content">
@@ -655,20 +766,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 Uganda Securities Exchange. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="/terms" class="footer-link">Terms & Conditions</a>
-                    <a href="/privacy" class="footer-link">Privacy Policy</a>
-                    <a href="/risk-disclosure" class="footer-link">Risk Disclosure</a>
-                    <a href="/complaints" class="footer-link">Complaints Procedure</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    @include('partials.footer')
 
     <script>
         // Header scroll effect
@@ -714,5 +812,159 @@
             });
         });
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            console.log('toggleMobileMenu called');
+            const menu = document.querySelector('.nav-menu');
+            console.log('menu element:', menu);
+            if (menu) {
+                menu.classList.toggle('active');
+                console.log('menu active state:', menu.classList.contains('active'));
+            } else {
+                console.error('nav-menu not found!');
+            }
+        }
+
+        // Mobile dropdown toggle
+        let lastDropdownToggle = 0;
+        function toggleMobileDropdown(event) {
+            console.log('>>> toggleMobileDropdown called <<<');
+            console.log('Window width:', window.innerWidth);
+
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Prevent rapid double-clicks
+                const now = Date.now();
+                if (now - lastDropdownToggle < 300) {
+                    console.log('⚠️ Too fast, ignoring');
+                    return;
+                }
+                lastDropdownToggle = now;
+
+                const dropdown = event.currentTarget.nextElementSibling;
+                const chevron = event.currentTarget.querySelector('.chevron-down');
+
+                console.log('Dropdown element:', dropdown);
+                console.log('Has dropdown class:', dropdown?.classList.contains('dropdown'));
+                console.log('Chevron found:', !!chevron);
+
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    const wasActive = dropdown.classList.contains('active');
+                    dropdown.classList.toggle('active');
+                    console.log('Dropdown toggled from', wasActive, 'to', dropdown.classList.contains('active'));
+
+                    if (chevron) {
+                        chevron.style.transform = dropdown.classList.contains('active')
+                            ? 'rotate(225deg)'
+                            : 'rotate(45deg)';
+                        console.log('Chevron rotated');
+                    }
+
+                    // List all dropdown items for debugging
+                    const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+                    console.log('Dropdown contains', dropdownItems.length, 'items');
+                    dropdownItems.forEach((item, index) => {
+                        const hasSubmenu = item.parentElement.classList.contains('has-submenu');
+                        const hasChevron = !!item.querySelector('.chevron-right');
+                        console.log(`  Item ${index + 1}:`, item.textContent.trim(), '- has-submenu:', hasSubmenu, '- has chevron-right:', hasChevron);
+                    });
+                }
+            }
+        }
+
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded - Initializing mobile menu');
+
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const menu = document.querySelector('.nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            console.log('Mobile button found:', mobileBtn);
+            console.log('Menu found:', menu);
+
+            // Add click handlers for mobile dropdown toggles
+            navLinks.forEach(link => {
+                if (link.querySelector('.chevron-down')) {
+                    link.addEventListener('click', toggleMobileDropdown);
+                }
+            });
+
+            // Use event delegation for submenu toggles
+            document.body.addEventListener('click', function(e) {
+                // Only on mobile
+                if (window.innerWidth > 768) return;
+
+                // Check if we clicked on a dropdown-item
+                const dropdownItem = e.target.closest('.dropdown-item');
+                if (!dropdownItem) return;
+
+                // Check if this dropdown-item has a submenu
+                const parentLi = dropdownItem.parentElement;
+                const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
+
+                console.log('🔵 Clicked on dropdown-item:', dropdownItem.textContent.trim());
+                console.log('🔵 Parent li has has-submenu class:', hasSubmenuClass);
+
+                if (hasSubmenuClass) {
+                    const submenu = parentLi.querySelector('.submenu');
+                    const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    console.log('🔵 Submenu found:', !!submenu);
+                    console.log('🔵 Chevron found:', !!chevron);
+
+                    // Prevent navigation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (submenu) {
+                        const wasActive = submenu.classList.contains('active');
+                        submenu.classList.toggle('active');
+                        console.log('✅ Submenu toggled from', wasActive, 'to', submenu.classList.contains('active'));
+
+                        if (chevron) {
+                            chevron.style.transform = submenu.classList.contains('active')
+                                ? 'rotate(45deg)'
+                                : 'rotate(-45deg)';
+                            console.log('✅ Chevron rotated');
+                        }
+                    } else {
+                        console.log('❌ No submenu element found');
+                    }
+                }
+            }, false);
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const menu = document.querySelector('.nav-menu');
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
+                const header = document.querySelector('.header');
+
+                // Only close if clicking completely outside the header
+                if (menu && menu.classList.contains('active')) {
+                    if (!header.contains(e.target)) {
+                        console.log('🔴 Closing menu - clicked outside header');
+                        menu.classList.remove('active');
+                        // Close all dropdowns and submenus
+                        document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // Reset all chevrons
+                        document.querySelectorAll('.chevron-down, .chevron-right').forEach(chevron => {
+                            if (chevron.classList.contains('chevron-down')) {
+                                chevron.style.transform = 'rotate(45deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(-45deg)';
+                            }
+                        });
+                    }
+                }
+            }, true); // Use capture phase
+        });
+    </script>
+
 </body>
 </html>

@@ -29,8 +29,6 @@ CREATE TABLE `carousel_images` (
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `button_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `button_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `button_text_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `button_link_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sort_order` int NOT NULL DEFAULT '0',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -45,7 +43,7 @@ CREATE TABLE `carousel_images` (
 
 LOCK TABLES `carousel_images` WRITE;
 /*!40000 ALTER TABLE `carousel_images` DISABLE KEYS */;
-INSERT INTO `carousel_images` VALUES (1,'Uganda Securities Exchange',NULL,'https://demo.use.or.ug/images/c558563a-417a-4817-be92-0ffad321327b.jpg','Start Trading','https://demo.use.org/investors/investor-faqs','Learn More','http://bdbdbdb.com',0,1,'2025-09-20 17:06:14','2025-10-26 08:40:04'),(2,'East Africa\'s Premier Financial Market',NULL,'https://images.pexels.com/photos/33691593/pexels-photo-33691593.jpeg','Start Trading',NULL,NULL,NULL,0,1,'2025-09-20 17:06:53','2025-10-26 08:40:28'),(3,'Your Gateway to Uganda\'s Financial Market',NULL,'https://images.pexels.com/photos/14393766/pexels-photo-14393766.jpeg',NULL,NULL,NULL,NULL,0,1,'2025-09-20 17:08:53','2025-10-26 08:40:59');
+INSERT INTO `carousel_images` VALUES (1,'Your Ultimate Gateway to Uganda\'s financial market',NULL,'https://demo.use.or.ug/images/c558563a-417a-4817-be92-0ffad321327b.jpg','Start Trading','https://demo.use.org/investors/investor-faqs',0,1,'2025-09-20 17:06:14','2025-10-28 11:13:25'),(2,'East Africa\'s Premier Financial Market',NULL,'https://images.pexels.com/photos/33691593/pexels-photo-33691593.jpeg','Start Trading',NULL,0,1,'2025-09-20 17:06:53','2025-10-26 08:40:28'),(3,'Your Ultimate Gateway to Uganda\'s financial market',NULL,'https://images.pexels.com/photos/14393766/pexels-photo-14393766.jpeg',NULL,NULL,0,1,'2025-09-20 17:08:53','2025-10-28 11:13:41');
 /*!40000 ALTER TABLE `carousel_images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,12 +60,13 @@ CREATE TABLE `events` (
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `event_date` datetime NOT NULL,
   `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `show_on_site` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +75,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (1,'Investment Management Masterclass','Let your money work for you','2025-08-28 15:16:00','Kampala, Uganda',1,1,'2025-08-27 09:17:37','2025-08-27 09:17:37'),(3,'Test Event','bdbdbdbbdbdb','2025-09-08 15:39:00','Kampala, Uganda',1,1,'2025-09-05 09:39:54','2025-09-05 09:39:54'),(4,'Launch','Come one, Come all','2025-09-24 11:35:00','Kampala',1,1,'2025-09-22 05:35:17','2025-09-22 05:35:17');
+INSERT INTO `events` VALUES (5,'The USE Neighbour Connect Campaign','This World Investor Week, we’re stepping out of our offices to meet our neighbours at Nakawa Business Park under the theme \"𝐍𝐞𝐢𝐠𝐡𝐛𝐨𝐮𝐫 𝟐 𝐍𝐞𝐢𝐠𝐡𝐛𝐨𝐮𝐫: 𝐁𝐮𝐢𝐥𝐝𝐢𝐧𝐠 𝐖𝐞𝐚𝐥𝐭𝐡 𝐓𝐨𝐠𝐞𝐭𝐡𝐞𝐫” \n\nThis is a special outreach campaign where our team will engage, appreciate, and share financial literacy tips with our neighbouring organisations and their employees. \n\n💡 Together, we’re Inspiring Growth - one neighbour at a time.','2025-10-31 14:10:00',NULL,'https://use.or.ug/images/a3e1a800-2025-4242-97b4-0e0e99aedc34.jpeg',1,1,'2025-10-28 08:11:01','2025-10-28 12:46:51'),(6,'Invest In Knowledge Growth','This #WorldInvestorWeek2025, we’re taking financial empowerment to the heart of Kampala! 💪','2025-10-29 23:15:00',NULL,'https://use.or.ug/images/4510beb6-97b2-45a0-8d59-95b15a0454db.jpeg',1,1,'2025-10-28 17:15:31','2025-10-28 17:15:31');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +129,7 @@ CREATE TABLE `files` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +138,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (5,'c558563a-417a-4817-be92-0ffad321327b.jpg','pexels-rdne-7947707 (1).jpg','images/c558563a-417a-4817-be92-0ffad321327b.jpg','http://localhost:8000/images/c558563a-417a-4817-be92-0ffad321327b.jpg','image/jpeg','image',292959,NULL,NULL,'2025-09-21 11:04:31','2025-09-21 11:04:31'),(6,'f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','pexels-energepic-com-27411-159888.jpg','images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','http://localhost:8000/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','image/jpeg','image',585100,NULL,NULL,'2025-09-21 11:07:48','2025-09-21 11:07:48'),(7,'7df237ab-c034-483f-927e-d2db880744cd.webp','temp_lm_img.webp','images/7df237ab-c034-483f-927e-d2db880744cd.webp','http://localhost:8000/images/7df237ab-c034-483f-927e-d2db880744cd.webp','image/webp','image',375252,NULL,NULL,'2025-09-22 06:17:06','2025-09-22 06:17:06'),(8,'a7138055-f5f9-4394-b729-4a64e639e42e.pdf','PDF-Listings.pdf','uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 17:17:17','2025-10-25 17:17:17'),(10,'ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','PDF-Listings.pdf','uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','https://demo.use.or.ug/uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 18:42:49','2025-10-25 18:42:49');
+INSERT INTO `files` VALUES (5,'c558563a-417a-4817-be92-0ffad321327b.jpg','pexels-rdne-7947707 (1).jpg','images/c558563a-417a-4817-be92-0ffad321327b.jpg','https://use.or.ug/images/c558563a-417a-4817-be92-0ffad321327b.jpg','image/jpeg','image',292959,NULL,NULL,'2025-09-21 11:04:31','2025-09-21 11:04:31'),(6,'f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','pexels-energepic-com-27411-159888.jpg','images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','https://use.or.ug/images/f1e1c7ea-bd74-41c5-866a-8e57fcfa21fe.jpg','image/jpeg','image',585100,NULL,NULL,'2025-09-21 11:07:48','2025-09-21 11:07:48'),(7,'7df237ab-c034-483f-927e-d2db880744cd.webp','temp_lm_img.webp','images/7df237ab-c034-483f-927e-d2db880744cd.webp','https://use.or.ug/images/7df237ab-c034-483f-927e-d2db880744cd.webp','image/webp','image',375252,NULL,NULL,'2025-09-22 06:17:06','2025-09-22 06:17:06'),(8,'a7138055-f5f9-4394-b729-4a64e639e42e.pdf','PDF-Listings.pdf','uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','https://use.or.ug/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 17:17:17','2025-10-25 17:17:17'),(10,'ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','PDF-Listings.pdf','uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','https://demo.use.or.ug/uploads/ffba7964-df45-4ba2-be71-cec0396b73a3.pdf','application/pdf','pdf',437635,NULL,NULL,'2025-10-25 18:42:49','2025-10-25 18:42:49'),(11,'0607ac65-b128-42d8-ba42-5c1574295300.png','Screenshot 2025-10-26 at 23.18.01.png','images/0607ac65-b128-42d8-ba42-5c1574295300.png','https://use.or.ug/images/0607ac65-b128-42d8-ba42-5c1574295300.png','image/png','image',588114,NULL,NULL,'2025-10-26 18:00:34','2025-10-26 18:00:34'),(12,'8ed1dc54-d255-4f28-bef2-45419f0361a7.jpg','Umeme_Ltd-768x288.jpg','images/8ed1dc54-d255-4f28-bef2-45419f0361a7.jpg','http://localhost/images/8ed1dc54-d255-4f28-bef2-45419f0361a7.jpg','image/jpeg','image',17753,NULL,NULL,'2025-10-28 08:24:57','2025-10-28 08:24:57'),(13,'b0aae9ac-35e1-4d68-b48c-8e69a2acc9b5.jpg','Bank-of-Baroda-in-Jinja.jpg','images/b0aae9ac-35e1-4d68-b48c-8e69a2acc9b5.jpg','https://use.or.ug/images/b0aae9ac-35e1-4d68-b48c-8e69a2acc9b5.jpg','image/jpeg','image',97033,NULL,NULL,'2025-10-28 12:37:52','2025-10-28 12:37:52'),(14,'19e260cd-589a-4bfb-967b-57742f4881d7.png','ug-bobu-logo.png','images/19e260cd-589a-4bfb-967b-57742f4881d7.png','https://use.or.ug/images/19e260cd-589a-4bfb-967b-57742f4881d7.png','image/png','image',56666,NULL,NULL,'2025-10-28 12:41:19','2025-10-28 12:41:19'),(15,'a3e1a800-2025-4242-97b4-0e0e99aedc34.jpeg','G4Rtx8KXkAA9o12.jpeg','images/a3e1a800-2025-4242-97b4-0e0e99aedc34.jpeg','https://use.or.ug/images/a3e1a800-2025-4242-97b4-0e0e99aedc34.jpeg','image/jpeg','image',1446745,NULL,NULL,'2025-10-28 12:45:55','2025-10-28 12:45:55'),(16,'764912d2-43bc-4a88-94d2-db7de3b76dbe.jpg','STANBIC-BANK_1000X450.jpg','images/764912d2-43bc-4a88-94d2-db7de3b76dbe.jpg','https://use.or.ug/images/764912d2-43bc-4a88-94d2-db7de3b76dbe.jpg','image/jpeg','image',478101,NULL,NULL,'2025-10-28 13:08:51','2025-10-28 13:08:51'),(17,'e918014b-a04c-497e-96c0-02b7619311ca.pdf','180314c3-3bfc-44a9-a43c-b0b4c8178f67.pdf','uploads/e918014b-a04c-497e-96c0-02b7619311ca.pdf','https://use.or.ug/uploads/e918014b-a04c-497e-96c0-02b7619311ca.pdf','application/pdf','pdf',945594,NULL,NULL,'2025-10-28 13:10:19','2025-10-28 13:10:19'),(18,'882d3a77-533b-4b51-89f9-91a44e9374eb.pdf','e06bad72-e918-4d3b-8e6a-1109175fd4c7.pdf','uploads/882d3a77-533b-4b51-89f9-91a44e9374eb.pdf','https://use.or.ug/uploads/882d3a77-533b-4b51-89f9-91a44e9374eb.pdf','application/pdf','pdf',123482,NULL,NULL,'2025-10-28 15:50:32','2025-10-28 15:50:32'),(19,'bc1185f0-cb01-491b-b15f-a403a57758bd.png','Umeme.png','images/bc1185f0-cb01-491b-b15f-a403a57758bd.png','https://use.or.ug/images/bc1185f0-cb01-491b-b15f-a403a57758bd.png','image/png','image',1134966,NULL,NULL,'2025-10-28 15:53:24','2025-10-28 15:53:24'),(20,'4510beb6-97b2-45a0-8d59-95b15a0454db.jpeg','G4WpIybWkAA5ZMN.jpeg','images/4510beb6-97b2-45a0-8d59-95b15a0454db.jpeg','https://use.or.ug/images/4510beb6-97b2-45a0-8d59-95b15a0454db.jpeg','image/jpeg','image',727613,NULL,NULL,'2025-10-28 17:14:27','2025-10-28 17:14:27');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +218,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +227,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2025_08_27_120430_create_news_table',1),(6,'2025_08_27_120641_create_events_table',1),(7,'2025_08_27_122356_create_site_contents_table',2),(8,'2025_09_20_195828_create_carousel_images_table',3),(9,'2025_09_20_201354_add_second_button_to_carousel_images_table',4),(10,'2025_09_20_203232_create_files_table',5),(11,'2025_09_20_205150_add_summary_and_author_to_news_table',6),(12,'2025_09_20_210644_create_menu_items_table',7),(15,'2025_09_21_142144_create_securities_table',8),(16,'2025_09_22_075435_create_news_security_table',9),(17,'2025_09_30_121950_add_role_to_users_table',10),(18,'2025_10_25_000000_add_article_type_and_file_to_news_table',10),(19,'2025_10_25_000001_change_file_id_to_file_url_in_news_table',11);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2025_08_27_120430_create_news_table',1),(6,'2025_08_27_120641_create_events_table',1),(7,'2025_08_27_122356_create_site_contents_table',2),(8,'2025_09_20_195828_create_carousel_images_table',3),(9,'2025_09_20_201354_add_second_button_to_carousel_images_table',4),(10,'2025_09_20_203232_create_files_table',5),(11,'2025_09_20_205150_add_summary_and_author_to_news_table',6),(12,'2025_09_20_210644_create_menu_items_table',7),(15,'2025_09_21_142144_create_securities_table',8),(16,'2025_09_22_075435_create_news_security_table',9),(17,'2025_09_30_121950_add_role_to_users_table',10),(18,'2025_10_25_000000_add_article_type_and_file_to_news_table',10),(19,'2025_10_25_000001_change_file_id_to_file_url_in_news_table',11),(20,'2025_10_28_113312_add_image_url_to_events_table',12);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +254,7 @@ CREATE TABLE `news` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,7 +263,7 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (4,'BOBU - Annual Report & Financial Statements for the Year Ended 31st December 2024','bobu-annual-report-financial-statements-for-the-year-ended-31st-december-2024',NULL,NULL,NULL,NULL,1,NULL,'report','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','2025-10-25 18:23:40','2025-10-25 18:53:43'),(5,'BOBU - Annual Report & Financial Statements for the Year Ended 31st December 2024','bobu-annual-report-financial-statements-for-the-year-ended-31st-december-2024-1',NULL,NULL,NULL,NULL,1,'2025-09-26 00:54:00','report','http://localhost:8000/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','2025-10-25 18:54:48','2025-10-25 18:54:48');
+INSERT INTO `news` VALUES (5,'BOBU - Annual Report & Financial Statements for the Year Ended 31st December 2024','bobu-annual-report-financial-statements-for-the-year-ended-31st-december-2024-1',NULL,NULL,NULL,'https://use.or.ug/images/b0aae9ac-35e1-4d68-b48c-8e69a2acc9b5.jpg',1,'2025-09-26 06:54:00','report','https://use.or.ug/uploads/a7138055-f5f9-4394-b729-4a64e639e42e.pdf','2025-10-25 18:54:48','2025-10-28 12:38:09'),(6,'SUHL - Book Closure & Interim Dividend Payment','suhl-book-closure-interim-dividend-payment',NULL,NULL,NULL,'https://use.or.ug/images/764912d2-43bc-4a88-94d2-db7de3b76dbe.jpg',1,'2025-09-24 21:48:00','report','https://use.or.ug/uploads/e918014b-a04c-497e-96c0-02b7619311ca.pdf','2025-10-28 13:11:26','2025-10-28 15:48:55'),(7,'UMEME - Interim Condensed Financial Statements for the Six Months Ended 30th June 2025','umeme-interim-condensed-financial-statements-for-the-six-months-ended-30th-june-2025',NULL,NULL,NULL,'https://use.or.ug/images/bc1185f0-cb01-491b-b15f-a403a57758bd.png',1,NULL,'report','https://use.or.ug/uploads/882d3a77-533b-4b51-89f9-91a44e9374eb.pdf','2025-10-28 15:53:38','2025-10-28 15:53:38');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,13 +434,12 @@ CREATE TABLE `user` (
   `name` text NOT NULL,
   `role` enum('Admin','Accounts','User') NOT NULL DEFAULT 'User',
   `password` text NOT NULL,
-  `phone` varchar(10) NOT NULL,
   `email` varchar(255) NOT NULL,
   `status` enum('Active','Pending','Disabled') NOT NULL DEFAULT 'Pending',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +448,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (35,'Duncan Mudulo','Admin','$2a$12$PbrJhtKXjlvdxJd7wQDuQeWK6ZLK6NoyCnHZb5fv9kU7Gwyb/0S.u','0702681160','webmaster@use.or.ug','Active','2021-11-19 17:24:03','2025-10-19 20:37:36');
+INSERT INTO `user` VALUES (35,'Webmaster','Admin','$2a$12$PbrJhtKXjlvdxJd7wQDuQeWK6ZLK6NoyCnHZb5fv9kU7Gwyb/0S.u','webmaster@use.or.ug','Active','2021-11-19 17:24:03','2025-10-28 19:55:15'),(82,'Katusabe','Admin','$2y$10$a12GfFGcsKDANTOsYtQGJOCZgWzISXsM8Jt2tvMX69W1kRNDNC7me','kkatusabe@use.or.ug','Pending','2025-10-28 19:54:16','2025-10-28 19:54:16'),(83,'Senteza','Admin','$2y$10$2ATd9nmNiDEXX5mwzmSIAeIsJ8Qp3jnrylLSfb5NXp9/xfnAGoFOm','ksenteza@use.or.ug','Pending','2025-10-28 19:54:58','2025-10-28 19:54:58'),(84,'Ongom','Admin','$2y$10$0i1ocoo4GwfUnEHThGuVA..dx5YQrfN3WsVGYNh/LrkYBls9CeNpu','dongom@use.or.ug','Pending','2025-10-28 19:57:33','2025-10-28 19:57:33'),(85,'Were','Admin','$2y$10$9Rj0hDHn8XCUjGK2grwE0.52RdpzLhlP33omRlQcEPCt1jt/W2pHW','jwere@use.or.ug','Pending','2025-10-28 19:57:53','2025-10-28 19:57:53');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -494,4 +492,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-26 23:56:26
+-- Dump completed on 2025-10-28 23:24:06

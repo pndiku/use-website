@@ -15,8 +15,6 @@ class CarouselImage extends Model
         'image_url',
         'button_text',
         'button_link',
-        'button_text_2',
-        'button_link_2',
         'sort_order',
         'is_active'
     ];

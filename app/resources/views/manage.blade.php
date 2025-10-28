@@ -1028,6 +1028,11 @@
                                         <input type="text" id="eventLocation" class="form-control">
                                     </div>
                                     <div class="form-group">
+                                        <label class="form-label">Image URL (Optional)</label>
+                                        <input type="url" id="eventImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
+                                        <small class="form-text text-muted">Enter the full URL of the event image</small>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="form-label">
                                             <input type="checkbox" id="eventActive" checked> Active
                                         </label>
@@ -1082,6 +1087,11 @@
                                     <div class="form-group">
                                         <label class="form-label">Location (Optional)</label>
                                         <input type="text" id="editEventLocation" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Image URL (Optional)</label>
+                                        <input type="url" id="editEventImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
+                                        <small class="form-text text-muted">Enter the full URL of the event image</small>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">
@@ -1348,14 +1358,6 @@
                                         <input type="url" id="carouselButtonLink" class="form-control" placeholder="https://example.com">
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Second Button Text (Optional)</label>
-                                        <input type="text" id="carouselButtonText2" class="form-control" placeholder="Learn More">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Second Button Link (Optional)</label>
-                                        <input type="url" id="carouselButtonLink2" class="form-control" placeholder="https://example.com">
-                                    </div>
-                                    <div class="form-group">
                                         <label class="form-label">Sort Order</label>
                                         <input type="number" id="carouselSortOrder" class="form-control" value="0" min="0">
                                     </div>
@@ -1413,14 +1415,6 @@
                                     <div class="form-group">
                                         <label class="form-label">Button Link (Optional)</label>
                                         <input type="url" id="editCarouselButtonLink" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Second Button Text (Optional)</label>
-                                        <input type="text" id="editCarouselButtonText2" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Second Button Link (Optional)</label>
-                                        <input type="url" id="editCarouselButtonLink2" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Sort Order</label>
@@ -1896,6 +1890,7 @@
                 description: document.getElementById('eventDescription').value,
                 event_date: document.getElementById('eventDate').value,
                 location: document.getElementById('eventLocation').value,
+                image_url: document.getElementById('eventImageUrl').value,
                 is_active: document.getElementById('eventActive').checked,
                 show_on_site: document.getElementById('eventVisible').checked,
                 _token: document.querySelector('input[name="_token"]').value
@@ -2480,8 +2475,6 @@
                 image_url: document.getElementById('carouselImageUrl').value,
                 button_text: document.getElementById('carouselButtonText').value,
                 button_link: document.getElementById('carouselButtonLink').value,
-                button_text_2: document.getElementById('carouselButtonText2').value,
-                button_link_2: document.getElementById('carouselButtonLink2').value,
                 sort_order: parseInt(document.getElementById('carouselSortOrder').value) || 0,
                 is_active: document.getElementById('carouselActive').checked,
                 _token: document.querySelector('input[name="_token"]').value
@@ -2523,8 +2516,6 @@
                 image_url: document.getElementById('editCarouselImageUrl').value,
                 button_text: document.getElementById('editCarouselButtonText').value,
                 button_link: document.getElementById('editCarouselButtonLink').value,
-                button_text_2: document.getElementById('editCarouselButtonText2').value,
-                button_link_2: document.getElementById('editCarouselButtonLink2').value,
                 sort_order: parseInt(document.getElementById('editCarouselSortOrder').value) || 0,
                 is_active: document.getElementById('editCarouselActive').checked,
                 _token: document.querySelector('input[name="_token"]').value
@@ -2578,10 +2569,8 @@
                                 <div class="mb-2">
                                     <img src="${image.image_url}" alt="${image.title}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;">
                                 </div>
-                                ${image.button_text ? `<small class="text-info d-block">Button 1: ${image.button_text}</small>` : ''}
-                                ${image.button_link ? `<small class="text-secondary d-block">Link 1: ${image.button_link}</small>` : ''}
-                                ${image.button_text_2 ? `<small class="text-info d-block">Button 2: ${image.button_text_2}</small>` : ''}
-                                ${image.button_link_2 ? `<small class="text-secondary d-block">Link 2: ${image.button_link_2}</small>` : ''}
+                                ${image.button_text ? `<small class="text-info d-block">Button: ${image.button_text}</small>` : ''}
+                                ${image.button_link ? `<small class="text-secondary d-block">Link: ${image.button_link}</small>` : ''}
                                 <small class="text-secondary d-block">Sort Order: ${image.sort_order}</small>
                                 <span class="badge ${image.is_active ? 'bg-success' : 'bg-secondary'}">${image.is_active ? 'Active' : 'Inactive'}</span>
                             </div>
@@ -2617,8 +2606,6 @@
                 document.getElementById('editCarouselImageUrl').value = image.image_url;
                 document.getElementById('editCarouselButtonText').value = image.button_text || '';
                 document.getElementById('editCarouselButtonLink').value = image.button_link || '';
-                document.getElementById('editCarouselButtonText2').value = image.button_text_2 || '';
-                document.getElementById('editCarouselButtonLink2').value = image.button_link_2 || '';
                 document.getElementById('editCarouselSortOrder').value = image.sort_order;
                 document.getElementById('editCarouselActive').checked = image.is_active;
 
@@ -3332,6 +3319,7 @@
                 document.getElementById('editEventDescription').value = event.description;
                 document.getElementById('editEventDate').value = event.event_date ? event.event_date.slice(0, 16) : '';
                 document.getElementById('editEventLocation').value = event.location || '';
+                document.getElementById('editEventImageUrl').value = event.image_url || '';
                 document.getElementById('editEventActive').checked = event.is_active;
                 document.getElementById('editEventVisible').checked = event.show_on_site;
 
@@ -3357,6 +3345,7 @@
                 description: document.getElementById('editEventDescription').value,
                 event_date: document.getElementById('editEventDate').value,
                 location: document.getElementById('editEventLocation').value,
+                image_url: document.getElementById('editEventImageUrl').value,
                 is_active: document.getElementById('editEventActive').checked,
                 show_on_site: document.getElementById('editEventVisible').checked,
                 _token: document.querySelector('input[name="_token"]').value

@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\PageController@home');
+Route::get('/', 'App\Http\Controllers\PageController@homeNew');
+Route::get('/home', 'App\Http\Controllers\PageController@homeNew')->name('home.new');
 Route::get('/login', 'App\Http\Controllers\AuthController@login');
 Route::get('/register', 'App\Http\Controllers\AuthController@signup');
 

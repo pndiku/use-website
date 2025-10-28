@@ -552,105 +552,134 @@
 
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-            color: white;
-            padding: 5rem 0 2rem;
-            position: relative;
+            background: #001e2f;
+            padding: 4rem 2rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
             margin-top: 4rem;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(253, 185, 19, 0.5), transparent);
         }
 
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .footer-brand h3 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            height: 100px;
             margin-bottom: 1.5rem;
         }
 
-        .footer-brand p {
-            color: #94a3b8;
-            line-height: 1.6;
+        .footer-address {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
             margin-bottom: 1.5rem;
         }
 
-        .social-links {
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-contact {
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--use-blue-light);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-social {
             display: flex;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .social-link {
+        .social-icon {
             width: 40px;
             height: 40px;
-            background: rgba(0, 128, 199, 0.1);
             border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--use-blue);
+            color: white;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
-            background: rgba(0, 128, 199, 0.2);
+        .social-icon:hover {
+            background: var(--use-blue);
             transform: translateY(-2px);
         }
 
-        .footer-section h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .footer-link {
-            color: #94a3b8;
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-link:hover {
-            color: var(--use-blue);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #334155;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #94a3b8;
-            font-size: 0.875rem;
+        .footer-legal a:hover {
+            color: var(--use-yellow);
         }
 
         /* Responsive Design */
@@ -767,70 +796,7 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <a href="/" class="logo">
-                <img src="/images/logo.PNG" alt="Uganda Securities Exchange">
-            </a>
-            <div class="market-status">
-                <span class="status-indicator {{ ($siteContent['market_status'] ?? 'open') == 'open' ? 'open' : 'closed' }}"></span>
-                <span class="status-text">{{ ucfirst($siteContent['market_status'] ?? 'Market Open') }}</span>
-                <span class="status-time">{{ $siteContent['trading_hours'] ?? '9:00 AM - 3:00 PM EAT' }}</span>
-            </div>
-            <ul class="nav-menu">
-                @foreach($menuItems as $menuItem)
-                    <li class="nav-item">
-                        <a href="{{ $menuItem->url ?: '#' }}" class="nav-link {{ Request::is(ltrim($menuItem->url, '/')) ? 'active' : '' }}"
-                           @if($menuItem->opens_new_tab) target="_blank" @endif
-                           @if($menuItem->hasActiveChildren()) onclick="toggleMobileDropdown(event)" @endif>
-                            @if($menuItem->icon) <i class="{{ $menuItem->icon }}"></i> @endif
-                            {{ $menuItem->title }}
-                            @if($menuItem->hasActiveChildren()) <span class="chevron-down"></span> @endif
-                        </a>
-                        @if($menuItem->hasActiveChildren())
-                            <ul class="dropdown">
-                                @foreach($menuItem->activeChildren as $childItem)
-                                    @php
-                                        $childItem->load('activeChildren');
-                                        $grandchildren = $childItem->activeChildren;
-                                        $hasGrandchildren = $grandchildren->count() > 0;
-                                    @endphp
-
-                                    <li class="{{ $hasGrandchildren ? 'has-submenu' : '' }}">
-                                        <a href="{{ $childItem->url ?: '#' }}" class="dropdown-item"
-                                           @if($childItem->opens_new_tab) target="_blank" @endif>
-                                            @if($childItem->icon) <i class="{{ $childItem->icon }}"></i> @endif
-                                            {{ $childItem->title }}
-                                            @if($hasGrandchildren) <span class="chevron-right"></span> @endif
-                                        </a>
-
-                                        @if($hasGrandchildren)
-                                            <ul class="submenu">
-                                                @foreach($grandchildren as $grandchildItem)
-                                                    <li>
-                                                        <a href="{{ $grandchildItem->url ?: '#' }}" class="submenu-item"
-                                                           @if($grandchildItem->opens_new_tab) target="_blank" @endif>
-                                                            @if($grandchildItem->icon) <i class="{{ $grandchildItem->icon }}"></i> @endif
-                                                            {{ $grandchildItem->title }}
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
+    @include('partials.header')
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -868,88 +834,7 @@
             </div>
             <div id="container"></div>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <h3>Uganda Securities Exchange</h3>
-                    <p>Building East Africa's premier financial market through innovative trading solutions, comprehensive market data, and professional investment services.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="YouTube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">About USE</a>
-                        <a href="#" class="footer-link">How to Invest</a>
-                        <a href="#" class="footer-link">Listed Securities</a>
-                        <a href="#" class="footer-link">Market Data</a>
-                        <a href="#" class="footer-link">Trading Rules</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Securities Trading</a>
-                        <a href="#" class="footer-link">Corporate Listings</a>
-                        <a href="#" class="footer-link">Investment Advisory</a>
-                        <a href="#" class="footer-link">Investor Education</a>
-                        <a href="#" class="footer-link">Market Research</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <div class="footer-links">
-                        <a href="mailto:{{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}" class="footer-link">
-                            <i class="fas fa-envelope"></i> {{ $siteContent['contact_email'] ?? 'info@use.co.ug' }}
-                        </a>
-                        <a href="tel:{{ $siteContent['contact_phone'] ?? '+256414230738' }}" class="footer-link">
-                            <i class="fas fa-phone"></i> {{ $siteContent['contact_phone'] ?? '+256 414 230 738' }}
-                        </a>
-                        <div class="footer-link">
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ $siteContent['contact_address'] ?? 'Uganda Securities Exchange, Plot 24/26 Kampala Road, Kampala, Uganda' }}
-                        </div>
-                        <div class="footer-link">
-                            <i class="fas fa-clock"></i>
-                            Trading Hours: {{ $siteContent['trading_hours'] ?? '9:00 AM - 3:00 PM EAT' }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div>
-                    <p>&copy; {{ date('Y') }} Uganda Securities Exchange. All rights reserved.</p>
-                </div>
-                <div>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Disclaimer</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    </main> @include('partials.footer')
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

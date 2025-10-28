@@ -14,6 +14,7 @@ class Event extends Model
         'description',
         'event_date',
         'location',
+        'image_url',
         'is_active',
         'show_on_site'
     ];

@@ -677,108 +677,135 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Footer - EXACT COPY FROM INDEX */
+        /* Footer */
         .footer {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-            color: white;
-            padding: 5rem 0 2rem;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(253, 185, 19, 0.5), transparent);
+            background: #001e2f;
+            padding: 4rem 2rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 3rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .footer-brand h3 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-            font-family: 'Titillium Web', sans-serif;
+        .footer-brand {
+            max-width: 300px;
         }
 
-        .footer-brand p {
-            color: #94a3b8;
-            line-height: 1.6;
+        .footer-logo {
+            height: 100px;
             margin-bottom: 1.5rem;
         }
 
-        .social-links {
+        .footer-address {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-contact {
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--use-blue-light);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-social {
             display: flex;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .social-link {
+        .social-icon {
             width: 40px;
             height: 40px;
-            background: rgba(0, 128, 199, 0.1);
             border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--use-blue);
+            color: white;
             text-decoration: none;
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
-            background: rgba(0, 128, 199, 0.2);
+        .social-icon:hover {
+            background: var(--use-blue);
             transform: translateY(-2px);
         }
 
-        .footer-section h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-family: 'Titillium Web', sans-serif;
-        }
-
-        .footer-links {
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .footer-link {
-            color: #94a3b8;
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-link:hover {
-            color: var(--use-blue);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #334155;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #94a3b8;
-            font-size: 0.875rem;
+        .footer-legal a:hover {
+            color: var(--use-yellow);
         }
 
         /* Enhanced Animations */
@@ -810,43 +837,190 @@
 
         @media (max-width: 768px) {
             .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                order: 1;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 55px;
                 display: block;
             }
 
+            .market-status {
+                display: none !important;
+            }
+
+            .status-indicator {
+                flex-shrink: 0;
+            }
+
+            .status-text {
+                flex-shrink: 0;
+                font-size: 0.7rem;
+            }
+
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem;
+                height: 72px;
+                gap: 0.5rem;
+            }
+
             .nav-menu {
-                display: none;
+                order: 4;
+            }
+
+            .nav-menu {
+                display: flex;
                 position: absolute;
-                top: calc(100% + 1rem);
-                left: 1rem;
-                right: 1rem;
+                top: calc(100% + 0.5rem);
+                left: 0.5rem;
+                right: 0.5rem;
                 background: white;
                 border-radius: 16px;
                 box-shadow: var(--shadow-xl);
                 border: 1px solid var(--border);
-                padding: 1rem;
+                padding: 0.5rem;
                 flex-direction: column;
                 gap: 0;
+                max-height: calc(100vh - 100px);
+                overflow-y: auto;
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+                pointer-events: none;
             }
 
             .nav-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-item {
+                width: 100%;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link {
+                padding: 0.875rem 1rem;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .nav-link:hover {
+                transform: none;
+            }
+
+            .chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+                background: transparent;
+                border-radius: 0;
+                max-height: 0;
+                overflow: hidden;
+                padding-left: 1rem;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            .dropdown.active {
+                opacity: 1;
+                visibility: visible;
+                max-height: 1000px;
+                display: block;
+            }
+
+            .dropdown > li {
+                border-top: 1px solid var(--border-light);
+            }
+
+            .dropdown > li:first-child {
+                border-top: none;
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
                 display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            /* Mobile submenu styles */
+            .submenu {
+                position: static !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transform: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                margin-left: 0 !important;
+                background: transparent !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                padding-left: 1rem !important;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+            }
+
+            .submenu.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-height: 800px !important;
+                display: block !important;
+            }
+
+            .submenu > li {
+                border-top: 1px solid var(--border-light);
+            }
+
+            .submenu > li:first-child {
+                border-top: none;
+            }
+
+            .submenu-item {
+                padding: 0.625rem 1rem;
+                font-size: 0.8125rem;
+            }
+
+            .submenu-item:hover {
+                transform: none;
             }
 
             .header {
                 width: calc(100% - 1rem);
-            }
-
-            .nav-container {
-                padding: 0 1rem;
-                flex-wrap: wrap;
-                height: auto;
-                padding: 0.75rem 1rem;
-            }
-
-            .market-status {
-                order: -1;
-                margin-left: auto;
-                margin-right: 0.5rem;
             }
 
             .container {
@@ -921,7 +1095,68 @@
             }
         }
 
+        /* Extra small devices (phones, 480px and down) */
         @media (max-width: 480px) {
+            .header {
+                width: calc(100% - 0.5rem);
+                top: 0.5rem;
+            }
+
+            .header.scrolled {
+                top: 0.25rem;
+            }
+
+            .nav-container {
+                padding: 0.625rem;
+                height: 68px;
+                gap: 0.375rem;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .market-status {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.65rem;
+            }
+
+            .status-indicator {
+                width: 6px;
+                height: 6px;
+            }
+
+            .status-text {
+                font-size: 0.65rem;
+            }
+
+            .mobile-menu-btn {
+                font-size: 1.25rem;
+                padding: 0.375rem;
+            }
+
+            .nav-menu {
+                top: calc(100% + 0.25rem);
+                left: 0.25rem;
+                right: 0.25rem;
+                max-height: calc(100vh - 80px);
+            }
+
+            .nav-link {
+                padding: 0.75rem 0.875rem;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-item {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.8125rem;
+            }
+
+            .submenu-item {
+                padding: 0.5rem 0.875rem;
+                font-size: 0.75rem;
+            }
+
             .main-content {
                 padding-top: 6rem;
             }
@@ -1117,29 +1352,8 @@
     </style>
 </head>
 <body>
-    <!-- Header - EXACT COPY FROM INDEX -->
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <div class="logo">USE</div>
-            <div class="market-status">
-                <span class="status-indicator open"></span>
-                <span class="status-text">Market Open</span>
-                <span class="status-time">9:00 AM - 3:00 PM EAT</span>
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/securities" class="nav-link active">Securities</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/about" class="nav-link">About</a>
-                </li>
-            </ul>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-        </nav>
-    </header>
+    <!-- Header -->
+    @include('partials.header')
 
     <!-- Main Content -->
     <main class="main-content">
@@ -1410,88 +1624,116 @@
     </main>
 
     <!-- Footer - EXACT COPY FROM INDEX -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <h3>Uganda Securities Exchange</h3>
-                    <p>Building East Africa's premier financial market through innovative trading solutions, comprehensive market data, and professional investment services.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="social-link" aria-label="YouTube">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">About USE</a>
-                        <a href="#" class="footer-link">How to Invest</a>
-                        <a href="#" class="footer-link">Listed Securities</a>
-                        <a href="#" class="footer-link">Market Data</a>
-                        <a href="#" class="footer-link">Trading Rules</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Securities Trading</a>
-                        <a href="#" class="footer-link">Corporate Listings</a>
-                        <a href="#" class="footer-link">Investment Advisory</a>
-                        <a href="#" class="footer-link">Investor Education</a>
-                        <a href="#" class="footer-link">Market Research</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <div class="footer-links">
-                        <a href="mailto:info@use.co.ug" class="footer-link">
-                            <i class="fas fa-envelope"></i> info@use.co.ug
-                        </a>
-                        <a href="tel:+256414230738" class="footer-link">
-                            <i class="fas fa-phone"></i> +256 414 230 738
-                        </a>
-                        <div class="footer-link">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Uganda Securities Exchange, Plot 24/26 Kampala Road, Kampala, Uganda
-                        </div>
-                        <div class="footer-link">
-                            <i class="fas fa-clock"></i>
-                            Trading Hours: 9:00 AM - 3:00 PM EAT
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div>
-                    <p>&copy; {{ date('Y') }} Uganda Securities Exchange. All rights reserved.</p>
-                </div>
-                <div>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <span style="margin: 0 1rem; color: #64748b;">|</span>
-                    <a href="#" class="footer-link">Disclaimer</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    @include('partials.footer')
 
     <script>
-        // Header scroll effect from index
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.nav-menu');
+            if (menu) {
+                menu.classList.toggle('active');
+            }
+        }
+
+        // Mobile dropdown toggle
+        let lastDropdownToggle = 0;
+        function toggleMobileDropdown(event) {
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Prevent rapid double-clicks
+                const now = Date.now();
+                if (now - lastDropdownToggle < 300) {
+                    return;
+                }
+                lastDropdownToggle = now;
+
+                const dropdown = event.currentTarget.nextElementSibling;
+                const chevron = event.currentTarget.querySelector('.chevron-down');
+
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.toggle('active');
+
+                    if (chevron) {
+                        chevron.style.transform = dropdown.classList.contains('active')
+                            ? 'rotate(225deg)'
+                            : 'rotate(45deg)';
+                    }
+                }
+            }
+        }
+
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers for mobile dropdown toggles
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.querySelector('.chevron-down')) {
+                    link.addEventListener('click', toggleMobileDropdown);
+                }
+            });
+
+            // Use event delegation for submenu toggles
+            document.body.addEventListener('click', function(e) {
+                // Only on mobile
+                if (window.innerWidth > 768) return;
+
+                // Check if we clicked on a dropdown-item
+                const dropdownItem = e.target.closest('.dropdown-item');
+                if (!dropdownItem) return;
+
+                // Check if this dropdown-item has a submenu
+                const parentLi = dropdownItem.parentElement;
+                const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
+
+                if (hasSubmenuClass) {
+                    const submenu = parentLi.querySelector('.submenu');
+                    const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    // Prevent navigation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (submenu) {
+                        submenu.classList.toggle('active');
+
+                        if (chevron) {
+                            chevron.style.transform = submenu.classList.contains('active')
+                                ? 'rotate(45deg)'
+                                : 'rotate(-45deg)';
+                        }
+                    }
+                }
+            }, false);
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const menu = document.querySelector('.nav-menu');
+                const header = document.querySelector('.header');
+
+                // Only close if clicking completely outside the header
+                if (menu && menu.classList.contains('active')) {
+                    if (!header.contains(e.target)) {
+                        menu.classList.remove('active');
+                        // Close all dropdowns and submenus
+                        document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // Reset all chevrons
+                        document.querySelectorAll('.chevron-down, .chevron-right').forEach(chevron => {
+                            if (chevron.classList.contains('chevron-down')) {
+                                chevron.style.transform = 'rotate(45deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(-45deg)';
+                            }
+                        });
+                    }
+                }
+            }, true);
+        });
+
+        // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
             if (window.scrollY > 100) {
@@ -1500,12 +1742,6 @@
                 header.classList.remove('scrolled');
             }
         });
-
-        // Mobile menu toggle from index
-        function toggleMobileMenu() {
-            const menu = document.querySelector('.nav-menu');
-            menu.classList.toggle('active');
-        }
 
         @if($security->ticker && $security->security_type === 'equity')
         // Stock Chart Implementation

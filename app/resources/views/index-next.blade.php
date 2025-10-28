@@ -745,7 +745,174 @@
         }
 
         @media (max-width: 768px) {
+                        .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                order: 1;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 55px;
+                display: block;
+            }
+
+            .market-status {
+                display: none !important;
+            }
+
+            .status-indicator {
+                flex-shrink: 0;
+            }
+
+            .status-text {
+                flex-shrink: 0;
+            }
+
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem;
+                height: 72px;
+                gap: 0.5rem;
+            }
+
             .nav-menu {
+                order: 4;
+            }
+
+            .nav-menu {
+                display: flex;
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0.5rem;
+                right: 0.5rem;
+                background: white;
+                border-radius: 16px;
+                box-shadow: var(--shadow-xl);
+                border: 1px solid var(--border);
+                padding: 0.5rem;
+                flex-direction: column;
+                gap: 0;
+                max-height: calc(100vh - 100px);
+                overflow-y: auto;
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+                pointer-events: none;
+            }
+
+            .nav-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-item {
+                width: 100%;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link {
+                padding: 0.875rem 1rem;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .nav-link:hover {
+                background: var(--surface);
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                box-shadow: none;
+                border: none;
+                margin-top: 0;
+                border-radius: 0;
+                background: var(--surface);
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
+            }
+
+            .dropdown.active {
+                opacity: 1;
+                visibility: visible;
+                max-height: 1000px;
+                display: block;
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid var(--border-light);
+                justify-content: space-between;
+                font-size: 0.85rem;
+            }
+
+            .dropdown li:last-child .dropdown-item {
+                border-bottom: none;
+            }
+
+            .submenu {
+                position: static;
+                background: #f8fafc;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
+            }
+
+            .submenu.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-height: 800px !important;
+                display: block !important;
+            }
+
+            .submenu-item {
+                padding: 0.625rem 2rem;
+                font-size: 0.8rem;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .submenu li:last-child .submenu-item {
+                border-bottom: none;
+            }
+
+            .chevron-down,
+            .chevron-right {
+                font-size: 0.7rem;
+                transition: transform 0.3s ease;
+            }
+
+.nav-menu {
                 display: none;
             }
 
@@ -841,18 +1008,7 @@
     <div class="cursor-trail" id="cursorTrail"></div>
 
     <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav-container">
-            <div class="logo">USE</div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#services" class="nav-link">Services</a></li>
-                <li><a href="#market" class="nav-link">Market</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-            </ul>
-            <a href="#" class="cta-button">Start Trading</a>
-        </nav>
-    </header>
+    @include('partials.header')
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -1179,5 +1335,159 @@
 
         updateActiveNav();
     </script>
+
+    <script>
+        function toggleMobileMenu() {
+            console.log('toggleMobileMenu called');
+            const menu = document.querySelector('.nav-menu');
+            console.log('menu element:', menu);
+            if (menu) {
+                menu.classList.toggle('active');
+                console.log('menu active state:', menu.classList.contains('active'));
+            } else {
+                console.error('nav-menu not found!');
+            }
+        }
+
+        // Mobile dropdown toggle
+        let lastDropdownToggle = 0;
+        function toggleMobileDropdown(event) {
+            console.log('>>> toggleMobileDropdown called <<<');
+            console.log('Window width:', window.innerWidth);
+
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Prevent rapid double-clicks
+                const now = Date.now();
+                if (now - lastDropdownToggle < 300) {
+                    console.log('⚠️ Too fast, ignoring');
+                    return;
+                }
+                lastDropdownToggle = now;
+
+                const dropdown = event.currentTarget.nextElementSibling;
+                const chevron = event.currentTarget.querySelector('.chevron-down');
+
+                console.log('Dropdown element:', dropdown);
+                console.log('Has dropdown class:', dropdown?.classList.contains('dropdown'));
+                console.log('Chevron found:', !!chevron);
+
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    const wasActive = dropdown.classList.contains('active');
+                    dropdown.classList.toggle('active');
+                    console.log('Dropdown toggled from', wasActive, 'to', dropdown.classList.contains('active'));
+
+                    if (chevron) {
+                        chevron.style.transform = dropdown.classList.contains('active')
+                            ? 'rotate(225deg)'
+                            : 'rotate(45deg)';
+                        console.log('Chevron rotated');
+                    }
+
+                    // List all dropdown items for debugging
+                    const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+                    console.log('Dropdown contains', dropdownItems.length, 'items');
+                    dropdownItems.forEach((item, index) => {
+                        const hasSubmenu = item.parentElement.classList.contains('has-submenu');
+                        const hasChevron = !!item.querySelector('.chevron-right');
+                        console.log(`  Item ${index + 1}:`, item.textContent.trim(), '- has-submenu:', hasSubmenu, '- has chevron-right:', hasChevron);
+                    });
+                }
+            }
+        }
+
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded - Initializing mobile menu');
+
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const menu = document.querySelector('.nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            console.log('Mobile button found:', mobileBtn);
+            console.log('Menu found:', menu);
+
+            // Add click handlers for mobile dropdown toggles
+            navLinks.forEach(link => {
+                if (link.querySelector('.chevron-down')) {
+                    link.addEventListener('click', toggleMobileDropdown);
+                }
+            });
+
+            // Use event delegation for submenu toggles
+            document.body.addEventListener('click', function(e) {
+                // Only on mobile
+                if (window.innerWidth > 768) return;
+
+                // Check if we clicked on a dropdown-item
+                const dropdownItem = e.target.closest('.dropdown-item');
+                if (!dropdownItem) return;
+
+                // Check if this dropdown-item has a submenu
+                const parentLi = dropdownItem.parentElement;
+                const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
+
+                console.log('🔵 Clicked on dropdown-item:', dropdownItem.textContent.trim());
+                console.log('🔵 Parent li has has-submenu class:', hasSubmenuClass);
+
+                if (hasSubmenuClass) {
+                    const submenu = parentLi.querySelector('.submenu');
+                    const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    console.log('🔵 Submenu found:', !!submenu);
+                    console.log('🔵 Chevron found:', !!chevron);
+
+                    // Prevent navigation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (submenu) {
+                        const wasActive = submenu.classList.contains('active');
+                        submenu.classList.toggle('active');
+                        console.log('✅ Submenu toggled from', wasActive, 'to', submenu.classList.contains('active'));
+
+                        if (chevron) {
+                            chevron.style.transform = submenu.classList.contains('active')
+                                ? 'rotate(45deg)'
+                                : 'rotate(-45deg)';
+                            console.log('✅ Chevron rotated');
+                        }
+                    } else {
+                        console.log('❌ No submenu element found');
+                    }
+                }
+            }, false);
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const menu = document.querySelector('.nav-menu');
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
+                const header = document.querySelector('.header');
+
+                // Only close if clicking completely outside the header
+                if (menu && menu.classList.contains('active')) {
+                    if (!header.contains(e.target)) {
+                        console.log('🔴 Closing menu - clicked outside header');
+                        menu.classList.remove('active');
+                        // Close all dropdowns and submenus
+                        document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // Reset all chevrons
+                        document.querySelectorAll('.chevron-down, .chevron-right').forEach(chevron => {
+                            if (chevron.classList.contains('chevron-down')) {
+                                chevron.style.transform = 'rotate(45deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(-45deg)';
+                            }
+                        });
+                    }
+                }
+            }, true); // Use capture phase
+        });
+    </script>
+
 </body>
 </html>

@@ -42,8 +42,6 @@ class CarouselImageController extends Controller
             'image_url' => 'required|url',
             'button_text' => 'nullable|string|max:255',
             'button_link' => 'nullable|url',
-            'button_text_2' => 'nullable|string|max:255',
-            'button_link_2' => 'nullable|url',
             'sort_order' => 'integer|min:0',
             'is_active' => 'boolean'
         ]);
@@ -92,8 +90,6 @@ class CarouselImageController extends Controller
             'image_url' => 'required|url',
             'button_text' => 'nullable|string|max:255',
             'button_link' => 'nullable|url',
-            'button_text_2' => 'nullable|string|max:255',
-            'button_link_2' => 'nullable|url',
             'sort_order' => 'integer|min:0',
             'is_active' => 'boolean'
         ]);

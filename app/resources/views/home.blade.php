@@ -1787,7 +1787,7 @@
                         moverItem.innerHTML = `
                             <div>
                                 <div class="mover-symbol">${symbol}</div>
-                                <div class="mover-company">NTL</div>
+                                <div class="mover-company" style="color: green;">+%</div>
                             </div>
                             <div class="mover-price">
                                 <div class="mover-value">${formattedPrice}</div>
@@ -1830,7 +1830,7 @@
                         moverItem.innerHTML = `
                             <div>
                                 <div class="mover-symbol">${symbol}</div>
-                                <div class="mover-company">NTL</div>
+                                <div class="mover-company" style="color: red;">-%</div>
                             </div>
                             <div class="mover-price">
                                 <div class="mover-value">${formattedPrice}</div>

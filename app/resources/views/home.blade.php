@@ -1370,19 +1370,19 @@
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-label">Total Volume</div>
-                        <div class="stat-value" id="totalVolume">8.66M</div>
+                        <div class="stat-value" id="totalVolume">_</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Trades</div>
-                        <div class="stat-value" id="totalTrades">4,406</div>
+                        <div class="stat-value" id="totalTrades">_</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Index Daily</div>
-                        <div class="stat-value" id="indexDaily">312.97</div>
+                        <div class="stat-value" id="indexDaily">_</div>
                     </div>
                 </div>
                 <div class="stat-footer">
-                    The <span class="highlight">total volume</span> traded on the USE today is <span class="highlight">2.3M</span>
+                    The <span class="highlight">total volume</span> traded on the USE today is <span class="highlight">_</span>
                 </div>
             </div>
 

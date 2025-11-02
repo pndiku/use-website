@@ -61,9 +61,9 @@ Route::get('/about', function () {
 Route::get('/next', function () {
     return view('index-next');
 })->name('index-next');
-Route::get('/securities', 'App\Http\Controllers\SecurityController@publicIndex')->name('securities');
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
 Route::get('/news/{slug}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
+Route::get('/events/{id}', 'App\Http\Controllers\EventController@showPublic')->name('event.show');
 Route::get('/annual-reports', 'App\Http\Controllers\PageController@annualReports')->name('annual-reports');
 Route::get('/market-statistics/market-snapshot', function () {
     $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();

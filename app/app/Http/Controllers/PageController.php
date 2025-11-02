@@ -74,11 +74,10 @@ class PageController extends Controller
         if (session()->has('user')) {
             return redirect('/manage');
         } else {
-            // Fetch upcoming events
+            // Fetch events (both upcoming and recent past events)
             $upcomingEvents = Event::active()
                 ->visible()
-                ->upcoming()
-                ->orderByDate()
+                ->orderBy('event_date', 'desc')
                 ->take(4)
                 ->get();
 

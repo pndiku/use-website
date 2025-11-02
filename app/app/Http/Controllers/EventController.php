@@ -110,4 +110,26 @@ class EventController extends Controller
         $event->delete();
         return response()->json(['message' => 'Event deleted successfully']);
     }
+
+    /**
+     * Display the specified event to the public.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showPublic($id)
+    {
+        $event = Event::where('is_active', true)
+            ->where('show_on_site', true)
+            ->findOrFail($id);
+
+        $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+        $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+            ->whereNull('parent_id')
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('event-detail', compact('event', 'siteContent', 'menuItems'));
+    }
 }

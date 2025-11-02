@@ -327,6 +327,203 @@
             cursor: pointer;
         }
 
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-overlay {
+                display: block;
+            }
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile Menu Drawer */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 400px;
+            height: 100vh;
+            background: white;
+            z-index: 10000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border);
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .mobile-menu-logo {
+            height: 45px;
+            width: auto;
+        }
+
+        .mobile-menu-close {
+            background: var(--surface-secondary);
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .mobile-menu-close:hover {
+            background: var(--use-blue);
+            color: white;
+        }
+
+        .mobile-menu-list {
+            list-style: none;
+            padding: 0.5rem 0;
+            margin: 0;
+        }
+
+        .mobile-menu-item {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .mobile-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-link:hover {
+            background: var(--surface-secondary);
+            color: var(--use-blue);
+        }
+
+        .mobile-menu-link.has-children {
+            cursor: pointer;
+        }
+
+        .mobile-chevron {
+            font-size: 0.75rem;
+            transition: transform 0.3s ease;
+            margin-left: auto;
+        }
+
+        .mobile-menu-link.active .mobile-chevron {
+            transform: rotate(180deg);
+        }
+
+        .mobile-submenu {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--surface-secondary);
+        }
+
+        .mobile-submenu.active {
+            max-height: 1000px;
+        }
+
+        .mobile-submenu-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.875rem 1.5rem 0.875rem 2.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-submenu-link:hover {
+            background: rgba(0, 128, 199, 0.05);
+            color: var(--use-blue);
+        }
+
+        .mobile-submenu-link.has-children {
+            cursor: pointer;
+        }
+
+        .mobile-grandsubmenu {
+            list-style: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--surface-tertiary);
+        }
+
+        .mobile-grandsubmenu.active {
+            max-height: 1000px;
+        }
+
+        .mobile-grandsubmenu-link {
+            display: block;
+            padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-grandsubmenu-link:hover {
+            background: rgba(0, 128, 199, 0.05);
+            color: var(--use-blue);
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -876,7 +1073,10 @@
             border: 2px solid var(--border-light);
             border-radius: 12px;
             overflow: hidden;
+            padding: 1rem;
             transition: all 0.3s ease;
+            cursor: pointer;
+            display: block;
         }
 
         .event-card:hover {
@@ -919,7 +1119,7 @@
         }
 
         .event-content {
-            padding: 1.5rem;
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
         }
 
         .event-date-icon {
@@ -930,7 +1130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .event-date-icon i {
@@ -1250,6 +1450,22 @@
                 display: block;
             }
 
+            .market-status {
+                display: none;
+            }
+
+            .header {
+                width: calc(100% - 1rem);
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
             .market-stats-container {
                 grid-template-columns: 1fr;
             }
@@ -1268,6 +1484,25 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                width: calc(100% - 0.5rem);
+                top: 0.5rem;
+            }
+
+            .nav-container {
+                padding: 0 0.75rem;
+                height: 56px;
+            }
+
+            .logo img {
+                height: 45px;
+            }
+
+            .mobile-menu-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 1.1rem;
+            }
+
             .hero-title {
                 font-size: 2rem;
             }
@@ -1494,7 +1729,7 @@
             <div class="events-grid">
                 @if($upcomingEvents && $upcomingEvents->count() > 0)
                     @foreach($upcomingEvents as $event)
-                        <div class="event-card">
+                        <a href="{{ route('event.show', $event->id) }}" class="event-card" style="text-decoration: none; color: inherit;">
                             @if($event->image_url)
                                 <div class="event-image" style="background-image: url('{{ $event->image_url }}');">
                                     <div class="event-date-badge">
@@ -1519,7 +1754,7 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 @else
                     <div class="event-card">
@@ -1636,11 +1871,7 @@
             }
         });
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const navMenu = document.querySelector('.nav-menu');
-            navMenu.classList.toggle('active');
-        }
+        // Mobile menu functions are now defined in partials/header.blade.php as USE_toggleMobileDrawer() and USE_toggleMobileSubmenu()
 
         // WebSocket Connection for Live Data
         console.log('Initializing WebSocket connection...');

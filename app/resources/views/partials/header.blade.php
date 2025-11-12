@@ -281,6 +281,28 @@
             font-size: 1.1rem !important;
         }
     }
+
+    /* Footer Disclaimer Styles */
+    .footer-disclaimer {
+        padding: 2rem 0;
+        margin: 2rem 0 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-disclaimer h4 {
+        margin-bottom: 1rem;
+    }
+
+    .footer-disclaimer p {
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 1rem;
+    }
+
+    .footer-disclaimer p:last-child {
+        margin-bottom: 0;
+    }
 </style>
 
 <script>

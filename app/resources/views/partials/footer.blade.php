@@ -59,6 +59,38 @@
             </div>
         </div>
 
+        <div class="footer-disclaimer">
+            <h4 class="footer-section-title">Notice and Disclaimer</h4>
+            <p>
+                To access the Uganda Securities Exchange website (the "Website") and its data
+                product (the "Data"), you must agree to the below notice and disclaimer (the
+                "Terms"). If you do not agree to the Terms, then you must refrain from using the
+                Website and the Data.
+            </p>
+            <p>
+                Unless otherwise stated, the Website and Data is the copyright of the Uganda
+                Securities Exchange.
+            </p>
+            <p>
+                Access to and use of the Website and the Data is for personal and non-commercial
+                use only. No part of the Website or Data may be copied, reproduced, republished,
+                downloaded, posted, broadcast or transmitted in any way for any commercial
+                purpose and/or exploited for profit.
+            </p>
+            <p>
+                The Website and Data is provided "as is" and on an "as available" basis only and no
+                guarantee is made as to the accuracy, timeliness, completeness, or fitness for a
+                particular purpose of the Website or any of the Data. While care has been taken to
+                ensure that all Data provided on the Website is correct at the time of publication, the
+                Uganda Securities Exchange does not accept any responsibility for any errors,
+                omissions, or inaccurate Data on the Website.
+            </p>
+            <p>
+                The Uganda Securities Exchange reserves the right to make changes to the Website
+                and/or Data at any time without prior notice to you.
+            </p>
+        </div>
+
         <div class="footer-bottom">
             <div class="footer-copyright">
                 © {{ date('Y') }} Uganda Securities Exchange. All rights reserved.

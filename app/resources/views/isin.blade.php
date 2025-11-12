@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>International Securities Identification Number (ISIN) - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="Learn about ISIN allocation at Uganda Securities Exchange - the National Numbering Agency for Uganda recognized by ANNA.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

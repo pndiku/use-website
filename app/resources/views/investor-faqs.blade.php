@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investor FAQs - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="Frequently asked questions about investing in the Uganda Securities Exchange - everything you need to know about shares, trading, and benefits.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

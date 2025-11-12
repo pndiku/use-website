@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="Get in touch with Uganda Securities Exchange. We're here to help with your questions and inquiries.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

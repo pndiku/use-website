@@ -58,13 +58,29 @@ Route::get('/about', function () {
         ->get();
     return view('about', compact('siteContent', 'menuItems'));
 })->name('about');
+Route::get('/use-specialist-market', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('use-specialist-market', compact('siteContent', 'menuItems'));
+})->name('use-specialist-market');
 Route::get('/next', function () {
     return view('index-next');
 })->name('index-next');
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
 Route::get('/news/{slug}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
 Route::get('/events/{id}', 'App\Http\Controllers\EventController@showPublic')->name('event.show');
-Route::get('/annual-reports', 'App\Http\Controllers\PageController@annualReports')->name('annual-reports');
+Route::get('/annual-reports', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $reports = \App\Models\AnnualReport::orderBy('published_date', 'desc')->get();
+    return view('annual-reports', compact('siteContent', 'menuItems', 'reports'));
+})->name('annual-reports');
 Route::get('/market-statistics/market-snapshot', function () {
     $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
     $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
@@ -82,6 +98,33 @@ Route::get('/market-statistics/market-performance', function () {
     $reports = \App\Models\MarketPerformance::orderBy('published_date', 'desc')->get();
     return view('market-performance', compact('siteContent', 'menuItems', 'reports'));
 })->name('market-performance');
+Route::get('/scd/scd-forms', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $forms = \App\Models\ScdForm::orderBy('published_date', 'desc')->get();
+    return view('scd-forms', compact('siteContent', 'menuItems', 'forms'));
+})->name('scd-forms');
+Route::get('/scd/scd-rules', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $rules = \App\Models\ScdRule::orderBy('published_date', 'desc')->get();
+    return view('scd-rules', compact('siteContent', 'menuItems', 'rules'));
+})->name('scd-rules');
+Route::get('/rules-and-regulations/market-regulations', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $regulations = \App\Models\MarketRegulation::orderBy('published_date', 'desc')->get();
+    return view('market-regulations', compact('siteContent', 'menuItems', 'regulations'));
+})->name('market-regulations');
 Route::get('/listed/{stock}', function ($stock) {
     // Convert underscores back to spaces for stock symbols like "AIRTEL UGANDA"
     $stock = str_replace('_', ' ', $stock);
@@ -91,7 +134,22 @@ Route::get('/listed/{stock}', function ($stock) {
         ->mainMenu()
         ->active()
         ->get();
-    return view('stock-detail', compact('siteContent', 'menuItems', 'stock'));
+
+    // Get related articles for this stock using the ticker
+    $security = \App\Models\Security::where('ticker', $stock)
+        ->orWhere('company_name', $stock)
+        ->first();
+
+    $relatedArticles = collect();
+    if ($security) {
+        $relatedArticles = $security->news()
+            ->published()
+            ->latest()
+            ->take(6)
+            ->get();
+    }
+
+    return view('stock-detail', compact('siteContent', 'menuItems', 'stock', 'relatedArticles'));
 })->name('stock.detail');
 
 // Proxy endpoint for stock data to avoid CORS issues
@@ -310,6 +368,10 @@ Route::prefix('admin')->group(function () {
     Route::get('market-summary', 'App\Http\Controllers\SecurityController@getMarketSummary')->name('market.summary');
     Route::resource('users', 'App\Http\Controllers\UserController');
     Route::resource('market-performance', 'App\Http\Controllers\MarketPerformanceController');
+    Route::resource('scd-forms', 'App\Http\Controllers\ScdFormController');
+    Route::resource('scd-rules', 'App\Http\Controllers\ScdRuleController');
+    Route::resource('market-regulations', 'App\Http\Controllers\MarketRegulationController');
+    Route::resource('annual-reports', 'App\Http\Controllers\AnnualReportController');
 });
 
 

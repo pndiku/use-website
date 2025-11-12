@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual Reports - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta name="description" content="Download annual reports from the Uganda Securities Exchange. Access comprehensive market data, financial insights, and regulatory updates.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            /* Official USE Brand Colors */
+            --use-blue: rgb(0, 128, 199);
+            --use-blue-dark: rgb(0, 102, 159);
+            --use-blue-light: rgb(51, 153, 219);
+            --use-yellow: rgb(253, 185, 19);
+            --use-yellow-light: rgb(254, 202, 56);
+            --use-gray: rgb(88, 89, 91);
+            --use-red: rgb(221, 39, 39);
+            --use-green: rgb(39, 221, 90);
+
+            /* Surface Colors */
+            --surface: #ffffff;
+            --surface-secondary: #f7fafc;
+            --surface-tertiary: #edf2f7;
+            --text-primary: #1a202c;
+            --text-secondary: var(--use-gray);
+            --text-tertiary: #718096;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-dark) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--use-yellow) 0%, var(--use-yellow-light) 100%);
+        }
+
+        /* Header - EXACT COPY FROM INDEX */
+        .header {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: calc(100% - 2rem);
+            max-width: 1400px;
+        }
+
+        .header.scrolled {
+            top: 0.5rem;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(24px) saturate(200%);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(226, 232, 240, 0.3);
+        }
+
+        .nav-container {
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: translateY(-1px);
+        }
+
+        .market-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            flex-shrink: 0;
+            min-width: fit-content;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: statusPulse 2s infinite;
+        }
+
+        .status-indicator.open {
+            background: var(--use-green);
+        }
+
+        .status-indicator.closed {
+            background: var(--use-red);
+            animation: none;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .status-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 0.375rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .nav-link:hover {
+            color: var(--use-blue);
+            background: rgba(0, 128, 199, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .nav-link.active {
+            color: var(--use-blue);
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chevron-down {
+            width: 6px;
+            height: 6px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .nav-item:hover .chevron-down {
+            transform: rotate(225deg);
+        }
+
+        .dropdown {
+            list-style: none;
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            min-width: 220px;
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow: visible;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown > li {
+            position: relative;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 128, 199, 0.05);
+            color: var(--use-blue);
+        }
+
+        /* Only apply transform to dropdown items WITHOUT submenus */
+        .dropdown > li:not(.has-submenu) .dropdown-item:hover {
+            transform: translateX(4px);
+        }
+
+        .dropdown > li.has-submenu > .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Create invisible hover bridge */
+        .dropdown > li.has-submenu::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            bottom: 0;
+            width: 15px;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        .chevron-right {
+            width: 5px;
+            height: 5px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            transform: rotate(-45deg);
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .dropdown-item:hover .chevron-right {
+            transform: rotate(-45deg) translateX(2px);
+        }
+
+        /* Submenu - Third level menu - Fixed positioning */
+        .submenu {
+            list-style: none;
+            position: absolute !important;
+            top: 0 !important;
+            left: 100% !important;
+            background: white !important;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border) !important;
+            min-width: 200px !important;
+            padding: 0.5rem !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateX(-5px) !important;
+            transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease !important;
+            z-index: 1050 !important;
+            display: block !important;
+            margin-left: 0 !important;
+        }
+
+        /* Show submenu when hovering over its parent */
+        .dropdown > li.has-submenu:hover > .submenu {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateX(0) !important;
+            pointer-events: auto !important;
+        }
+
+        /* Keep submenu visible when hovering over it */
+        .submenu:hover {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateX(0) !important;
+            pointer-events: auto !important;
+        }
+
+        .submenu > li {
+            position: relative;
+        }
+
+        .submenu-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .submenu-item:hover {
+            background: rgba(0, 128, 199, 0.05);
+            color: var(--use-blue);
+            transform: translateX(4px);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(0, 128, 199, 0.05);
+            color: var(--use-blue);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 0;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-top: 0;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="0.3" fill="rgba(255,255,255,0.15)"/><circle cx="80" cy="30" r="0.4" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--use-yellow);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        /* Reports Section */
+        .reports-section {
+            padding: 4rem 0;
+            background: var(--surface-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--use-blue);
+            color: var(--use-blue);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--use-blue);
+            border-color: var(--use-blue);
+            color: white;
+        }
+
+        /* Reports Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Featured Report Card */
+        .report-card.featured {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-dark) 100%);
+            color: white;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--use-yellow);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Regular Report Card */
+        .report-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--use-blue-light) 0%, var(--use-blue) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .report-year {
+            font-size: 0.875rem;
+            color: var(--use-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured .report-year {
+            color: var(--use-yellow);
+        }
+
+        .report-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .featured .report-title {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .report-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .featured .report-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .report-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-tertiary);
+        }
+
+        .featured .meta-item {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .meta-item i {
+            color: var(--use-blue);
+        }
+
+        .featured .meta-item i {
+            color: var(--use-yellow);
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--use-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--use-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--use-blue);
+            border: 2px solid var(--use-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--use-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .featured .btn-secondary {
+            color: white;
+            border-color: white;
+        }
+
+        .featured .btn-secondary:hover {
+            background: white;
+            color: var(--use-blue);
+        }
+
+        /* Footer */
+        .footer {
+            background: #001e2f;
+            padding: 4rem 2rem 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            height: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-address {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-contact {
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--use-blue-light);
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover {
+            color: var(--use-yellow);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--use-blue);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-legal a:hover {
+            color: var(--use-yellow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10;
+                order: 3;
+                flex-shrink: 0;
+            }
+
+            .logo {
+                order: 1;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 55px;
+                display: block;
+            }
+
+            .market-status {
+                display: none !important;
+            }
+
+            .status-indicator {
+                flex-shrink: 0;
+            }
+
+            .status-text {
+                flex-shrink: 0;
+            }
+
+            .nav-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.75rem;
+                height: 72px;
+                gap: 0.5rem;
+            }
+
+            .nav-menu {
+                order: 4;
+            }
+
+            .nav-menu {
+                display: flex;
+                position: absolute;
+                top: calc(100% + 0.5rem);
+                left: 0.5rem;
+                right: 0.5rem;
+                background: white;
+                border-radius: 16px;
+                box-shadow: var(--shadow-xl);
+                border: 1px solid var(--border);
+                padding: 0.5rem;
+                flex-direction: column;
+                gap: 0;
+                max-height: calc(100vh - 100px);
+                overflow-y: auto;
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+                pointer-events: none;
+            }
+
+            .nav-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .nav-item {
+                width: 100%;
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link {
+                padding: 0.875rem 1rem;
+                justify-content: space-between;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+
+            .nav-link:hover {
+                transform: none;
+            }
+
+            .chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+                background: transparent;
+                border-radius: 0;
+                max-height: 0;
+                overflow: hidden;
+                padding-left: 1rem;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            .dropdown.active {
+                opacity: 1;
+                visibility: visible;
+                max-height: 1000px;
+                display: block;
+            }
+
+            .dropdown > li {
+                border-top: 1px solid var(--border-light);
+            }
+
+            .dropdown > li:first-child {
+                border-top: none;
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            /* Mobile submenu styles */
+            .submenu {
+                position: static !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transform: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                margin-left: 0 !important;
+                background: transparent !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                padding-left: 1rem !important;
+                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+            }
+
+            .submenu.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-height: 800px !important;
+                display: block !important;
+            }
+
+            .submenu > li {
+                border-top: 1px solid var(--border-light);
+            }
+
+            .submenu > li:first-child {
+                border-top: none;
+            }
+
+            .submenu-item {
+                padding: 0.625rem 1rem;
+                font-size: 0.8125rem;
+            }
+
+            .submenu-item:hover {
+                transform: none;
+            }
+
+            .market-status {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.625rem;
+            }
+
+            .status-text {
+                font-size: 0.7rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 2rem;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .report-card.featured {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .filter-controls {
+                justify-content: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .hero-section {
+                padding: 8rem 0 3rem;
+            }
+
+            .header {
+                width: calc(100% - 1rem);
+            }
+        }
+
+        /* Extra small devices (phones, 480px and down) */
+        @media (max-width: 480px) {
+            .header {
+                width: calc(100% - 0.5rem);
+                top: 0.5rem;
+            }
+
+            .header.scrolled {
+                top: 0.25rem;
+            }
+
+            .nav-container {
+                padding: 0.625rem;
+                height: 68px;
+                gap: 0.375rem;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .market-status {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.65rem;
+            }
+
+            .status-indicator {
+                width: 6px;
+                height: 6px;
+            }
+
+            .status-text {
+                font-size: 0.65rem;
+            }
+
+            .mobile-menu-btn {
+                font-size: 1.25rem;
+                padding: 0.375rem;
+            }
+
+            .nav-menu {
+                top: calc(100% + 0.25rem);
+                left: 0.25rem;
+                right: 0.25rem;
+                max-height: calc(100vh - 80px);
+            }
+
+            .nav-link {
+                padding: 0.75rem 0.875rem;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-item {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.8125rem;
+            }
+
+            .submenu-item {
+                padding: 0.5rem 0.875rem;
+                font-size: 0.75rem;
+            }
+
+            .hero-section {
+                padding: 8rem 0 3rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .report-card {
+                padding: 1.5rem;
+            }
+
+            .report-card.featured {
+                padding: 2rem;
+            }
+
+            .report-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation Classes */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    @include('partials.header')
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content animate-in">
+                    <h1 class="hero-title">Annual Reports</h1>
+                    <p class="hero-subtitle">Access comprehensive insights into Uganda's capital markets performance, regulatory developments, and strategic initiatives through our detailed annual reports.</p>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">{{ count($reports) }}</div>
+                            <div class="stat-label">Years of Reports</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">240+</div>
+                            <div class="stat-label">Pages of Insights</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Transparency</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section class="reports-section">
+            <div class="container">
+                <div class="section-header animate-in">
+                    <h2 class="section-title">Annual Reports Archive</h2>
+                    <p class="section-subtitle">Download and explore our comprehensive annual reports showcasing market growth, regulatory compliance, and strategic developments.</p>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="filter-controls animate-in">
+                    <button class="filter-btn active" onclick="filterReports('all')">All Reports</button>
+                    <button class="filter-btn" onclick="filterReports('recent')">Recent (2020+)</button>
+                    <button class="filter-btn" onclick="filterReports('featured')">Featured</button>
+                </div>
+
+                <!-- Reports Grid -->
+                <div class="reports-grid animate-in" id="reportsGrid">
+                    @foreach($reports as $index => $report)
+                        @if($report['featured'])
+                            <!-- Featured Report -->
+                            <div class="report-card featured" data-year="{{ $report['year'] }}" data-featured="{{ $report['featured'] ? 'true' : 'false' }}">
+                                <div class="featured-badge">
+                                    <i class="fas fa-star"></i>
+                                    Latest Report
+                                </div>
+
+                                <div>
+                                    <div class="report-year">{{ $report['year'] }}</div>
+                                    <h3 class="report-title">{{ $report['title'] }}</h3>
+                                    <p class="report-description">{{ $report['description'] }}</p>
+
+                                    <div class="report-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-file-pdf"></i>
+                                            <span>{{ $report['file_size'] }}</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-file-text"></i>
+                                            <span>{{ $report['pages'] }} pages</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="report-actions">
+                                        <a href="{{ $report['file_url'] }}" class="btn btn-primary" target="_blank">
+                                            <i class="fas fa-download"></i>
+                                            Download PDF
+                                        </a>
+                                        <button class="btn btn-secondary" onclick="previewReport('{{ $report['year'] }}')">
+                                            <i class="fas fa-eye"></i>
+                                            Quick Preview
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; align-items: center; justify-content: center;">
+                                    <div class="report-icon" style="width: 120px; height: 120px; font-size: 3rem;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <!-- Regular Report Card -->
+                            <div class="report-card" data-year="{{ $report['year'] }}" data-featured="false">
+                                <div class="report-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+
+                                <div class="report-year">{{ $report['year'] }}</div>
+                                <h3 class="report-title">{{ $report['title'] }}</h3>
+                                <p class="report-description">{{ $report['description'] }}</p>
+
+                                <div class="report-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>{{ $report['file_size'] }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-file-text"></i>
+                                        <span>{{ $report['pages'] }} pages</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-actions">
+                                    <a href="{{ $report['file_url'] }}" class="btn btn-primary" target="_blank">
+                                        <i class="fas fa-download"></i>
+                                        Download
+                                    </a>
+                                    <button class="btn btn-secondary" onclick="previewReport('{{ $report['year'] }}')">
+                                        <i class="fas fa-eye"></i>
+                                        Preview
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    </main>
+
+    @include('partials.footer')
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.nav-menu');
+            if (menu) {
+                menu.classList.toggle('active');
+            }
+        }
+
+        // Mobile dropdown toggle
+        let lastDropdownToggle = 0;
+        function toggleMobileDropdown(event) {
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Prevent rapid double-clicks
+                const now = Date.now();
+                if (now - lastDropdownToggle < 300) {
+                    return;
+                }
+                lastDropdownToggle = now;
+
+                const dropdown = event.currentTarget.nextElementSibling;
+                const chevron = event.currentTarget.querySelector('.chevron-down');
+
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.toggle('active');
+
+                    if (chevron) {
+                        chevron.style.transform = dropdown.classList.contains('active')
+                            ? 'rotate(225deg)'
+                            : 'rotate(45deg)';
+                    }
+                }
+            }
+        }
+
+        // Initialize mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers for mobile dropdown toggles
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.querySelector('.chevron-down')) {
+                    link.addEventListener('click', toggleMobileDropdown);
+                }
+            });
+
+            // Use event delegation for submenu toggles
+            document.body.addEventListener('click', function(e) {
+                // Only on mobile
+                if (window.innerWidth > 768) return;
+
+                // Check if we clicked on a dropdown-item
+                const dropdownItem = e.target.closest('.dropdown-item');
+                if (!dropdownItem) return;
+
+                // Check if this dropdown-item has a submenu
+                const parentLi = dropdownItem.parentElement;
+                const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
+
+                if (hasSubmenuClass) {
+                    const submenu = parentLi.querySelector('.submenu');
+                    const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    // Prevent navigation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (submenu) {
+                        submenu.classList.toggle('active');
+
+                        if (chevron) {
+                            chevron.style.transform = submenu.classList.contains('active')
+                                ? 'rotate(45deg)'
+                                : 'rotate(-45deg)';
+                        }
+                    }
+                }
+            }, false);
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const menu = document.querySelector('.nav-menu');
+                const header = document.querySelector('.header');
+
+                // Only close if clicking completely outside the header
+                if (menu && menu.classList.contains('active')) {
+                    if (!header.contains(e.target)) {
+                        menu.classList.remove('active');
+                        // Close all dropdowns and submenus
+                        document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // Reset all chevrons
+                        document.querySelectorAll('.chevron-down, .chevron-right').forEach(chevron => {
+                            if (chevron.classList.contains('chevron-down')) {
+                                chevron.style.transform = 'rotate(45deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(-45deg)';
+                            }
+                        });
+                    }
+                }
+            }, true);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Filter functionality
+        function filterReports(filter) {
+            const cards = document.querySelectorAll('.report-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter cards
+            cards.forEach(card => {
+                const year = parseInt(card.dataset.year);
+                const featured = card.dataset.featured === 'true';
+
+                let show = false;
+
+                switch(filter) {
+                    case 'all':
+                        show = true;
+                        break;
+                    case 'recent':
+                        show = year >= 2020;
+                        break;
+                    case 'featured':
+                        show = featured;
+                        break;
+                }
+
+                if (show) {
+                    card.style.display = 'block';
+                    card.style.animation = 'slideIn 0.6s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Preview functionality
+        function previewReport(year) {
+            alert(`Preview functionality for ${year} report would open here. In a real implementation, this could open a modal with report highlights or the first few pages.`);
+        }
+
+        // Animate elements on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-in');
+            const windowHeight = window.innerHeight;
+
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+
+                if (elementTop < windowHeight - 100) {
+                    element.style.animation = 'slideIn 0.6s ease forwards';
+                }
+            });
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements already in view
+            setTimeout(() => {
+                animateOnScroll();
+            }, 100);
+
+            // Animate on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

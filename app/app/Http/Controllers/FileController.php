@@ -22,6 +22,11 @@ class FileController extends Controller
             $query->where('file_type', $request->type);
         }
 
+        // Filter by category if requested
+        if ($request->has('category') && $request->category !== 'all') {
+            $query->where('category', $request->category);
+        }
+
         // Search functionality
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
@@ -46,7 +51,8 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:10240', // 10MB max
+            'file' => 'required|file|max:71680', // 70MB max
+            'category' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:500',
             'alt_text' => 'nullable|string|max:255'
         ]);
@@ -98,6 +104,7 @@ class FileController extends Controller
             'file_url' => $fileUrl,
             'mime_type' => $mimeType,
             'file_type' => $fileType,
+            'category' => $request->category,
             'file_size' => $fileSize,
             'description' => $request->description,
             'alt_text' => $request->alt_text

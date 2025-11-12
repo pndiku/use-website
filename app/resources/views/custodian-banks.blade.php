@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custodian Banks - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="List of authorized custodian banks operating on the Uganda Securities Exchange, providing secure custody services for securities.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

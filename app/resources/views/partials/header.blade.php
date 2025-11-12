@@ -1,3 +1,4 @@
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 <style>
     /* CSS Variables for Mobile Menu */
     :root {
@@ -365,7 +366,7 @@
             // Market is open from 9:00 AM (09:00) to 3:00 PM (15:00) on weekdays only
             $isMarketOpen = !$isWeekend
                          && ($currentHour > 9 || ($currentHour == 9 && $currentMinute >= 0))
-                         && ($currentHour < 15 || ($currentHour == 15 && $currentMinute == 0));
+                         && ($currentHour < 15 || ($currentHour == 13 && $currentMinute == 0));
 
             $marketStatus = $isMarketOpen ? 'open' : 'closed';
             $marketStatusText = $isMarketOpen ? 'Market Open' : 'Market Closed';

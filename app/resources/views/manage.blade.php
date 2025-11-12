@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Content Management - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Quill.js Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -698,6 +700,22 @@
                     <a href="#" class="nav-item" data-section="market-performance">
                         <i class="fas fa-chart-bar"></i>
                         <span>Market Performance</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="scd-forms">
+                        <i class="fas fa-file-alt"></i>
+                        <span>SCD Forms</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="scd-rules">
+                        <i class="fas fa-gavel"></i>
+                        <span>SCD Rules</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="market-regulations">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>Market Regulations</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="annual-reports">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Annual Reports</span>
                     </a>
                     <a href="#" class="nav-item" data-section="menu">
                         <i class="fas fa-bars"></i>
@@ -1447,8 +1465,22 @@
                                         <label class="form-label">Select File</label>
                                         <input type="file" id="fileInput" class="form-control" required accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt">
                                         <small class="form-text text-muted">
-                                            Supported: Images (JPG, PNG, GIF, WebP), PDFs, Documents (DOC, XLS, PPT). Max size: 10MB
+                                            Supported: Images (JPG, PNG, GIF, WebP), PDFs, Documents (DOC, XLS, PPT). Max size: 70MB
                                         </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Category (Optional)</label>
+                                        <select id="fileCategory" class="form-control">
+                                            <option value="">-- Select Category --</option>
+                                            <option value="reports">Reports</option>
+                                            <option value="events">Events</option>
+                                            <option value="press-releases">Press Releases</option>
+                                            <option value="announcements">Announcements</option>
+                                            <option value="financial-statements">Financial Statements</option>
+                                            <option value="market-data">Market Data</option>
+                                            <option value="general">General</option>
+                                        </select>
+                                        <small class="form-text text-muted">Categorize this file for easier organization and filtering</small>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Description (Optional)</label>
@@ -1471,12 +1503,22 @@
                                 <h3 class="card-title">File Repository</h3>
                                 <div class="d-flex gap-2">
                                     <select id="fileTypeFilter" class="form-control" style="width: auto;">
-                                        <option value="all">All Files</option>
+                                        <option value="all">All Types</option>
                                         <option value="image">Images</option>
                                         <option value="pdf">PDFs</option>
                                         <option value="document">Documents</option>
                                         <option value="video">Videos</option>
                                         <option value="audio">Audio</option>
+                                    </select>
+                                    <select id="fileCategoryFilter" class="form-control" style="width: auto;">
+                                        <option value="all">All Categories</option>
+                                        <option value="reports">Reports</option>
+                                        <option value="events">Events</option>
+                                        <option value="press-releases">Press Releases</option>
+                                        <option value="announcements">Announcements</option>
+                                        <option value="financial-statements">Financial Statements</option>
+                                        <option value="market-data">Market Data</option>
+                                        <option value="general">General</option>
                                     </select>
                                     <input type="text" id="fileSearch" class="form-control" placeholder="Search files..." style="width: 200px;">
                                     <button class="btn btn-secondary" onclick="loadFiles()">
@@ -1563,6 +1605,250 @@
                             </div>
                             <div class="card-body">
                                 <div id="marketPerformanceList" class="table-container">
+                                    <p class="text-muted">Loading reports...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCD Forms Section -->
+                <div id="scd-forms-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add SCD Form -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="scdFormFormTitle">Add SCD Form</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="scdFormForm">
+                                    @csrf
+                                    <input type="hidden" id="scdFormId">
+                                    <div class="form-group">
+                                        <label class="form-label">Form Title *</label>
+                                        <input type="text" id="scdFormTitle" class="form-control" placeholder="e.g., Account Opening Form" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="scdFormFileUrl" class="form-control" placeholder="https://example.com/form.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="scdFormFileSize" class="form-control" placeholder="e.g., 245 KB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="scdFormPublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="scdFormSubmitText">Add Form</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="scdFormCancelBtn" onclick="cancelScdFormEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- SCD Forms List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">SCD Forms</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="scdFormsList" class="table-container">
+                                    <p class="text-muted">Loading forms...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCD Rules Section -->
+                <div id="scd-rules-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add SCD Rule -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="scdRuleFormTitle">Add SCD Rule</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="scdRuleForm">
+                                    @csrf
+                                    <input type="hidden" id="scdRuleId">
+                                    <div class="form-group">
+                                        <label class="form-label">Document Title *</label>
+                                        <input type="text" id="scdRuleTitle" class="form-control" placeholder="e.g., SCD Operating Rules 2024" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="scdRuleFileUrl" class="form-control" placeholder="https://example.com/rules.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="scdRuleFileSize" class="form-control" placeholder="e.g., 1.2 MB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="scdRulePublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="scdRuleSubmitText">Add Document</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="scdRuleCancelBtn" onclick="cancelScdRuleEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- SCD Rules List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">SCD Rules & Regulations</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="scdRulesList" class="table-container">
+                                    <p class="text-muted">Loading rules...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Regulations Section -->
+                <div id="market-regulations-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add Market Regulation -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="marketRegulationFormTitle">Add Market Regulation</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="marketRegulationForm">
+                                    @csrf
+                                    <input type="hidden" id="marketRegulationId">
+                                    <div class="form-group">
+                                        <label class="form-label">Document Title *</label>
+                                        <input type="text" id="marketRegulationTitle" class="form-control" placeholder="e.g., USE Trading Rules 2024" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="marketRegulationFileUrl" class="form-control" placeholder="https://example.com/regulation.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="marketRegulationFileSize" class="form-control" placeholder="e.g., 2.5 MB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="marketRegulationPublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="marketRegulationSubmitText">Add Document</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="marketRegulationCancelBtn" onclick="cancelMarketRegulationEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Market Regulations List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Market Regulations</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="marketRegulationsList" class="table-container">
+                                    <p class="text-muted">Loading regulations...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Annual Reports Section -->
+                <div id="annual-reports-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add Annual Report -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="annualReportFormTitle">Add Annual Report</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="annualReportForm">
+                                    @csrf
+                                    <input type="hidden" id="annualReportId">
+                                    <div class="form-group">
+                                        <label class="form-label">Report Title *</label>
+                                        <input type="text" id="annualReportTitle" class="form-control" placeholder="e.g., USE Annual Report 2023" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="annualReportFileUrl" class="form-control" placeholder="https://example.com/report.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="annualReportFileSize" class="form-control" placeholder="e.g., 5.2 MB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="annualReportPublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="annualReportSubmitText">Add Report</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="annualReportCancelBtn" onclick="cancelAnnualReportEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Annual Reports List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Annual Reports</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="annualReportsList" class="table-container">
                                     <p class="text-muted">Loading reports...</p>
                                 </div>
                             </div>
@@ -2670,6 +2956,7 @@
 
             const formData = new FormData();
             const fileInput = document.getElementById('fileInput');
+            const category = document.getElementById('fileCategory').value;
             const description = document.getElementById('fileDescription').value;
             const altText = document.getElementById('fileAltText').value;
 
@@ -2678,7 +2965,15 @@
                 return;
             }
 
+            // Check file size (70MB = 70 * 1024 * 1024 bytes)
+            const maxSize = 70 * 1024 * 1024;
+            if (fileInput.files[0].size > maxSize) {
+                showNotification('File size exceeds 70MB limit. Please choose a smaller file.', 'error');
+                return;
+            }
+
             formData.append('file', fileInput.files[0]);
+            if (category) formData.append('category', category);
             formData.append('description', description);
             formData.append('alt_text', altText);
             formData.append('_token', document.querySelector('input[name="_token"]').value);
@@ -2719,10 +3014,12 @@
 
             try {
                 const typeFilter = document.getElementById('fileTypeFilter').value;
+                const categoryFilter = document.getElementById('fileCategoryFilter').value;
                 const search = document.getElementById('fileSearch').value;
 
                 let url = '/admin/files?';
                 if (typeFilter !== 'all') url += `type=${typeFilter}&`;
+                if (categoryFilter !== 'all') url += `category=${categoryFilter}&`;
                 if (search) url += `search=${encodeURIComponent(search)}&`;
 
                 const response = await fetch(url);
@@ -2899,6 +3196,7 @@
 
         // File search and filter
         document.getElementById('fileTypeFilter').addEventListener('change', loadFiles);
+        document.getElementById('fileCategoryFilter').addEventListener('change', loadFiles);
         document.getElementById('fileSearch').addEventListener('input', debounce(loadFiles, 500));
 
         function debounce(func, wait) {
@@ -4066,6 +4364,782 @@
         document.querySelector('[data-section="market-performance"]').addEventListener('click', function() {
             setTimeout(() => {
                 loadMarketPerformance();
+            }, 100);
+        });
+
+        // ===========================
+        // SCD Forms Functions
+        // ===========================
+
+        // Load SCD forms
+        async function loadScdForms() {
+            try {
+                const response = await fetch('/admin/scd-forms');
+                const forms = await response.json();
+
+                const listContainer = document.getElementById('scdFormsList');
+
+                if (forms.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No SCD forms yet.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Form Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${forms.map(form => {
+                                // Determine icon based on file extension
+                                const extension = form.file_url.split('.').pop().toLowerCase();
+                                let iconClass = 'fa-file';
+                                let iconColor = 'text-secondary';
+
+                                if (extension === 'pdf') {
+                                    iconClass = 'fa-file-pdf';
+                                    iconColor = 'text-danger';
+                                } else if (extension === 'doc' || extension === 'docx') {
+                                    iconClass = 'fa-file-word';
+                                    iconColor = 'text-primary';
+                                } else if (extension === 'xls' || extension === 'xlsx') {
+                                    iconClass = 'fa-file-excel';
+                                    iconColor = 'text-success';
+                                }
+
+                                return `
+                                <tr>
+                                    <td>
+                                        <a href="${form.file_url}" target="_blank" class="table-link">
+                                            <i class="fas ${iconClass} ${iconColor}"></i>
+                                            ${form.title}
+                                        </a>
+                                    </td>
+                                    <td>${form.file_size || 'N/A'}</td>
+                                    <td>${form.published_date ? new Date(form.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="editScdForm(${form.id})" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteScdForm(${form.id})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `}).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading SCD forms:', error);
+                document.getElementById('scdFormsList').innerHTML =
+                    '<p class="text-danger">Error loading forms. Please try again.</p>';
+            }
+        }
+
+        // Handle SCD form submission
+        document.getElementById('scdFormForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('scdFormId').value;
+            const formData = {
+                title: document.getElementById('scdFormTitle').value,
+                file_url: document.getElementById('scdFormFileUrl').value,
+                file_size: document.getElementById('scdFormFileSize').value || null,
+                published_date: document.getElementById('scdFormPublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/scd-forms/${id}` : '/admin/scd-forms';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Form updated successfully!' : 'Form added successfully!');
+                    resetScdFormForm();
+                    loadScdForms();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save form');
+                }
+            } catch (error) {
+                console.error('Error saving SCD form:', error);
+                showNotification('Error saving form: ' + error.message, 'error');
+            }
+        });
+
+        // Edit SCD form
+        async function editScdForm(id) {
+            try {
+                const response = await fetch(`/admin/scd-forms/${id}`);
+                const form = await response.json();
+
+                document.getElementById('scdFormId').value = form.id;
+                document.getElementById('scdFormTitle').value = form.title;
+                document.getElementById('scdFormFileUrl').value = form.file_url;
+                document.getElementById('scdFormFileSize').value = form.file_size || '';
+
+                if (form.published_date) {
+                    const date = new Date(form.published_date);
+                    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                    document.getElementById('scdFormPublishedDate').value = localDate.toISOString().slice(0, 16);
+                }
+
+                document.getElementById('scdFormFormTitle').textContent = 'Edit SCD Form';
+                document.getElementById('scdFormSubmitText').textContent = 'Update Form';
+                document.getElementById('scdFormCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('scdFormForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading SCD form:', error);
+                showNotification('Error loading form: ' + error.message, 'error');
+            }
+        }
+
+        // Delete SCD form
+        async function deleteScdForm(id) {
+            if (!confirm('Are you sure you want to delete this SCD form?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/scd-forms/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Form deleted successfully!');
+                    loadScdForms();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete form');
+                }
+            } catch (error) {
+                console.error('Error deleting SCD form:', error);
+                showNotification('Error deleting form: ' + error.message, 'error');
+            }
+        }
+
+        // Reset SCD form
+        function resetScdFormForm() {
+            document.getElementById('scdFormForm').reset();
+            document.getElementById('scdFormId').value = '';
+            document.getElementById('scdFormFormTitle').textContent = 'Add SCD Form';
+            document.getElementById('scdFormSubmitText').textContent = 'Add Form';
+            document.getElementById('scdFormCancelBtn').style.display = 'none';
+        }
+
+        // Cancel SCD form edit
+        function cancelScdFormEdit() {
+            resetScdFormForm();
+        }
+
+        // Load SCD forms when section is shown
+        document.querySelector('[data-section="scd-forms"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadScdForms();
+            }, 100);
+        });
+
+        // ===========================
+        // SCD Rules Functions
+        // ===========================
+
+        // Load SCD rules
+        async function loadScdRules() {
+            try {
+                const response = await fetch('/admin/scd-rules');
+                const rules = await response.json();
+
+                const listContainer = document.getElementById('scdRulesList');
+
+                if (rules.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No SCD rules yet.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Document Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rules.map(rule => {
+                                // Determine icon based on file extension
+                                const extension = rule.file_url.split('.').pop().toLowerCase();
+                                let iconClass = 'fa-file';
+                                let iconColor = 'text-secondary';
+
+                                if (extension === 'pdf') {
+                                    iconClass = 'fa-file-pdf';
+                                    iconColor = 'text-danger';
+                                } else if (extension === 'doc' || extension === 'docx') {
+                                    iconClass = 'fa-file-word';
+                                    iconColor = 'text-primary';
+                                } else if (extension === 'xls' || extension === 'xlsx') {
+                                    iconClass = 'fa-file-excel';
+                                    iconColor = 'text-success';
+                                }
+
+                                return `
+                                <tr>
+                                    <td>
+                                        <a href="${rule.file_url}" target="_blank" class="table-link">
+                                            <i class="fas ${iconClass} ${iconColor}"></i>
+                                            ${rule.title}
+                                        </a>
+                                    </td>
+                                    <td>${rule.file_size || 'N/A'}</td>
+                                    <td>${rule.published_date ? new Date(rule.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="editScdRule(${rule.id})" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteScdRule(${rule.id})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `}).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading SCD rules:', error);
+                document.getElementById('scdRulesList').innerHTML =
+                    '<p class="text-danger">Error loading rules. Please try again.</p>';
+            }
+        }
+
+        // Handle SCD rule submission
+        document.getElementById('scdRuleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('scdRuleId').value;
+            const formData = {
+                title: document.getElementById('scdRuleTitle').value,
+                file_url: document.getElementById('scdRuleFileUrl').value,
+                file_size: document.getElementById('scdRuleFileSize').value || null,
+                published_date: document.getElementById('scdRulePublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/scd-rules/${id}` : '/admin/scd-rules';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Document updated successfully!' : 'Document added successfully!');
+                    resetScdRuleForm();
+                    loadScdRules();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save document');
+                }
+            } catch (error) {
+                console.error('Error saving SCD rule:', error);
+                showNotification('Error saving document: ' + error.message, 'error');
+            }
+        });
+
+        // Edit SCD rule
+        async function editScdRule(id) {
+            try {
+                const response = await fetch(`/admin/scd-rules/${id}`);
+                const rule = await response.json();
+
+                document.getElementById('scdRuleId').value = rule.id;
+                document.getElementById('scdRuleTitle').value = rule.title;
+                document.getElementById('scdRuleFileUrl').value = rule.file_url;
+                document.getElementById('scdRuleFileSize').value = rule.file_size || '';
+
+                if (rule.published_date) {
+                    const date = new Date(rule.published_date);
+                    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                    document.getElementById('scdRulePublishedDate').value = localDate.toISOString().slice(0, 16);
+                }
+
+                document.getElementById('scdRuleFormTitle').textContent = 'Edit SCD Rule';
+                document.getElementById('scdRuleSubmitText').textContent = 'Update Document';
+                document.getElementById('scdRuleCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('scdRuleForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading SCD rule:', error);
+                showNotification('Error loading document: ' + error.message, 'error');
+            }
+        }
+
+        // Delete SCD rule
+        async function deleteScdRule(id) {
+            if (!confirm('Are you sure you want to delete this SCD rule?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/scd-rules/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Document deleted successfully!');
+                    loadScdRules();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete document');
+                }
+            } catch (error) {
+                console.error('Error deleting SCD rule:', error);
+                showNotification('Error deleting document: ' + error.message, 'error');
+            }
+        }
+
+        // Reset SCD rule form
+        function resetScdRuleForm() {
+            document.getElementById('scdRuleForm').reset();
+            document.getElementById('scdRuleId').value = '';
+            document.getElementById('scdRuleFormTitle').textContent = 'Add SCD Rule';
+            document.getElementById('scdRuleSubmitText').textContent = 'Add Document';
+            document.getElementById('scdRuleCancelBtn').style.display = 'none';
+        }
+
+        // Cancel SCD rule edit
+        function cancelScdRuleEdit() {
+            resetScdRuleForm();
+        }
+
+        // Load SCD rules when section is shown
+        document.querySelector('[data-section="scd-rules"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadScdRules();
+            }, 100);
+        });
+
+        // ===========================
+        // Market Regulations Functions
+        // ===========================
+
+        // Load market regulations
+        async function loadMarketRegulations() {
+            try {
+                const response = await fetch('/admin/market-regulations');
+                const regulations = await response.json();
+
+                const listContainer = document.getElementById('marketRegulationsList');
+
+                if (regulations.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No market regulations yet.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Document Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${regulations.map(regulation => {
+                                // Determine icon based on file extension
+                                const extension = regulation.file_url.split('.').pop().toLowerCase();
+                                let iconClass = 'fa-file';
+                                let iconColor = 'text-secondary';
+
+                                if (extension === 'pdf') {
+                                    iconClass = 'fa-file-pdf';
+                                    iconColor = 'text-danger';
+                                } else if (extension === 'doc' || extension === 'docx') {
+                                    iconClass = 'fa-file-word';
+                                    iconColor = 'text-primary';
+                                } else if (extension === 'xls' || extension === 'xlsx') {
+                                    iconClass = 'fa-file-excel';
+                                    iconColor = 'text-success';
+                                }
+
+                                return `
+                                <tr>
+                                    <td>
+                                        <a href="${regulation.file_url}" target="_blank" class="table-link">
+                                            <i class="fas ${iconClass} ${iconColor}"></i>
+                                            ${regulation.title}
+                                        </a>
+                                    </td>
+                                    <td>${regulation.file_size || 'N/A'}</td>
+                                    <td>${regulation.published_date ? new Date(regulation.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="editMarketRegulation(${regulation.id})" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteMarketRegulation(${regulation.id})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `}).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading market regulations:', error);
+                document.getElementById('marketRegulationsList').innerHTML =
+                    '<p class="text-danger">Error loading regulations. Please try again.</p>';
+            }
+        }
+
+        // Handle market regulation submission
+        document.getElementById('marketRegulationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('marketRegulationId').value;
+            const formData = {
+                title: document.getElementById('marketRegulationTitle').value,
+                file_url: document.getElementById('marketRegulationFileUrl').value,
+                file_size: document.getElementById('marketRegulationFileSize').value || null,
+                published_date: document.getElementById('marketRegulationPublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/market-regulations/${id}` : '/admin/market-regulations';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Document updated successfully!' : 'Document added successfully!');
+                    resetMarketRegulationForm();
+                    loadMarketRegulations();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save document');
+                }
+            } catch (error) {
+                console.error('Error saving market regulation:', error);
+                showNotification('Error saving document: ' + error.message, 'error');
+            }
+        });
+
+        // Edit market regulation
+        async function editMarketRegulation(id) {
+            try {
+                const response = await fetch(`/admin/market-regulations/${id}`);
+                const regulation = await response.json();
+
+                document.getElementById('marketRegulationId').value = regulation.id;
+                document.getElementById('marketRegulationTitle').value = regulation.title;
+                document.getElementById('marketRegulationFileUrl').value = regulation.file_url;
+                document.getElementById('marketRegulationFileSize').value = regulation.file_size || '';
+
+                if (regulation.published_date) {
+                    const date = new Date(regulation.published_date);
+                    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                    document.getElementById('marketRegulationPublishedDate').value = localDate.toISOString().slice(0, 16);
+                }
+
+                document.getElementById('marketRegulationFormTitle').textContent = 'Edit Market Regulation';
+                document.getElementById('marketRegulationSubmitText').textContent = 'Update Document';
+                document.getElementById('marketRegulationCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('marketRegulationForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading market regulation:', error);
+                showNotification('Error loading document: ' + error.message, 'error');
+            }
+        }
+
+        // Delete market regulation
+        async function deleteMarketRegulation(id) {
+            if (!confirm('Are you sure you want to delete this market regulation?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/market-regulations/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Document deleted successfully!');
+                    loadMarketRegulations();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete document');
+                }
+            } catch (error) {
+                console.error('Error deleting market regulation:', error);
+                showNotification('Error deleting document: ' + error.message, 'error');
+            }
+        }
+
+        // Reset market regulation form
+        function resetMarketRegulationForm() {
+            document.getElementById('marketRegulationForm').reset();
+            document.getElementById('marketRegulationId').value = '';
+            document.getElementById('marketRegulationFormTitle').textContent = 'Add Market Regulation';
+            document.getElementById('marketRegulationSubmitText').textContent = 'Add Document';
+            document.getElementById('marketRegulationCancelBtn').style.display = 'none';
+        }
+
+        // Cancel market regulation edit
+        function cancelMarketRegulationEdit() {
+            resetMarketRegulationForm();
+        }
+
+        // Load market regulations when section is shown
+        document.querySelector('[data-section="market-regulations"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadMarketRegulations();
+            }, 100);
+        });
+
+        // ========================================
+        // Annual Reports Management Functions
+        // ========================================
+
+        // Load annual reports
+        async function loadAnnualReports() {
+            try {
+                const response = await fetch('/admin/annual-reports');
+                const reports = await response.json();
+
+                const listContainer = document.getElementById('annualReportsList');
+
+                if (reports.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No annual reports yet.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Report Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${reports.map(report => {
+                                // Determine icon based on file extension
+                                const extension = report.file_url.split('.').pop().toLowerCase();
+                                let iconClass = 'fa-file';
+                                let iconColor = 'text-secondary';
+
+                                if (extension === 'pdf') {
+                                    iconClass = 'fa-file-pdf';
+                                    iconColor = 'text-danger';
+                                } else if (extension === 'doc' || extension === 'docx') {
+                                    iconClass = 'fa-file-word';
+                                    iconColor = 'text-primary';
+                                } else if (extension === 'xls' || extension === 'xlsx') {
+                                    iconClass = 'fa-file-excel';
+                                    iconColor = 'text-success';
+                                }
+
+                                return `
+                                <tr>
+                                    <td>
+                                        <a href="${report.file_url}" target="_blank" class="table-link">
+                                            <i class="fas ${iconClass} ${iconColor}"></i>
+                                            ${report.title}
+                                        </a>
+                                    </td>
+                                    <td>${report.file_size || 'N/A'}</td>
+                                    <td>${report.published_date ? new Date(report.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" onclick="editAnnualReport(${report.id})" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteAnnualReport(${report.id})" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `}).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading annual reports:', error);
+                document.getElementById('annualReportsList').innerHTML =
+                    '<p class="text-danger">Error loading reports. Please try again.</p>';
+            }
+        }
+
+        // Handle annual report form submission
+        document.getElementById('annualReportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('annualReportId').value;
+            const formData = {
+                title: document.getElementById('annualReportTitle').value,
+                file_url: document.getElementById('annualReportFileUrl').value,
+                file_size: document.getElementById('annualReportFileSize').value,
+                published_date: document.getElementById('annualReportPublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/annual-reports/${id}` : '/admin/annual-reports';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Annual report updated successfully!' : 'Annual report added successfully!');
+                    resetAnnualReportForm();
+                    loadAnnualReports();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save annual report');
+                }
+            } catch (error) {
+                console.error('Error saving annual report:', error);
+                showNotification('Error saving report: ' + error.message, 'error');
+            }
+        });
+
+        // Edit annual report
+        async function editAnnualReport(id) {
+            try {
+                const response = await fetch(`/admin/annual-reports/${id}`);
+                const report = await response.json();
+
+                document.getElementById('annualReportId').value = report.id;
+                document.getElementById('annualReportTitle').value = report.title;
+                document.getElementById('annualReportFileUrl').value = report.file_url;
+                document.getElementById('annualReportFileSize').value = report.file_size || '';
+
+                if (report.published_date) {
+                    const date = new Date(report.published_date);
+                    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                    document.getElementById('annualReportPublishedDate').value = localDate.toISOString().slice(0, 16);
+                }
+
+                document.getElementById('annualReportFormTitle').textContent = 'Edit Annual Report';
+                document.getElementById('annualReportSubmitText').textContent = 'Update Report';
+                document.getElementById('annualReportCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('annualReportForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading annual report:', error);
+                showNotification('Error loading report: ' + error.message, 'error');
+            }
+        }
+
+        // Delete annual report
+        async function deleteAnnualReport(id) {
+            if (!confirm('Are you sure you want to delete this annual report?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/annual-reports/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Report deleted successfully!');
+                    loadAnnualReports();
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to delete report');
+                }
+            } catch (error) {
+                console.error('Error deleting annual report:', error);
+                showNotification('Error deleting report: ' + error.message, 'error');
+            }
+        }
+
+        // Reset annual report form
+        function resetAnnualReportForm() {
+            document.getElementById('annualReportForm').reset();
+            document.getElementById('annualReportId').value = '';
+            document.getElementById('annualReportFormTitle').textContent = 'Add Annual Report';
+            document.getElementById('annualReportSubmitText').textContent = 'Add Report';
+            document.getElementById('annualReportCancelBtn').style.display = 'none';
+        }
+
+        // Cancel annual report edit
+        function cancelAnnualReportEdit() {
+            resetAnnualReportForm();
+        }
+
+        // Load annual reports when section is shown
+        document.querySelector('[data-section="annual-reports"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadAnnualReports();
             }, 100);
         });
     </script>

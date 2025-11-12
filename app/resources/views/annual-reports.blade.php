@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Annual Reports - Uganda Securities Exchange</title>
-    <meta name="description" content="Download annual reports from the Uganda Securities Exchange. Access comprehensive market data, financial insights, and regulatory updates.">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta name="description" content="Download annual reports from the Uganda Securities Exchange.">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
@@ -25,6 +26,7 @@
             color: #0f172a;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            background: linear-gradient(180deg, var(--use-blue) 0%, var(--use-blue-light) 15%, var(--surface-secondary) 15%, var(--surface-secondary) 100%);
         }
 
         :root {
@@ -50,16 +52,19 @@
 
             /* Shadows */
             --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-dark) 100%);
+            /* USE Brand Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-light) 100%);
             --gradient-accent: linear-gradient(135deg, var(--use-yellow) 0%, var(--use-yellow-light) 100%);
+            --gradient-success: linear-gradient(135deg, var(--use-green) 0%, rgba(39, 221, 90, 0.8) 100%);
+            --gradient-danger: linear-gradient(135deg, var(--use-red) 0%, rgba(221, 39, 39, 0.8) 100%);
         }
 
-        /* Header - EXACT COPY FROM INDEX */
+        /* Header */
         .header {
             position: fixed;
             top: 1rem;
@@ -227,7 +232,7 @@
             transform: translateY(-10px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
-            overflow: visible;
+            overflow: visible !important;
         }
 
         .nav-item:hover .dropdown {
@@ -257,7 +262,6 @@
             color: var(--use-blue);
         }
 
-        /* Only apply transform to dropdown items WITHOUT submenus */
         .dropdown > li:not(.has-submenu) .dropdown-item:hover {
             transform: translateX(4px);
         }
@@ -268,7 +272,6 @@
             justify-content: space-between;
         }
 
-        /* Create invisible hover bridge */
         .dropdown > li.has-submenu::after {
             content: '';
             position: absolute;
@@ -294,7 +297,6 @@
             transform: rotate(-45deg) translateX(2px);
         }
 
-        /* Submenu - Third level menu - Fixed positioning */
         .submenu {
             list-style: none;
             position: absolute !important;
@@ -316,7 +318,6 @@
             margin-left: 0 !important;
         }
 
-        /* Show submenu when hovering over its parent */
         .dropdown > li.has-submenu:hover > .submenu {
             opacity: 1 !important;
             visibility: visible !important;
@@ -324,7 +325,6 @@
             pointer-events: auto !important;
         }
 
-        /* Keep submenu visible when hovering over it */
         .submenu:hover {
             opacity: 1 !important;
             visibility: visible !important;
@@ -357,353 +357,154 @@
             display: none;
             background: none;
             border: none;
-            font-size: 1.25rem;
-            color: var(--text-secondary);
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-btn:hover {
-            background: rgba(0, 128, 199, 0.05);
-            color: var(--use-blue);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-top: 0;
-            min-height: 100vh;
+            color: var(--text-primary);
         }
 
         /* Hero Section */
-        .hero-section {
+        .hero {
             background: var(--gradient-primary);
             color: white;
             padding: 12rem 0 4rem;
-            position: relative;
-            overflow: hidden;
-            width: 100vw;
-            margin-left: calc(-50vw + 50%);
+            text-align: center;
             margin-top: 0;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="0.3" fill="rgba(255,255,255,0.15)"/><circle cx="80" cy="30" r="0.4" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
         }
 
         .hero-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-content {
-            max-width: 600px;
         }
 
         .hero-title {
             font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
             font-weight: 700;
-            color: var(--use-yellow);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 0.5rem;
-        }
-
-        /* Reports Section */
-        .reports-section {
-            padding: 4rem 0;
-            background: var(--surface-secondary);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
             margin-bottom: 1rem;
         }
 
-        .section-subtitle {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Filter Controls */
-        .filter-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
         }
 
-        .filter-btn {
-            padding: 0.75rem 1.5rem;
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-content {
             background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 50px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--use-blue);
-            color: var(--use-blue);
-            transform: translateY(-2px);
-        }
-
-        .filter-btn.active {
-            background: var(--use-blue);
-            border-color: var(--use-blue);
-            color: white;
-        }
-
-        /* Reports Grid */
-        .reports-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Featured Report Card */
-        .report-card.featured {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2rem;
-            padding: 2.5rem;
-            background: linear-gradient(135deg, var(--use-blue) 0%, var(--use-blue-dark) 100%);
-            color: white;
+            padding: 0;
             border-radius: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .featured::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
-            animation: float 15s ease-in-out infinite;
-        }
-
-        .featured-badge {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--use-yellow);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            z-index: 2;
-        }
-
-        /* Regular Report Card */
-        .report-card {
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border-light);
-            position: relative;
             overflow: hidden;
         }
 
-        .report-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
+        /* Reports Table */
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .report-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--use-blue-light) 0%, var(--use-blue) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+        .reports-table thead {
+            background: var(--surface-secondary);
         }
 
-        .report-year {
-            font-size: 0.875rem;
-            color: var(--use-blue);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .featured .report-year {
-            color: var(--use-yellow);
-        }
-
-        .report-title {
-            font-size: 1.25rem;
+        .reports-table th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        .featured .report-title {
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .report-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .featured .report-description {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .report-meta {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
             font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-tertiary);
+        .reports-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
         }
 
-        .featured .meta-item {
-            color: rgba(255, 255, 255, 0.8);
+        .reports-table tbody tr:hover {
+            background: var(--surface-secondary);
         }
 
-        .meta-item i {
+        .reports-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .reports-table td {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .report-name {
             color: var(--use-blue);
-        }
-
-        .featured .meta-item i {
-            color: var(--use-yellow);
-        }
-
-        .report-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: all 0.3s ease;
-            display: inline-flex;
+            font-weight: 600;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
+            gap: 0.75rem;
+            transition: color 0.2s;
+            font-size: 0.95rem;
         }
 
-        .btn-primary {
-            background: var(--use-blue);
-            color: white;
+        .report-name:hover {
+            color: var(--use-blue-dark);
         }
 
-        .btn-primary:hover {
-            background: var(--use-blue-dark);
-            transform: translateY(-2px);
+        .report-name i {
+            font-size: 1.25rem;
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--use-blue);
-            border: 2px solid var(--use-blue);
+        .text-danger {
+            color: var(--use-red) !important;
         }
 
-        .btn-secondary:hover {
-            background: var(--use-blue);
-            color: white;
-            transform: translateY(-2px);
+        .text-primary {
+            color: #2563eb !important;
         }
 
-        .featured .btn-secondary {
-            color: white;
-            border-color: white;
+        .text-success {
+            color: #16a34a !important;
         }
 
-        .featured .btn-secondary:hover {
-            background: white;
-            color: var(--use-blue);
+        .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .published-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--border);
+            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -838,8 +639,18 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .market-status {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
-            .mobile-menu-btn {
+                        .mobile-menu-btn {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -932,28 +743,22 @@
             }
 
             .nav-link:hover {
-                transform: none;
-            }
-
-            .chevron-down {
-                transition: transform 0.3s ease;
+                background: var(--surface);
             }
 
             .dropdown {
                 position: static;
                 opacity: 0;
                 visibility: hidden;
-                transform: none;
-                box-shadow: none;
-                border: none;
-                padding: 0;
-                margin-top: 0;
-                background: transparent;
-                border-radius: 0;
                 max-height: 0;
                 overflow: hidden;
-                padding-left: 1rem;
-                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+                box-shadow: none;
+                border: none;
+                margin-top: 0;
+                border-radius: 0;
+                background: var(--surface);
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
             }
 
             .dropdown.active {
@@ -963,38 +768,30 @@
                 display: block;
             }
 
-            .dropdown > li {
-                border-top: 1px solid var(--border-light);
-            }
-
-            .dropdown > li:first-child {
-                border-top: none;
-            }
-
             .dropdown-item {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
-                display: flex;
+                padding: 0.75rem 1.5rem;
+                border-bottom: 1px solid var(--border-light);
                 justify-content: space-between;
-                align-items: center;
+                font-size: 0.85rem;
             }
 
-            /* Mobile submenu styles */
+            .dropdown li:last-child .dropdown-item {
+                border-bottom: none;
+            }
+
             .submenu {
-                position: static !important;
-                opacity: 0 !important;
-                visibility: hidden !important;
-                transform: none !important;
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                margin-left: 0 !important;
-                background: transparent !important;
-                max-height: 0 !important;
-                overflow: hidden !important;
-                padding-left: 1rem !important;
-                transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+                position: static;
+                background: #f8fafc;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+                display: block;
             }
 
             .submenu.active {
@@ -1004,178 +801,67 @@
                 display: block !important;
             }
 
-            .submenu > li {
-                border-top: 1px solid var(--border-light);
-            }
-
-            .submenu > li:first-child {
-                border-top: none;
-            }
-
             .submenu-item {
-                padding: 0.625rem 1rem;
-                font-size: 0.8125rem;
+                padding: 0.625rem 2rem;
+                font-size: 0.8rem;
+                border-bottom: 1px solid #e2e8f0;
             }
 
-            .submenu-item:hover {
-                transform: none;
+            .submenu li:last-child .submenu-item {
+                border-bottom: none;
             }
 
-            .market-status {
-                font-size: 0.75rem;
-                padding: 0.375rem 0.625rem;
-            }
-
-            .status-text {
+            .chevron-down,
+            .chevron-right {
                 font-size: 0.7rem;
+                transition: transform 0.3s ease;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero {
+                padding: 8rem 0 3rem;
             }
 
             .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .hero-stats {
-                flex-wrap: wrap;
-                gap: 2rem;
-                justify-content: center;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            .section-title {
                 font-size: 2rem;
             }
 
-            .reports-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+            .hero-subtitle {
+                font-size: 1rem;
             }
 
-            .report-card.featured {
-                grid-template-columns: 1fr;
-                text-align: center;
+            .main-content {
+                padding: 2rem 1rem;
             }
 
-            .filter-controls {
-                justify-content: center;
+            .section-content {
+                border-radius: 12px;
+            }
+
+            .reports-table {
+                font-size: 0.875rem;
+            }
+
+            .reports-table th,
+            .reports-table td {
+                padding: 1rem;
+            }
+
+            .report-name {
+                font-size: 0.875rem;
             }
 
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 2rem;
             }
 
             .footer-bottom {
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
-            }
-
-            .hero-section {
-                padding: 8rem 0 3rem;
-            }
-
-            .header {
-                width: calc(100% - 1rem);
-            }
-        }
-
-        /* Extra small devices (phones, 480px and down) */
-        @media (max-width: 480px) {
-            .header {
-                width: calc(100% - 0.5rem);
-                top: 0.5rem;
-            }
-
-            .header.scrolled {
-                top: 0.25rem;
-            }
-
-            .nav-container {
-                padding: 0.625rem;
-                height: 68px;
-                gap: 0.375rem;
-            }
-
-            .logo img {
-                height: 50px;
-            }
-
-            .market-status {
-                padding: 0.25rem 0.5rem;
-                font-size: 0.65rem;
-            }
-
-            .status-indicator {
-                width: 6px;
-                height: 6px;
-            }
-
-            .status-text {
-                font-size: 0.65rem;
-            }
-
-            .mobile-menu-btn {
-                font-size: 1.25rem;
-                padding: 0.375rem;
-            }
-
-            .nav-menu {
-                top: calc(100% + 0.25rem);
-                left: 0.25rem;
-                right: 0.25rem;
-                max-height: calc(100vh - 80px);
-            }
-
-            .nav-link {
-                padding: 0.75rem 0.875rem;
-                font-size: 0.85rem;
-            }
-
-            .dropdown-item {
-                padding: 0.625rem 0.875rem;
-                font-size: 0.8125rem;
-            }
-
-            .submenu-item {
-                padding: 0.5rem 0.875rem;
-                font-size: 0.75rem;
-            }
-
-            .hero-section {
-                padding: 8rem 0 3rem;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .report-card {
-                padding: 1.5rem;
-            }
-
-            .report-card.featured {
-                padding: 2rem;
-            }
-
-            .report-actions {
-                flex-direction: column;
-            }
-        }
-
-        /* Animation Classes */
-        .animate-in {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideIn 0.6s ease forwards;
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
             }
         }
     </style>
@@ -1184,146 +870,105 @@
     <!-- Header -->
     @include('partials.header')
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Annual Reports</h1>
+            <p class="hero-subtitle">Download annual reports and documents from the Uganda Securities Exchange</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="hero-container">
-                <div class="hero-content animate-in">
-                    <h1 class="hero-title">Annual Reports</h1>
-                    <p class="hero-subtitle">Access comprehensive insights into Uganda's capital markets performance, regulatory developments, and strategic initiatives through our detailed annual reports.</p>
+        <div class="section">
+            <div class="section-content">
+                @if($reports && count($reports) > 0)
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Form Name</th>
+                            <th style="width: 120px;">Size</th>
+                            <th style="width: 180px;">Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($reports as $report)
+                        <tr>
+                            <td>
+                                <a href="{{ $report->file_url }}" target="_blank" class="report-name">
+                                    @php
+                                        $extension = strtolower(pathinfo($report->file_url, PATHINFO_EXTENSION));
+                                        $iconClass = 'fa-file';
+                                        $iconColor = 'text-secondary';
 
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">{{ count($reports) }}</div>
-                            <div class="stat-label">Years of Reports</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">240+</div>
-                            <div class="stat-label">Pages of Insights</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100%</div>
-                            <div class="stat-label">Transparency</div>
-                        </div>
-                    </div>
+                                        if (in_array($extension, ['pdf'])) {
+                                            $iconClass = 'fa-file-pdf';
+                                            $iconColor = 'text-danger';
+                                        } elseif (in_array($extension, ['doc', 'docx'])) {
+                                            $iconClass = 'fa-file-word';
+                                            $iconColor = 'text-primary';
+                                        } elseif (in_array($extension, ['xls', 'xlsx'])) {
+                                            $iconClass = 'fa-file-excel';
+                                            $iconColor = 'text-success';
+                                        }
+                                    @endphp
+                                    <i class="fas {{ $iconClass }} {{ $iconColor }}"></i>
+                                    <span>{{ $report->title }}</span>
+                                </a>
+                            </td>
+                            <td class="file-size">
+                                {{ $report->file_size ?? 'N/A' }}
+                            </td>
+                            <td class="published-date">
+                                {{ $report->published_date ? $report->published_date->format('M d, Y') : 'N/A' }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @else
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <p>No annual reports available at this time.</p>
                 </div>
+                @endif
             </div>
-        </section>
-
-        <!-- Reports Section -->
-        <section class="reports-section">
-            <div class="container">
-                <div class="section-header animate-in">
-                    <h2 class="section-title">Annual Reports Archive</h2>
-                    <p class="section-subtitle">Download and explore our comprehensive annual reports showcasing market growth, regulatory compliance, and strategic developments.</p>
-                </div>
-
-                <!-- Filter Controls -->
-                <div class="filter-controls animate-in">
-                    <button class="filter-btn active" onclick="filterReports('all')">All Reports</button>
-                    <button class="filter-btn" onclick="filterReports('recent')">Recent (2020+)</button>
-                    <button class="filter-btn" onclick="filterReports('featured')">Featured</button>
-                </div>
-
-                <!-- Reports Grid -->
-                <div class="reports-grid animate-in" id="reportsGrid">
-                    @foreach($reports as $index => $report)
-                        @if($report['featured'])
-                            <!-- Featured Report -->
-                            <div class="report-card featured" data-year="{{ $report['year'] }}" data-featured="{{ $report['featured'] ? 'true' : 'false' }}">
-                                <div class="featured-badge">
-                                    <i class="fas fa-star"></i>
-                                    Latest Report
-                                </div>
-
-                                <div>
-                                    <div class="report-year">{{ $report['year'] }}</div>
-                                    <h3 class="report-title">{{ $report['title'] }}</h3>
-                                    <p class="report-description">{{ $report['description'] }}</p>
-
-                                    <div class="report-meta">
-                                        <div class="meta-item">
-                                            <i class="fas fa-file-pdf"></i>
-                                            <span>{{ $report['file_size'] }}</span>
-                                        </div>
-                                        <div class="meta-item">
-                                            <i class="fas fa-file-text"></i>
-                                            <span>{{ $report['pages'] }} pages</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="report-actions">
-                                        <a href="{{ $report['file_url'] }}" class="btn btn-primary" target="_blank">
-                                            <i class="fas fa-download"></i>
-                                            Download PDF
-                                        </a>
-                                        <button class="btn btn-secondary" onclick="previewReport('{{ $report['year'] }}')">
-                                            <i class="fas fa-eye"></i>
-                                            Quick Preview
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div style="display: flex; align-items: center; justify-content: center;">
-                                    <div class="report-icon" style="width: 120px; height: 120px; font-size: 3rem;">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <!-- Regular Report Card -->
-                            <div class="report-card" data-year="{{ $report['year'] }}" data-featured="false">
-                                <div class="report-icon">
-                                    <i class="fas fa-file-pdf"></i>
-                                </div>
-
-                                <div class="report-year">{{ $report['year'] }}</div>
-                                <h3 class="report-title">{{ $report['title'] }}</h3>
-                                <p class="report-description">{{ $report['description'] }}</p>
-
-                                <div class="report-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-file-pdf"></i>
-                                        <span>{{ $report['file_size'] }}</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-file-text"></i>
-                                        <span>{{ $report['pages'] }} pages</span>
-                                    </div>
-                                </div>
-
-                                <div class="report-actions">
-                                    <a href="{{ $report['file_url'] }}" class="btn btn-primary" target="_blank">
-                                        <i class="fas fa-download"></i>
-                                        Download
-                                    </a>
-                                    <button class="btn btn-secondary" onclick="previewReport('{{ $report['year'] }}')">
-                                        <i class="fas fa-eye"></i>
-                                        Preview
-                                    </button>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
     @include('partials.footer')
 
     <script>
-        // Mobile menu toggle
+        // Header scroll behavior
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <script>
         function toggleMobileMenu() {
+            console.log('toggleMobileMenu called');
             const menu = document.querySelector('.nav-menu');
+            console.log('menu element:', menu);
             if (menu) {
                 menu.classList.toggle('active');
+                console.log('menu active state:', menu.classList.contains('active'));
+            } else {
+                console.error('nav-menu not found!');
             }
         }
 
         // Mobile dropdown toggle
         let lastDropdownToggle = 0;
         function toggleMobileDropdown(event) {
+            console.log('>>> toggleMobileDropdown called <<<');
+            console.log('Window width:', window.innerWidth);
+
             if (window.innerWidth <= 768) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1331,6 +976,7 @@
                 // Prevent rapid double-clicks
                 const now = Date.now();
                 if (now - lastDropdownToggle < 300) {
+                    console.log('⚠️ Too fast, ignoring');
                     return;
                 }
                 lastDropdownToggle = now;
@@ -1338,22 +984,46 @@
                 const dropdown = event.currentTarget.nextElementSibling;
                 const chevron = event.currentTarget.querySelector('.chevron-down');
 
+                console.log('Dropdown element:', dropdown);
+                console.log('Has dropdown class:', dropdown?.classList.contains('dropdown'));
+                console.log('Chevron found:', !!chevron);
+
                 if (dropdown && dropdown.classList.contains('dropdown')) {
+                    const wasActive = dropdown.classList.contains('active');
                     dropdown.classList.toggle('active');
+                    console.log('Dropdown toggled from', wasActive, 'to', dropdown.classList.contains('active'));
 
                     if (chevron) {
                         chevron.style.transform = dropdown.classList.contains('active')
                             ? 'rotate(225deg)'
                             : 'rotate(45deg)';
+                        console.log('Chevron rotated');
                     }
+
+                    // List all dropdown items for debugging
+                    const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+                    console.log('Dropdown contains', dropdownItems.length, 'items');
+                    dropdownItems.forEach((item, index) => {
+                        const hasSubmenu = item.parentElement.classList.contains('has-submenu');
+                        const hasChevron = !!item.querySelector('.chevron-right');
+                        console.log(`  Item ${index + 1}:`, item.textContent.trim(), '- has-submenu:', hasSubmenu, '- has chevron-right:', hasChevron);
+                    });
                 }
             }
         }
 
         // Initialize mobile menu functionality
         document.addEventListener('DOMContentLoaded', () => {
-            // Add click handlers for mobile dropdown toggles
+            console.log('DOMContentLoaded - Initializing mobile menu');
+
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const menu = document.querySelector('.nav-menu');
             const navLinks = document.querySelectorAll('.nav-link');
+
+            console.log('Mobile button found:', mobileBtn);
+            console.log('Menu found:', menu);
+
+            // Add click handlers for mobile dropdown toggles
             navLinks.forEach(link => {
                 if (link.querySelector('.chevron-down')) {
                     link.addEventListener('click', toggleMobileDropdown);
@@ -1373,22 +1043,33 @@
                 const parentLi = dropdownItem.parentElement;
                 const hasSubmenuClass = parentLi && parentLi.classList.contains('has-submenu');
 
+                console.log('🔵 Clicked on dropdown-item:', dropdownItem.textContent.trim());
+                console.log('🔵 Parent li has has-submenu class:', hasSubmenuClass);
+
                 if (hasSubmenuClass) {
                     const submenu = parentLi.querySelector('.submenu');
                     const chevron = dropdownItem.querySelector('.chevron-right');
+
+                    console.log('🔵 Submenu found:', !!submenu);
+                    console.log('🔵 Chevron found:', !!chevron);
 
                     // Prevent navigation
                     e.preventDefault();
                     e.stopPropagation();
 
                     if (submenu) {
+                        const wasActive = submenu.classList.contains('active');
                         submenu.classList.toggle('active');
+                        console.log('✅ Submenu toggled from', wasActive, 'to', submenu.classList.contains('active'));
 
                         if (chevron) {
                             chevron.style.transform = submenu.classList.contains('active')
                                 ? 'rotate(45deg)'
                                 : 'rotate(-45deg)';
+                            console.log('✅ Chevron rotated');
                         }
+                    } else {
+                        console.log('❌ No submenu element found');
                     }
                 }
             }, false);
@@ -1396,11 +1077,13 @@
             // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 const menu = document.querySelector('.nav-menu');
+                const mobileBtn = document.querySelector('.mobile-menu-btn');
                 const header = document.querySelector('.header');
 
                 // Only close if clicking completely outside the header
                 if (menu && menu.classList.contains('active')) {
                     if (!header.contains(e.target)) {
+                        console.log('🔴 Closing menu - clicked outside header');
                         menu.classList.remove('active');
                         // Close all dropdowns and submenus
                         document.querySelectorAll('.dropdown.active, .submenu.active').forEach(el => {
@@ -1416,95 +1099,9 @@
                         });
                     }
                 }
-            }, true);
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Filter functionality
-        function filterReports(filter) {
-            const cards = document.querySelectorAll('.report-card');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            // Update active button
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Filter cards
-            cards.forEach(card => {
-                const year = parseInt(card.dataset.year);
-                const featured = card.dataset.featured === 'true';
-
-                let show = false;
-
-                switch(filter) {
-                    case 'all':
-                        show = true;
-                        break;
-                    case 'recent':
-                        show = year >= 2020;
-                        break;
-                    case 'featured':
-                        show = featured;
-                        break;
-                }
-
-                if (show) {
-                    card.style.display = 'block';
-                    card.style.animation = 'slideIn 0.6s ease forwards';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Preview functionality
-        function previewReport(year) {
-            alert(`Preview functionality for ${year} report would open here. In a real implementation, this could open a modal with report highlights or the first few pages.`);
-        }
-
-        // Animate elements on scroll
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.animate-in');
-            const windowHeight = window.innerHeight;
-
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-
-                if (elementTop < windowHeight - 100) {
-                    element.style.animation = 'slideIn 0.6s ease forwards';
-                }
-            });
-        }
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Initialize animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate elements already in view
-            setTimeout(() => {
-                animateOnScroll();
-            }, 100);
-
-            // Animate on scroll
-            window.addEventListener('scroll', animateOnScroll);
+            }, true); // Use capture phase
         });
     </script>
+
 </body>
 </html>

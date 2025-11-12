@@ -16,6 +16,7 @@ class File extends Model
         'file_url',
         'mime_type',
         'file_type',
+        'category',
         'file_size',
         'description',
         'alt_text'

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $article->title }} - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="{{ Str::limit(strip_tags($article->content), 160) }}">
     
     <!-- Open Graph Meta Tags -->
@@ -562,6 +563,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 10rem;
         }
 
         .related-card {

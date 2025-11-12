@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ strtoupper($stock) }} - Uganda Securities Exchange</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta name="description" content="Historical trading data and charts for {{ strtoupper($stock) }} on the Uganda Securities Exchange">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -792,6 +793,97 @@
                 font-size: 1rem;
             }
         }
+
+        /* Related Articles */
+        .related-section {
+            margin-top: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .related-articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 10rem;
+        }
+
+        .related-card {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-image {
+            width: 100%;
+            height: 160px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .related-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .related-card:hover .related-image::before {
+            transform: translateX(100%);
+        }
+
+        .related-content {
+            padding: 1.5rem;
+        }
+
+        .related-title {
+            font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .related-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .related-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
@@ -834,6 +926,33 @@
             </div>
             <div id="container"></div>
         </div>
+
+        <!-- Related Articles -->
+        @if(isset($relatedArticles) && $relatedArticles->count() > 0)
+        <section class="related-section">
+            <h2 class="section-title">Related News & Reports</h2>
+            <div class="related-articles">
+                @foreach($relatedArticles as $related)
+                <a href="{{ route('news.article', $related->slug) }}" class="related-card">
+                    <div class="related-image" @if($related->article_type === 'report') style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);" @endif>
+                        @if($related->article_type === 'report')
+                            <i class="fas fa-file-pdf"></i>
+                        @elseif($related->image_url)
+                            <img src="{{ $related->image_url }}" alt="{{ $related->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @else
+                            <i class="fas fa-newspaper"></i>
+                        @endif
+                    </div>
+                    <div class="related-content">
+                        <h3 class="related-title">{{ $related->title }}</h3>
+                        <p class="related-excerpt">{{ $related->article_type === 'report' ? Str::limit($related->summary ?? 'Download report', 120) : Str::limit(strip_tags($related->content), 120) }}</p>
+                        <span class="related-date">{{ $related->getDisplayDate()->format('M j, Y') }}@if($related->article_type === 'report') • Report @endif</span>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
     </main> @include('partials.footer')
 
     <!-- Scripts -->

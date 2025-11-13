@@ -3042,13 +3042,32 @@
 
         async function toggleCarouselStatus(id, newStatus) {
             try {
+                // First, fetch the current carousel image data
+                const getResponse = await fetch(`/admin/carousel-images/${id}`);
+                if (!getResponse.ok) {
+                    throw new Error('Failed to fetch carousel image data');
+                }
+                const image = await getResponse.json();
+
+                // Update the is_active status
+                image.is_active = newStatus;
+
+                // Send the complete data with updated status
                 const response = await fetch(`/admin/carousel-images/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                     },
-                    body: JSON.stringify({ is_active: newStatus })
+                    body: JSON.stringify({
+                        title: image.title,
+                        description: image.description,
+                        image_url: image.image_url,
+                        button_text: image.button_text,
+                        button_link: image.button_link,
+                        sort_order: image.sort_order,
+                        is_active: newStatus
+                    })
                 });
 
                 if (response.ok) {

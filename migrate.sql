@@ -1,7 +1,9 @@
 -- Migration: Create private_transfers table
 -- Date: 2025-11-13
 
-CREATE TABLE IF NOT EXISTS `private_transfers` (
+DROP TABLE IF EXISTS `private_transfers`;
+
+CREATE TABLE `private_transfers` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `file_url` varchar(255) NOT NULL,
@@ -19,7 +21,9 @@ INSERT INTO `private_transfers` (`id`, `title`, `file_url`, `file_size`, `publis
 -- Migration: Create corporate_announcements table
 -- Date: 2025-11-13
 
-CREATE TABLE IF NOT EXISTS `corporate_announcements` (
+DROP TABLE IF EXISTS `corporate_announcements`;
+
+CREATE TABLE `corporate_announcements` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `file_url` varchar(255) NOT NULL,

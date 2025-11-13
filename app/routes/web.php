@@ -28,7 +28,7 @@ Route::post('/logout', 'App\Http\Controllers\AuthController@logout');
 
 Route::post('/subscribe', 'App\Http\Controllers\PageController@subscribe');
 
-Route::get('/manage', 'App\Http\Controllers\PageController@manage')->name('home');
+Route::get('/manage', 'App\Http\Controllers\PageController@manage')->name('home')->middleware(['auth', 'admin']);
 
 Route::get('/logout', 'App\Http\Controllers\AuthController@logout');
 
@@ -351,8 +351,8 @@ Route::get('/scd/services/registry', function () {
     return view('registry-services', compact('siteContent', 'menuItems'));
 })->name('registry-services');
 
-// Admin management routes
-Route::prefix('admin')->group(function () {
+// Admin management routes - Protected by auth and admin middleware
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('news', 'App\Http\Controllers\NewsController');
     Route::resource('events', 'App\Http\Controllers\EventController');
     Route::resource('site-content', 'App\Http\Controllers\SiteContentController');

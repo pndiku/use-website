@@ -22,7 +22,7 @@ class IsAdmin
             return redirect('/login')->with('error', 'You must be logged in to access this area.');
         }
 
-        if (Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'Admin') {
             abort(403, 'Unauthorized access. Admin privileges required.');
         }
 

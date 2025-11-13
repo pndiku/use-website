@@ -705,6 +705,14 @@
                         <i class="fas fa-file-alt"></i>
                         <span>SCD Forms</span>
                     </a>
+                    <a href="#" class="nav-item" data-section="private-transfers">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Private Transfers</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="corporate-announcements">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Corporate Announcements</span>
+                    </a>
                     <a href="#" class="nav-item" data-section="scd-rules">
                         <i class="fas fa-gavel"></i>
                         <span>SCD Rules</span>
@@ -1479,6 +1487,8 @@
                                             <option value="financial-statements">Financial Statements</option>
                                             <option value="market-data">Market Data</option>
                                             <option value="general">General</option>
+                                            <option value="private-transfers">Private Transfers</option>
+                                            <option value="complaints_escalation">Complaints Escalation</option>
                                         </select>
                                         <small class="form-text text-muted">Categorize this file for easier organization and filtering</small>
                                     </div>
@@ -1519,6 +1529,8 @@
                                         <option value="financial-statements">Financial Statements</option>
                                         <option value="market-data">Market Data</option>
                                         <option value="general">General</option>
+                                        <option value="private-transfers">Private Transfers</option>
+                                        <option value="complaints_escalation">Complaints Escalation</option>
                                     </select>
                                     <input type="text" id="fileSearch" class="form-control" placeholder="Search files..." style="width: 200px;">
                                     <button class="btn btn-secondary" onclick="loadFiles()">
@@ -1667,6 +1679,128 @@
                             <div class="card-body">
                                 <div id="scdFormsList" class="table-container">
                                     <p class="text-muted">Loading forms...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Private Transfers Section -->
+                <div id="private-transfers-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add Private Transfer -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="privateTransferFormTitle">Add Private Transfer</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="privateTransferForm">
+                                    @csrf
+                                    <input type="hidden" id="privateTransferId">
+                                    <div class="form-group">
+                                        <label class="form-label">Document Title *</label>
+                                        <input type="text" id="privateTransferTitle" class="form-control" placeholder="e.g., Private Transfer Form" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="privateTransferFileUrl" class="form-control" placeholder="https://example.com/document.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="privateTransferFileSize" class="form-control" placeholder="e.g., 245 KB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="privateTransferPublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="privateTransferSubmitText">Add Document</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="privateTransferCancelBtn" onclick="cancelPrivateTransferEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Private Transfers List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Private Transfers</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="privateTransfersList" class="table-container">
+                                    <p class="text-muted">Loading documents...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Corporate Announcements Section -->
+                <div id="corporate-announcements-section" class="content-section" style="display: none;">
+                    <div class="content-grid">
+                        <!-- Add Corporate Announcement -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title" id="corporateAnnouncementFormTitle">Add Corporate Announcement</h3>
+                            </div>
+                            <div class="card-body">
+                                <form id="corporateAnnouncementForm">
+                                    @csrf
+                                    <input type="hidden" id="corporateAnnouncementId">
+                                    <div class="form-group">
+                                        <label class="form-label">Announcement Title *</label>
+                                        <input type="text" id="corporateAnnouncementTitle" class="form-control" placeholder="e.g., Quarterly Financial Report Q3 2024" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File URL *</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="url" id="corporateAnnouncementFileUrl" class="form-control" placeholder="https://example.com/document.pdf" required style="flex: 1;">
+                                            <button type="button" class="btn btn-secondary" onclick="window.open('/manage', '_blank')" title="Upload file in Files section first">
+                                                <i class="fas fa-upload"></i> Upload
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">Supported formats: PDF, DOC, DOCX, XLS, XLSX. Upload the file in the Files section first, then paste the URL here</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">File Size</label>
+                                        <input type="text" id="corporateAnnouncementFileSize" class="form-control" placeholder="e.g., 245 KB">
+                                        <small class="form-text text-muted">Optional - Enter file size for display</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Published Date</label>
+                                        <input type="datetime-local" id="corporateAnnouncementPublishedDate" class="form-control">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> <span id="corporateAnnouncementSubmitText">Add Announcement</span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" id="corporateAnnouncementCancelBtn" onclick="cancelCorporateAnnouncementEdit()" style="display: none;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Corporate Announcements List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Corporate Announcements</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="corporateAnnouncementsList" class="table-container">
+                                    <p class="text-muted">Loading announcements...</p>
                                 </div>
                             </div>
                         </div>
@@ -4558,6 +4692,356 @@
         document.querySelector('[data-section="scd-forms"]').addEventListener('click', function() {
             setTimeout(() => {
                 loadScdForms();
+            }, 100);
+        });
+
+        // ===========================
+        // Private Transfers Functions
+        // ===========================
+
+        // Load Private Transfers
+        async function loadPrivateTransfers() {
+            try {
+                const response = await fetch('/admin/private-transfers');
+                const transfers = await response.json();
+
+                const listContainer = document.getElementById('privateTransfersList');
+
+                if (transfers.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No private transfer documents found.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${transfers.map(transfer => `
+                                <tr>
+                                    <td>
+                                        <a href="${transfer.file_url}" target="_blank" style="color: var(--use-blue); text-decoration: none;">
+                                            <i class="fas fa-file-alt"></i> ${transfer.title}
+                                        </a>
+                                    </td>
+                                    <td>${transfer.file_size || 'N/A'}</td>
+                                    <td>${transfer.published_date ? new Date(transfer.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary" onclick="editPrivateTransfer(${transfer.id})" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deletePrivateTransfer(${transfer.id})" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading private transfers:', error);
+                document.getElementById('privateTransfersList').innerHTML = '<p class="text-danger">Error loading documents.</p>';
+            }
+        }
+
+        // Reset Private Transfer form
+        function resetPrivateTransferForm() {
+            document.getElementById('privateTransferForm').reset();
+            document.getElementById('privateTransferId').value = '';
+            document.getElementById('privateTransferFormTitle').textContent = 'Add Private Transfer';
+            document.getElementById('privateTransferSubmitText').textContent = 'Add Document';
+            document.getElementById('privateTransferCancelBtn').style.display = 'none';
+        }
+
+        // Handle Private Transfer form submission
+        document.getElementById('privateTransferForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('privateTransferId').value;
+            const data = {
+                title: document.getElementById('privateTransferTitle').value,
+                file_url: document.getElementById('privateTransferFileUrl').value,
+                file_size: document.getElementById('privateTransferFileSize').value || null,
+                published_date: document.getElementById('privateTransferPublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/private-transfers/${id}` : '/admin/private-transfers';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Private transfer updated successfully!' : 'Private transfer added successfully!', 'success');
+                    resetPrivateTransferForm();
+                    loadPrivateTransfers();
+                } else {
+                    showNotification('Error saving private transfer', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error saving private transfer', 'error');
+            }
+        });
+
+        // Edit Private Transfer
+        async function editPrivateTransfer(id) {
+            try {
+                const response = await fetch(`/admin/private-transfers/${id}`);
+                const transfer = await response.json();
+
+                document.getElementById('privateTransferId').value = transfer.id;
+                document.getElementById('privateTransferTitle').value = transfer.title;
+                document.getElementById('privateTransferFileUrl').value = transfer.file_url;
+                document.getElementById('privateTransferFileSize').value = transfer.file_size || '';
+
+                if (transfer.published_date) {
+                    const date = new Date(transfer.published_date);
+                    const formattedDate = date.toISOString().slice(0, 16);
+                    document.getElementById('privateTransferPublishedDate').value = formattedDate;
+                }
+
+                document.getElementById('privateTransferFormTitle').textContent = 'Edit Private Transfer';
+                document.getElementById('privateTransferSubmitText').textContent = 'Update Document';
+                document.getElementById('privateTransferCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('privateTransferForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading private transfer:', error);
+                showNotification('Error loading private transfer', 'error');
+            }
+        }
+
+        // Delete Private Transfer
+        async function deletePrivateTransfer(id) {
+            if (!confirm('Are you sure you want to delete this private transfer document?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/private-transfers/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Private transfer deleted successfully!', 'success');
+                    loadPrivateTransfers();
+                } else {
+                    showNotification('Error deleting private transfer', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error deleting private transfer', 'error');
+            }
+        }
+
+        // Cancel Private Transfer edit
+        function cancelPrivateTransferEdit() {
+            resetPrivateTransferForm();
+        }
+
+        // Load Private Transfers when section is shown
+        document.querySelector('[data-section="private-transfers"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadPrivateTransfers();
+            }, 100);
+        });
+
+        // ===========================
+        // Corporate Announcements Functions
+        // ===========================
+
+        // Load Corporate Announcements
+        async function loadCorporateAnnouncements() {
+            try {
+                const response = await fetch('/admin/corporate-announcements');
+                const announcements = await response.json();
+
+                const listContainer = document.getElementById('corporateAnnouncementsList');
+
+                if (announcements.length === 0) {
+                    listContainer.innerHTML = '<p class="text-muted">No corporate announcements found.</p>';
+                    return;
+                }
+
+                const table = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>File Size</th>
+                                <th>Published Date</th>
+                                <th style="width: 150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${announcements.map(announcement => `
+                                <tr>
+                                    <td>
+                                        <a href="${announcement.file_url}" target="_blank" style="color: var(--use-blue); text-decoration: none;">
+                                            <i class="fas fa-file-alt"></i> ${announcement.title}
+                                        </a>
+                                    </td>
+                                    <td>${announcement.file_size || 'N/A'}</td>
+                                    <td>${announcement.published_date ? new Date(announcement.published_date).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn btn-sm btn-secondary" onclick="editCorporateAnnouncement(${announcement.id})" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteCorporateAnnouncement(${announcement.id})" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                listContainer.innerHTML = table;
+            } catch (error) {
+                console.error('Error loading corporate announcements:', error);
+                document.getElementById('corporateAnnouncementsList').innerHTML = '<p class="text-danger">Error loading announcements.</p>';
+            }
+        }
+
+        // Reset Corporate Announcement form
+        function resetCorporateAnnouncementForm() {
+            document.getElementById('corporateAnnouncementForm').reset();
+            document.getElementById('corporateAnnouncementId').value = '';
+            document.getElementById('corporateAnnouncementFormTitle').textContent = 'Add Corporate Announcement';
+            document.getElementById('corporateAnnouncementSubmitText').textContent = 'Add Announcement';
+            document.getElementById('corporateAnnouncementCancelBtn').style.display = 'none';
+        }
+
+        // Handle Corporate Announcement form submission
+        document.getElementById('corporateAnnouncementForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('corporateAnnouncementId').value;
+            const data = {
+                title: document.getElementById('corporateAnnouncementTitle').value,
+                file_url: document.getElementById('corporateAnnouncementFileUrl').value,
+                file_size: document.getElementById('corporateAnnouncementFileSize').value || null,
+                published_date: document.getElementById('corporateAnnouncementPublishedDate').value || null
+            };
+
+            try {
+                const url = id ? `/admin/corporate-announcements/${id}` : '/admin/corporate-announcements';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    showNotification(id ? 'Corporate announcement updated successfully!' : 'Corporate announcement added successfully!', 'success');
+                    resetCorporateAnnouncementForm();
+                    loadCorporateAnnouncements();
+                } else {
+                    showNotification('Error saving corporate announcement', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error saving corporate announcement', 'error');
+            }
+        });
+
+        // Edit Corporate Announcement
+        async function editCorporateAnnouncement(id) {
+            try {
+                const response = await fetch(`/admin/corporate-announcements/${id}`);
+                const announcement = await response.json();
+
+                document.getElementById('corporateAnnouncementId').value = announcement.id;
+                document.getElementById('corporateAnnouncementTitle').value = announcement.title;
+                document.getElementById('corporateAnnouncementFileUrl').value = announcement.file_url;
+                document.getElementById('corporateAnnouncementFileSize').value = announcement.file_size || '';
+
+                if (announcement.published_date) {
+                    const date = new Date(announcement.published_date);
+                    const formattedDate = date.toISOString().slice(0, 16);
+                    document.getElementById('corporateAnnouncementPublishedDate').value = formattedDate;
+                }
+
+                document.getElementById('corporateAnnouncementFormTitle').textContent = 'Edit Corporate Announcement';
+                document.getElementById('corporateAnnouncementSubmitText').textContent = 'Update Announcement';
+                document.getElementById('corporateAnnouncementCancelBtn').style.display = 'inline-block';
+
+                // Scroll to form
+                document.getElementById('corporateAnnouncementForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                console.error('Error loading corporate announcement:', error);
+                showNotification('Error loading corporate announcement', 'error');
+            }
+        }
+
+        // Delete Corporate Announcement
+        async function deleteCorporateAnnouncement(id) {
+            if (!confirm('Are you sure you want to delete this corporate announcement?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/corporate-announcements/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification('Corporate announcement deleted successfully!', 'success');
+                    loadCorporateAnnouncements();
+                } else {
+                    showNotification('Error deleting corporate announcement', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error deleting corporate announcement', 'error');
+            }
+        }
+
+        // Cancel Corporate Announcement edit
+        function cancelCorporateAnnouncementEdit() {
+            resetCorporateAnnouncementForm();
+        }
+
+        // Load Corporate Announcements when section is shown
+        document.querySelector('[data-section="corporate-announcements"]').addEventListener('click', function() {
+            setTimeout(() => {
+                loadCorporateAnnouncements();
             }, 100);
         });
 

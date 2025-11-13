@@ -69,6 +69,22 @@ Route::get('/use-specialist-market', function () {
 Route::get('/next', function () {
     return view('index-next');
 })->name('index-next');
+Route::get('/securities/equities', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('equities', compact('siteContent', 'menuItems'));
+})->name('equities');
+Route::get('/securities/bonds', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('bonds', compact('siteContent', 'menuItems'));
+})->name('bonds');
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
 Route::get('/news/{slug}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
 Route::get('/events/{id}', 'App\Http\Controllers\EventController@showPublic')->name('event.show');
@@ -310,6 +326,32 @@ Route::get('/investors/investor-faqs', function () {
         ->get();
     return view('investor-faqs', compact('siteContent', 'menuItems'));
 })->name('investor-faqs');
+Route::get('/investors/private-transfers', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $transfers = \App\Models\PrivateTransfer::orderBy('published_date', 'desc')->get();
+    return view('private-transfers', compact('siteContent', 'menuItems', 'transfers'));
+})->name('private-transfers');
+Route::get('/investors/complaints-escalation', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('complaints-escalation', compact('siteContent', 'menuItems'));
+})->name('complaints-escalation');
+Route::get('/investors/corporate-announcements', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    $announcements = \App\Models\CorporateAnnouncement::orderBy('published_date', 'desc')->get();
+    return view('corporate-announcements', compact('siteContent', 'menuItems', 'announcements'));
+})->name('corporate-announcements');
 Route::get('/scd/about-scd', function () {
     $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
     $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
@@ -372,6 +414,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('scd-rules', 'App\Http\Controllers\ScdRuleController');
     Route::resource('market-regulations', 'App\Http\Controllers\MarketRegulationController');
     Route::resource('annual-reports', 'App\Http\Controllers\AnnualReportController');
+    Route::resource('private-transfers', 'App\Http\Controllers\PrivateTransferController');
+    Route::resource('corporate-announcements', 'App\Http\Controllers\CorporateAnnouncementController');
 });
 
 

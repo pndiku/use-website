@@ -15,7 +15,6 @@
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
 
     <style>
         :root {
@@ -531,11 +530,12 @@
             border-bottom: 2px solid var(--border);
         }
 
-        .market-table thead th:nth-child(n+4) {
+        .market-table thead th:nth-child(n+5) {
             display: none;
         }
 
-        .market-table thead th:nth-child(3) {
+        .market-table thead th:nth-child(3),
+        .market-table thead th:nth-child(4) {
             text-align: right;
         }
 
@@ -554,11 +554,12 @@
             color: var(--text-primary);
         }
 
-        .market-table tbody td:nth-child(n+4) {
+        .market-table tbody td:nth-child(n+5) {
             display: none;
         }
 
-        .market-table tbody td:nth-child(3) {
+        .market-table tbody td:nth-child(3),
+        .market-table tbody td:nth-child(4) {
             text-align: right;
         }
 
@@ -923,7 +924,7 @@
         <div class="update-status">
             <div class="update-status-text">
                 <span class="update-pulse"></span>
-                <span>Live market data</span>
+                <span>Delayed data</span>
             </div>
             <span id="last_update" class="last-update">Connecting...</span>
         </div>
@@ -936,6 +937,7 @@
                         <th>Stock Code</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Market Cap</th>
                         <th>% Change</th>
                         <th>Opening Price</th>
                         <th>High</th>
@@ -948,6 +950,7 @@
                         <td><a href="/listed/AIRTEL_UGANDA" class="stock-code">AIRTEL UGANDA</a></td>
                         <td class="stock-name">AIRTEL UGANDA LIMITED</td>
                         <td class="price-value" id="AIRTEL_UGANDA_close">-</td>
+                        <td class="price-value" id="AIRTEL_UGANDA_market_cap">-</td>
                         <td id="AIRTEL_UGANDA_change">-</td>
                         <td class="price-value" id="AIRTEL_UGANDA_open">-</td>
                         <td class="price-value" id="AIRTEL_UGANDA_high">-</td>
@@ -958,6 +961,7 @@
                         <td><a href="/listed/BOBU" class="stock-code">BOBU</a></td>
                         <td class="stock-name">Bank of Baroda Uganda</td>
                         <td class="price-value" id="BOBU_close">-</td>
+                        <td class="price-value" id="BOBU_market_cap">-</td>
                         <td id="BOBU_change">-</td>
                         <td class="price-value" id="BOBU_open">-</td>
                         <td class="price-value" id="BOBU_high">-</td>
@@ -968,6 +972,7 @@
                         <td><a href="/listed/BATU" class="stock-code">BATU</a></td>
                         <td class="stock-name">British American Tobacco Uganda</td>
                         <td class="price-value" id="BATU_close">-</td>
+                        <td class="price-value" id="BATU_market_cap">-</td>
                         <td id="BATU_change">-</td>
                         <td class="price-value" id="BATU_open">-</td>
                         <td class="price-value" id="BATU_high">-</td>
@@ -978,6 +983,7 @@
                         <td><a href="/listed/CENT" class="stock-code">CENT</a></td>
                         <td class="stock-name">Centum Investment Company Ltd</td>
                         <td class="price-value" id="CENT_close">-</td>
+                        <td class="price-value" id="CENT_market_cap">-</td>
                         <td id="CENT_change">-</td>
                         <td class="price-value" id="CENT_open">-</td>
                         <td class="price-value" id="CENT_high">-</td>
@@ -988,6 +994,7 @@
                         <td><a href="/listed/DFCU" class="stock-code">DFCU</a></td>
                         <td class="stock-name">DEVELOPMENT FINANCE COMPANY OF UGANDA LTD</td>
                         <td class="price-value" id="DFCU_close">-</td>
+                        <td class="price-value" id="DFCU_market_cap">-</td>
                         <td id="DFCU_change">-</td>
                         <td class="price-value" id="DFCU_open">-</td>
                         <td class="price-value" id="DFCU_high">-</td>
@@ -998,6 +1005,7 @@
                         <td><a href="/listed/EABL" class="stock-code">EABL</a></td>
                         <td class="stock-name">East African Breweries Limited</td>
                         <td class="price-value" id="EABL_close">-</td>
+                        <td class="price-value" id="EABL_market_cap">-</td>
                         <td id="EABL_change">-</td>
                         <td class="price-value" id="EABL_open">-</td>
                         <td class="price-value" id="EABL_high">-</td>
@@ -1008,6 +1016,7 @@
                         <td><a href="/listed/EBL" class="stock-code">EBL</a></td>
                         <td class="stock-name">Equity Bank Limited</td>
                         <td class="price-value" id="EBL_close">-</td>
+                        <td class="price-value" id="EBL_market_cap">-</td>
                         <td id="EBL_change">-</td>
                         <td class="price-value" id="EBL_open">-</td>
                         <td class="price-value" id="EBL_high">-</td>
@@ -1018,6 +1027,7 @@
                         <td><a href="/listed/KCB" class="stock-code">KCB</a></td>
                         <td class="stock-name">KCB Group</td>
                         <td class="price-value" id="KCB_close">-</td>
+                        <td class="price-value" id="KCB_market_cap">-</td>
                         <td id="KCB_change">-</td>
                         <td class="price-value" id="KCB_open">-</td>
                         <td class="price-value" id="KCB_high">-</td>
@@ -1028,6 +1038,7 @@
                         <td><a href="/listed/KA" class="stock-code">KA</a></td>
                         <td class="stock-name">Kenya Airways</td>
                         <td class="price-value" id="KA_close">-</td>
+                        <td class="price-value" id="KA_market_cap">-</td>
                         <td id="KA_change">-</td>
                         <td class="price-value" id="KA_open">-</td>
                         <td class="price-value" id="KA_high">-</td>
@@ -1038,6 +1049,7 @@
                         <td><a href="/listed/MTNU" class="stock-code">MTNU</a></td>
                         <td class="stock-name">MTN UGANDA LIMITED</td>
                         <td class="price-value" id="MTNU_close">-</td>
+                        <td class="price-value" id="MTNU_market_cap">-</td>
                         <td id="MTNU_change">-</td>
                         <td class="price-value" id="MTNU_open">-</td>
                         <td class="price-value" id="MTNU_high">-</td>
@@ -1048,6 +1060,7 @@
                         <td><a href="/listed/NMG" class="stock-code">NMG</a></td>
                         <td class="stock-name">Nation Media Group</td>
                         <td class="price-value" id="NMG_close">-</td>
+                        <td class="price-value" id="NMG_market_cap">-</td>
                         <td id="NMG_change">-</td>
                         <td class="price-value" id="NMG_open">-</td>
                         <td class="price-value" id="NMG_high">-</td>
@@ -1058,6 +1071,7 @@
                         <td><a href="/listed/NIC" class="stock-code">NIC</a></td>
                         <td class="stock-name">National Insurance Corporation</td>
                         <td class="price-value" id="NIC_close">-</td>
+                        <td class="price-value" id="NIC_market_cap">-</td>
                         <td id="NIC_change">-</td>
                         <td class="price-value" id="NIC_open">-</td>
                         <td class="price-value" id="NIC_high">-</td>
@@ -1068,6 +1082,7 @@
                         <td><a href="/listed/NVL" class="stock-code">NVL</a></td>
                         <td class="stock-name">New Vision Printing and Publishing Company Ltd</td>
                         <td class="price-value" id="NVL_close">-</td>
+                        <td class="price-value" id="NVL_market_cap">-</td>
                         <td id="NVL_change">-</td>
                         <td class="price-value" id="NVL_open">-</td>
                         <td class="price-value" id="NVL_high">-</td>
@@ -1078,6 +1093,7 @@
                         <td><a href="/listed/QCIL" class="stock-code">QCIL</a></td>
                         <td class="stock-name">QUALITY CHEMICAL INDUSTRIES LIMITED</td>
                         <td class="price-value" id="QCIL_close">-</td>
+                        <td class="price-value" id="QCIL_market_cap">-</td>
                         <td id="QCIL_change">-</td>
                         <td class="price-value" id="QCIL_open">-</td>
                         <td class="price-value" id="QCIL_high">-</td>
@@ -1088,6 +1104,7 @@
                         <td><a href="/listed/SBU" class="stock-code">SBU</a></td>
                         <td class="stock-name">Stanbic Bank Uganda</td>
                         <td class="price-value" id="SBU_close">-</td>
+                        <td class="price-value" id="SBU_market_cap">-</td>
                         <td id="SBU_change">-</td>
                         <td class="price-value" id="SBU_open">-</td>
                         <td class="price-value" id="SBU_high">-</td>
@@ -1098,6 +1115,7 @@
                         <td><a href="/listed/UMEM" class="stock-code">UMEM</a></td>
                         <td class="stock-name">UMEME LIMITED</td>
                         <td class="price-value" id="UMEM_close">-</td>
+                        <td class="price-value" id="UMEM_market_cap">-</td>
                         <td id="UMEM_change">-</td>
                         <td class="price-value" id="UMEM_open">-</td>
                         <td class="price-value" id="UMEM_high">-</td>
@@ -1108,6 +1126,7 @@
                         <td><a href="/listed/UCL" class="stock-code">UCL</a></td>
                         <td class="stock-name">Uganda Clays Limited</td>
                         <td class="price-value" id="UCL_close">-</td>
+                        <td class="price-value" id="UCL_market_cap">-</td>
                         <td id="UCL_change">-</td>
                         <td class="price-value" id="UCL_open">-</td>
                         <td class="price-value" id="UCL_high">-</td>
@@ -1152,7 +1171,7 @@
             }
         });
 
-        // Market data WebSocket connection
+        // Market data HTTP polling
         (function() {
             // Configure accounting.js
             accounting.settings = {
@@ -1183,87 +1202,61 @@
                         return;
                     }
 
-                    // Update change percentage with badge
-                    var changeElement = document.getElementById(stock + "_change");
-                    if (changeElement) {
-                        if (v.change_percent > 0.0) {
-                            changeElement.innerHTML =
-                                '<span class="change-badge positive"><i class="fas fa-arrow-up"></i>' +
-                                accounting.formatNumber(v.change_percent, 2) + '%</span>';
-                        } else if (v.change_percent < 0.0) {
-                            changeElement.innerHTML =
-                                '<span class="change-badge negative"><i class="fas fa-arrow-down"></i>' +
-                                accounting.formatNumber(v.change_percent, 2) + '%</span>';
+                    // Update price
+                    if (closeElement && v.price) {
+                        closeElement.textContent = accounting.formatNumber(v.price, 2);
+                    }
+
+                    // Update market cap
+                    var marketCapElement = document.getElementById(stock + "_market_cap");
+                    if (marketCapElement && v.market_cap) {
+                        // Format market cap in billions or millions
+                        var marketCap = v.market_cap;
+                        var formatted;
+                        if (marketCap >= 1000000000000) {
+                            formatted = accounting.formatNumber(marketCap / 1000000000000, 2) + 'T';
+                        } else if (marketCap >= 1000000000) {
+                            formatted = accounting.formatNumber(marketCap / 1000000000, 2) + 'B';
+                        } else if (marketCap >= 1000000) {
+                            formatted = accounting.formatNumber(marketCap / 1000000, 2) + 'M';
                         } else {
-                            changeElement.innerHTML =
-                                '<span class="change-badge">0.00%</span>';
+                            formatted = accounting.formatNumber(marketCap, 0);
                         }
-                    }
-
-                    // Handle high/low values
-                    if (v.high == 0) {
-                        v.high = Math.max(v.open, v.close);
-                    }
-                    if (v.low == 0) {
-                        v.low = Math.min(v.open, v.close);
-                    }
-
-                    // Update prices
-                    var openElement = document.getElementById(stock + "_open");
-                    var highElement = document.getElementById(stock + "_high");
-                    var lowElement = document.getElementById(stock + "_low");
-                    var lastElement = document.getElementById(stock + "_last");
-
-                    if (openElement) openElement.textContent = accounting.formatNumber(v.open, 2);
-                    if (closeElement) closeElement.textContent = accounting.formatNumber(v.close, 2);
-                    if (highElement) highElement.textContent = accounting.formatNumber(v.high, 2);
-                    if (lowElement) lowElement.textContent = accounting.formatNumber(v.low, 2);
-
-                    // Update last deal
-                    if (lastElement && v.last_traded_quantity > 0) {
-                        lastElement.textContent =
-                            accounting.formatNumber(v.last_traded_quantity, 0) + " @ UGX " +
-                            accounting.formatNumber(v.last_deal_price, 2);
-                    }
-
-                    // Update timestamp
-                    var updateElement = document.getElementById('last_update');
-                    if (updateElement) {
-                        updateElement.textContent =
-                            'Last updated: ' + moment(v.time).format('DD-MMM @ HH:mm:ss');
+                        marketCapElement.textContent = 'UGX ' + formatted;
                     }
                 });
-            };
 
-            // Connect to WebSocket
-            var socket = new ReconnectingWebSocket("wss://scd.use.or.ug/ws");
-
-            socket.onopen = function() {
-                console.log('Connected to market data feed');
-                socket.send('{"subscribe": "prices"}');
-                document.getElementById('last_update').textContent = 'Connected - waiting for data...';
-            };
-
-            socket.onerror = function(error) {
-                console.error('WebSocket Error:', error);
-                document.getElementById('last_update').textContent = 'Connection error - retrying...';
-            };
-
-            socket.onmessage = function(msg) {
-                try {
-                    var message = JSON.parse(msg.data);
-                    if (message.channel == "prices" && message.data && message.data.market) {
-                        updatePrices(message.data.market);
-                    }
-                } catch (e) {
-                    console.error('Error parsing message:', e);
+                // Update timestamp
+                var updateElement = document.getElementById('last_update');
+                if (updateElement) {
+                    updateElement.textContent = moment().format('DD-MMM @ HH:mm:ss');
                 }
             };
 
-            socket.onclose = function() {
-                console.log('WebSocket connection closed - reconnecting...');
-                document.getElementById('last_update').textContent = 'Reconnecting...';
+            // Function to fetch market data
+            var fetchMarketData = function() {
+                fetch('/api/delayed-data')
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log('Market data received:', data);
+                        updatePrices(data);
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching market data:', error);
+                        var updateElement = document.getElementById('last_update');
+                        if (updateElement) {
+                            updateElement.textContent = 'Error loading data';
+                        }
+                    });
             };
+
+            // Fetch data once on page load
+            fetchMarketData();
         })();
     </script>
 </body>

@@ -168,6 +168,48 @@ Route::get('/listed/{stock}', function ($stock) {
     return view('stock-detail', compact('siteContent', 'menuItems', 'stock', 'relatedArticles'));
 })->name('stock.detail');
 
+// Proxy endpoint for delayed market data to avoid CORS issues
+Route::get('/api/delayed-data', function () {
+    $url = "https://scd.use.or.ug/data/delayed.php";
+
+    try {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
+
+        $response = curl_exec($ch);
+        $curlError = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($curlError) {
+            return response()->json(['error' => 'CURL error: ' . $curlError], 500);
+        }
+
+        if ($httpCode === 200 && $response) {
+            $decoded = json_decode($response);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json([
+                    'error' => 'Invalid JSON received from API',
+                    'json_error' => json_last_error_msg()
+                ], 500);
+            }
+
+            return response()->json($decoded)
+                ->header('Access-Control-Allow-Origin', '*');
+        }
+
+        return response()->json(['error' => 'Failed to fetch data', 'http_code' => $httpCode], 500);
+    } catch (\Exception $e) {
+        \Log::error('Delayed data fetch error: ' . $e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 // Proxy endpoint for stock data to avoid CORS issues
 Route::get('/api/stock-data/{stock}', function ($stock) {
     // Convert underscores back to spaces for stock symbols like "AIRTEL UGANDA"

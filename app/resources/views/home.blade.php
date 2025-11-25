@@ -1622,6 +1622,7 @@
                 </div>
             </div>
 
+            @if($showMarketMovers)
             <div class="movers-container">
                 <div class="movers-section">
                     <div class="movers-header">
@@ -1647,6 +1648,17 @@
                     </ul>
                 </div>
             </div>
+            @else
+            <div class="movers-container">
+                <div class="movers-section" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 1rem;">
+                        <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 1rem; display: block; color: var(--use-yellow);"></i>
+                        <strong style="display: block; margin-bottom: 0.5rem; font-size: 1.125rem; color: white;">Market Movers Available After Close</strong>
+                        Top gainers and losers will be displayed after 1:00 PM EAT when the market closes.
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </section>
 
@@ -1862,6 +1874,9 @@
     </script>
 
     <script>
+        // Market movers visibility flag from server
+        const showMarketMovers = {{ $showMarketMovers ? 'true' : 'false' }};
+
         // Header scroll effect
         window.addEventListener('scroll', function() {
             const header = document.getElementById('header');
@@ -1973,6 +1988,12 @@
 
         // Function to update Top Gainers and Top Losers with live data
         function updateMarketMovers(marketData) {
+            // Only update market movers if market has closed (after 1PM EAT)
+            if (!showMarketMovers) {
+                console.log('Market has not closed yet. Skipping market movers update.');
+                return;
+            }
+
             console.log('Updating market movers with', marketData.length, 'stocks');
 
             // Filter stocks with valid change percentages

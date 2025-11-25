@@ -101,7 +101,12 @@ class PageController extends Controller
                 ->active()
                 ->get();
 
-            return view('home', compact('upcomingEvents', 'latestNews', 'siteContent', 'carouselImages', 'menuItems'));
+            // Check if market has closed (after 1PM EAT)
+            $currentTimeEAT = now()->setTimezone('Africa/Nairobi');
+            $marketCloseTime = $currentTimeEAT->copy()->setTime(13, 0, 0); // 1PM EAT
+            $showMarketMovers = $currentTimeEAT->greaterThanOrEqualTo($marketCloseTime);
+
+            return view('home', compact('upcomingEvents', 'latestNews', 'siteContent', 'carouselImages', 'menuItems', 'showMarketMovers'));
         }
     }
 

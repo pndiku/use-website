@@ -2001,14 +2001,22 @@
                 return stock.change_percent !== 0 && stock.change_percent !== null && stock.change_percent !== undefined;
             });
 
-            // Sort by change percentage
-            const sortedStocks = validStocks.sort(function(a, b) {
+            // Filter gainers (positive change) and losers (negative change)
+            const gainers = validStocks.filter(function(stock) {
+                return stock.change_percent > 0;
+            }).sort(function(a, b) {
                 return b.change_percent - a.change_percent;
             });
 
+            const losers = validStocks.filter(function(stock) {
+                return stock.change_percent < 0;
+            }).sort(function(a, b) {
+                return a.change_percent - b.change_percent;
+            });
+
             // Get top 3 gainers and top 3 losers
-            const topGainers = sortedStocks.slice(0, 3);
-            const topLosers = sortedStocks.slice(-3).reverse(); // Reverse to get worst performers first
+            const topGainers = gainers.slice(0, 3);
+            const topLosers = losers.slice(0, 3);
 
             // Update Top Gainers
             const gainersContainer = document.getElementById('topGainers');
@@ -2022,29 +2030,30 @@
                         const moverItem = document.createElement('li');
                         moverItem.className = 'mover-item';
 
-                        // Clean up stock symbol
+                        // Clean up stock symbol and get company name
                         let symbol = stock.stock;
+                        let companyName = stock.stock;
                         if (symbol.includes(' ')) {
                             const parts = symbol.split(' ');
                             symbol = parts[0];
                         }
 
                         const changePercent = stock.change_percent;
-                        const changeClass = changePercent >= 0 ? 'positive' : 'negative';
-                        const changeSymbol = changePercent >= 0 ? '+' : '';
+                        const changeClass = 'positive';
+                        const changeSymbol = '+';
 
                         // Format price
                         let price = stock.last_deal_price > 0 ? stock.last_deal_price : stock.close;
-                        let formattedPrice = '+' + price.toFixed(2);
+                        let formattedPrice = 'UGX ' + price.toFixed(2);
 
                         moverItem.innerHTML = `
                             <div>
                                 <div class="mover-symbol">${symbol}</div>
-                                <div class="mover-company" style="color: green;">+%</div>
+                                <div class="mover-company">${companyName}</div>
                             </div>
                             <div class="mover-price">
                                 <div class="mover-value">${formattedPrice}</div>
-                                <div class="mover-change ${changeClass}">${changeSymbol}${changePercent.toFixed(2)}</div>
+                                <div class="mover-change ${changeClass}">${changeSymbol}${changePercent.toFixed(2)}%</div>
                             </div>
                         `;
 
@@ -2065,29 +2074,30 @@
                         const moverItem = document.createElement('li');
                         moverItem.className = 'mover-item';
 
-                        // Clean up stock symbol
+                        // Clean up stock symbol and get company name
                         let symbol = stock.stock;
+                        let companyName = stock.stock;
                         if (symbol.includes(' ')) {
                             const parts = symbol.split(' ');
                             symbol = parts[0];
                         }
 
                         const changePercent = stock.change_percent;
-                        const changeClass = changePercent >= 0 ? 'positive' : 'negative';
-                        const changeSymbol = changePercent >= 0 ? '+' : '';
+                        const changeClass = 'negative';
+                        const changeSymbol = '';
 
                         // Format price
                         let price = stock.last_deal_price > 0 ? stock.last_deal_price : stock.close;
-                        let formattedPrice = '+' + price.toFixed(2);
+                        let formattedPrice = 'UGX ' + price.toFixed(2);
 
                         moverItem.innerHTML = `
                             <div>
                                 <div class="mover-symbol">${symbol}</div>
-                                <div class="mover-company" style="color: red;">-%</div>
+                                <div class="mover-company">${companyName}</div>
                             </div>
                             <div class="mover-price">
                                 <div class="mover-value">${formattedPrice}</div>
-                                <div class="mover-change ${changeClass}">${changeSymbol}${changePercent.toFixed(2)}</div>
+                                <div class="mover-change ${changeClass}">${changeSymbol}${changePercent.toFixed(2)}%</div>
                             </div>
                         `;
 

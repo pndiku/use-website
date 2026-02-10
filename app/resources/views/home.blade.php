@@ -715,7 +715,7 @@
             flex-wrap: nowrap;
             width: max-content;
             min-width: 100%;
-            animation: scroll 30s linear infinite;
+            animation: scroll 60s linear infinite;
             gap: 3rem;
             white-space: nowrap;
         }
@@ -2033,7 +2033,11 @@
                 return;
             }
 
-            const formattedStocks = marketData.map(formatTickerStock);
+            const formattedStocks = marketData
+                .map(formatTickerStock)
+                .sort(function(a, b) {
+                    return a.symbol.localeCompare(b.symbol, undefined, { sensitivity: 'base' });
+                });
             const nextSymbols = formattedStocks.map(function(stock) {
                 return stock.symbol;
             });

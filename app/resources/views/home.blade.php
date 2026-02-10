@@ -711,9 +711,13 @@
         }
 
         .ticker-content {
-            display: flex;
+            display: inline-flex;
+            flex-wrap: nowrap;
+            width: max-content;
+            min-width: 100%;
             animation: scroll 30s linear infinite;
             gap: 3rem;
+            white-space: nowrap;
         }
 
         .ticker-item {
@@ -721,6 +725,7 @@
             align-items: center;
             gap: 0.5rem;
             white-space: nowrap;
+            flex: 0 0 auto;
             color: #1a202c;
             font-weight: 600;
             font-size: 0.875rem;
@@ -1889,6 +1894,9 @@
 
         // Mobile menu functions are now defined in partials/header.blade.php as USE_toggleMobileDrawer() and USE_toggleMobileSubmenu()
 
+        // Keep ticker track stable across websocket updates so animation doesn't reset.
+        let tickerSymbols = [];
+
         // WebSocket Connection for Live Data
         console.log('Initializing WebSocket connection...');
 
@@ -1936,6 +1944,80 @@
             console.error('Failed to create WebSocket connection:', error);
         }
 
+        function formatTickerStock(stock) {
+            let symbol = stock.stock || '';
+            if (symbol.includes(' ')) {
+                symbol = symbol.split(' ')[0];
+            }
+
+            const rawPrice = stock.last_deal_price > 0 ? stock.last_deal_price : stock.close;
+            const parsedPrice = Number(rawPrice);
+            const price = Number.isFinite(parsedPrice) ? parsedPrice : 0;
+            const formattedPrice = 'UGX ' + price.toFixed(2);
+
+            const rawChangePercent = Number(stock.change_percent);
+            const changePercent = Number.isFinite(rawChangePercent) ? rawChangePercent : 0;
+            const changeClass = changePercent >= 0 ? 'positive' : 'negative';
+            const changeSymbol = changePercent >= 0 ? '+' : '';
+            const formattedChange = changeSymbol + changePercent.toFixed(2) + '%';
+
+            return {
+                symbol: symbol,
+                formattedPrice: formattedPrice,
+                formattedChange: formattedChange,
+                changeClass: changeClass
+            };
+        }
+
+        function createTickerItem(formattedStock) {
+            const tickerItem = document.createElement('div');
+            tickerItem.className = 'ticker-item';
+            tickerItem.innerHTML = `
+                <span class="ticker-symbol">${formattedStock.symbol}</span>
+                <span class="ticker-price">${formattedStock.formattedPrice}</span>
+                <span class="ticker-change ${formattedStock.changeClass}">${formattedStock.formattedChange}</span>
+            `;
+            return tickerItem;
+        }
+
+        function patchTickerItem(tickerItem, formattedStock) {
+            if (!tickerItem) {
+                return;
+            }
+
+            const symbolEl = tickerItem.querySelector('.ticker-symbol');
+            const priceEl = tickerItem.querySelector('.ticker-price');
+            const changeEl = tickerItem.querySelector('.ticker-change');
+
+            if (symbolEl) {
+                symbolEl.textContent = formattedStock.symbol;
+            }
+            if (priceEl) {
+                priceEl.textContent = formattedStock.formattedPrice;
+            }
+            if (changeEl) {
+                changeEl.textContent = formattedStock.formattedChange;
+                changeEl.classList.remove('positive', 'negative');
+                changeEl.classList.add(formattedStock.changeClass);
+            }
+        }
+
+        function rebuildTickerTrack(tickerContent, formattedStocks) {
+            tickerContent.innerHTML = '';
+
+            const baseItems = [];
+            formattedStocks.forEach(function(formattedStock) {
+                const baseItem = createTickerItem(formattedStock);
+                baseItems.push(baseItem);
+                tickerContent.appendChild(baseItem);
+            });
+
+            // Duplicate items for seamless scrolling loop.
+            baseItems.forEach(function(baseItem) {
+                tickerContent.appendChild(baseItem.cloneNode(true));
+            });
+        }
+
         // Function to update stock ticker with live data
         function updateStockTicker(marketData) {
             console.log('Updating stock ticker with', marketData.length, 'stocks');
@@ -1946,42 +2028,37 @@
                 return;
             }
 
-            // Clear existing ticker items
-            tickerContent.innerHTML = '';
+            if (!Array.isArray(marketData) || marketData.length === 0) {
+                console.log('No market data available for ticker');
+                return;
+            }
 
-            // Create ticker items from live data
-            marketData.forEach(function(stock) {
-                const tickerItem = document.createElement('div');
-                tickerItem.className = 'ticker-item';
-
-                // Format the stock symbol (clean up names like "AIRTEL UGANDA" -> "AIRTEL")
-                let symbol = stock.stock;
-                if (symbol.includes(' ')) {
-                    symbol = symbol.split(' ')[0];
-                }
-
-                // Format price (use last_deal_price if available, otherwise close price)
-                let price = stock.last_deal_price > 0 ? stock.last_deal_price : stock.close;
-                let formattedPrice = 'UGX ' + price.toFixed(2);
-
-                // Format change percentage
-                let changePercent = stock.change_percent;
-                let changeClass = changePercent >= 0 ? 'positive' : 'negative';
-                let changeSymbol = changePercent >= 0 ? '+' : '';
-                let formattedChange = changeSymbol + changePercent.toFixed(2) + '%';
-
-                tickerItem.innerHTML = `
-                    <span class="ticker-symbol">${symbol}</span>
-                    <span class="ticker-price">${formattedPrice}</span>
-                    <span class="ticker-change ${changeClass}">${formattedChange}</span>
-                `;
-
-                tickerContent.appendChild(tickerItem);
+            const formattedStocks = marketData.map(formatTickerStock);
+            const nextSymbols = formattedStocks.map(function(stock) {
+                return stock.symbol;
             });
 
-            // Duplicate the items for seamless scrolling
-            const originalItems = tickerContent.innerHTML;
-            tickerContent.innerHTML = originalItems + originalItems;
+            const symbolsChanged =
+                tickerSymbols.length !== nextSymbols.length ||
+                tickerSymbols.some(function(symbol, index) {
+                    return symbol !== nextSymbols[index];
+                });
+
+            const expectedTickerItems = formattedStocks.length * 2;
+            const currentTickerItems = tickerContent.querySelectorAll('.ticker-item');
+            const needsRebuild = symbolsChanged || currentTickerItems.length !== expectedTickerItems;
+
+            if (needsRebuild) {
+                rebuildTickerTrack(tickerContent, formattedStocks);
+            } else {
+                const half = formattedStocks.length;
+                formattedStocks.forEach(function(formattedStock, index) {
+                    patchTickerItem(currentTickerItems[index], formattedStock);
+                    patchTickerItem(currentTickerItems[index + half], formattedStock);
+                });
+            }
+
+            tickerSymbols = nextSymbols;
 
             console.log('Stock ticker updated with live data');
         }

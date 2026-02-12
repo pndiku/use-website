@@ -58,6 +58,14 @@ Route::get('/about', function () {
         ->get();
     return view('about', compact('siteContent', 'menuItems'));
 })->name('about');
+Route::get('/about/academy', function () {
+    $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
+    $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')
+        ->mainMenu()
+        ->active()
+        ->get();
+    return view('academy', compact('siteContent', 'menuItems'));
+})->name('academy');
 Route::get('/use-specialist-market', function () {
     $siteContent = \App\Models\SiteContent::all()->pluck('value', 'key')->toArray();
     $menuItems = \App\Models\MenuItem::with('activeChildren.activeChildren')

@@ -1623,7 +1623,7 @@
                     </div>
                 </div>
                 <div class="stat-footer">
-                    The <span class="highlight">total volume</span> traded on the USE today is <span class="highlight">_</span>
+                    The <span class="highlight">total volume</span> traded on the USE yesterday is <span class="highlight">_</span>
                 </div>
             </div>
 
@@ -2067,6 +2067,58 @@
             console.log('Stock ticker updated with live data');
         }
 
+        // Function to fetch and update market statistics (Total Volume, Trades, Index Daily)
+        function updateMarketStatistics() {
+            console.log('Fetching market statistics from delayed data...');
+
+            fetch('/api/delayed-data')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Market statistics data received:', data);
+
+                    // Filter equity stocks only
+                    const equityStocks = data.filter(item => item.type === 'EQUITY');
+
+                    // Calculate total volume (sum of all equity volumes)
+                    const totalVolume = equityStocks.reduce((sum, stock) => sum + (stock.volume || 0), 0);
+
+                    // Calculate total trades/deals (sum of all equity deals)
+                    const totalTrades = equityStocks.reduce((sum, stock) => sum + (stock.deals || 0), 0);
+
+                    // Find LCI index value
+                    const lciIndex = data.find(item => item.type === 'INDEX' && item.stock === 'LCI');
+                    const indexDaily = lciIndex ? lciIndex.price : 0;
+
+                    // Update DOM elements
+                    const totalVolumeEl = document.getElementById('totalVolume');
+                    const totalTradesEl = document.getElementById('totalTrades');
+                    const indexDailyEl = document.getElementById('indexDaily');
+
+                    if (totalVolumeEl) {
+                        totalVolumeEl.textContent = totalVolume.toLocaleString();
+                    }
+
+                    if (totalTradesEl) {
+                        totalTradesEl.textContent = totalTrades.toLocaleString();
+                    }
+
+                    if (indexDailyEl) {
+                        indexDailyEl.textContent = indexDaily.toFixed(2);
+                    }
+
+                    // Update the footer text with total volume
+                    const statFooter = document.querySelector('.stat-footer .highlight:last-child');
+                    if (statFooter) {
+                        statFooter.textContent = totalVolume.toLocaleString();
+                    }
+
+                    console.log('Market statistics updated - Volume:', totalVolume, 'Trades:', totalTrades, 'LCI Index:', indexDaily);
+                })
+                .catch(error => {
+                    console.error('Error fetching market statistics:', error);
+                });
+        }
+
         // Function to update Top Gainers and Top Losers with live data
         function updateMarketMovers(marketData) {
             // Only update market movers if market has closed (after 1PM EAT)
@@ -2275,6 +2327,12 @@
         // Initialize carousel when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing carousel...');
+
+            // Fetch and update market statistics immediately
+            updateMarketStatistics();
+
+            // Refresh market statistics every 30 seconds
+            setInterval(updateMarketStatistics, 30000);
 
             // Wait a bit for all elements to be rendered
             setTimeout(function() {

@@ -2026,11 +2026,6 @@
     </style>
 </head>
 <body>
-    <!-- ReconnectingWebSocket Library -->
-    <script>
-        !function(a,b){"function"==typeof define&&define.amd?define([],b):"undefined"!=typeof module&&module.exports?module.exports=b():a.ReconnectingWebSocket=b()}(this,function(){function a(b,c,d){function l(a,b){var c=document.createEvent("CustomEvent");return c.initCustomEvent(a,!1,!1,b),c}var e={debug:!1,automaticOpen:!0,reconnectInterval:1e3,maxReconnectInterval:3e4,reconnectDecay:1.5,timeoutInterval:2e3};d||(d={});for(var f in e)this[f]="undefined"!=typeof d[f]?d[f]:e[f];this.url=b,this.reconnectAttempts=0,this.readyState=WebSocket.CONNECTING,this.protocol=null;var h,g=this,i=!1,j=!1,k=document.createElement("div");k.addEventListener("open",function(a){g.onopen(a)}),k.addEventListener("close",function(a){g.onclose(a)}),k.addEventListener("connecting",function(a){g.onconnecting(a)}),k.addEventListener("message",function(a){g.onmessage(a)}),k.addEventListener("error",function(a){g.onerror(a)}),this.addEventListener=k.addEventListener.bind(k),this.removeEventListener=k.removeEventListener.bind(k),this.dispatchEvent=k.dispatchEvent.bind(k),this.open=function(b){h=new WebSocket(g.url,c||[]),b||k.dispatchEvent(l("connecting")),(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","attempt-connect",g.url);var d=h,e=setTimeout(function(){(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","connection-timeout",g.url),j=!0,d.close(),j=!1},g.timeoutInterval);h.onopen=function(){clearTimeout(e),(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","onopen",g.url),g.protocol=h.protocol,g.readyState=WebSocket.OPEN,g.reconnectAttempts=0;var d=l("open");d.isReconnect=b,b=!1,k.dispatchEvent(d)},h.onclose=function(c){if(clearTimeout(e),h=null,i)g.readyState=WebSocket.CLOSED,k.dispatchEvent(l("close"));else{g.readyState=WebSocket.CONNECTING;var d=l("connecting");d.code=c.code,d.reason=c.reason,d.wasClean=c.wasClean,k.dispatchEvent(d),b||j||((g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","onclose",g.url),k.dispatchEvent(l("close")));var e=g.reconnectInterval*Math.pow(g.reconnectDecay,g.reconnectAttempts);setTimeout(function(){g.reconnectAttempts++,g.open(!0)},e>g.maxReconnectInterval?g.maxReconnectInterval:e)}},h.onmessage=function(b){(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","onmessage",g.url,b.data);var c=l("message");c.data=b.data,k.dispatchEvent(c)},h.onerror=function(b){(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","onerror",g.url,b),k.dispatchEvent(l("error"))}},1==this.automaticOpen&&this.open(!1),this.send=function(b){if(h)return(g.debug||a.debugAll)&&console.debug("ReconnectingWebSocket","send",g.url,b),h.send(b);throw"INVALID_STATE_ERR : Pausing to reconnect websocket"},this.close=function(a,b){"undefined"==typeof a&&(a=1e3),i=!0,h&&h.close(a,b)},this.refresh=function(){h&&h.close()}}return a.prototype.onopen=function(){},a.prototype.onclose=function(){},a.prototype.onconnecting=function(){},a.prototype.onmessage=function(){},a.prototype.onerror=function(){},a.debugAll=!1,a.CONNECTING=WebSocket.CONNECTING,a.OPEN=WebSocket.OPEN,a.CLOSING=WebSocket.CLOSING,a.CLOSED=WebSocket.CLOSED,a});
-        console.log('ReconnectingWebSocket library loaded');
-    </script>
 
     <script>
         // Modern navbar scroll effect
@@ -2282,52 +2277,55 @@
             }, true); // Use capture phase
         });
 
-        // WebSocket Connection for Live Data
-        console.log('Initializing WebSocket connection...');
-        
-        try {
-            var socket = new ReconnectingWebSocket("wss://scd.use.or.ug/ws");
-            console.log('WebSocket object created:', socket);
+        // Live price feed — fetch public ticket then connect
+        (function () {
+            var WS_URL = 'wss://scd.use.or.ug/ws';
+            var TICKET_URL = 'https://scd.use.or.ug/ws-ticket/public';
+            var reconnectDelay = 1000;
+            var maxDelay = 30000;
 
-            socket.onopen = function() {
-                console.log('WebSocket connected successfully!');
-                console.log('Sending subscription message...');
-                socket.send('{"subscribe": "prices"}');
-                console.log('Subscription message sent: {"subscribe": "prices"}');
-            };
+            function connect() {
+                fetch(TICKET_URL)
+                    .then(function (r) { return r.json(); })
+                    .then(function (body) {
+                        var ws = new WebSocket(WS_URL + '?token=' + body.token);
 
-            socket.onmessage = function(event) {
-                console.log('WebSocket message received:', event.data);
-                try {
-                    var data = JSON.parse(event.data);
-                    console.log('Parsed message data:', data);
-                    
-                    // Update stock ticker and market movers with live data
-                    if (data.channel === 'prices' && data.data && data.data.market) {
-                        updateStockTicker(data.data.market);
-                        updateMarketMovers(data.data.market);
-                    }
-                } catch (e) {
-                    console.log('Failed to parse message as JSON:', e);
-                }
-            };
+                        ws.onopen = function () {
+                            reconnectDelay = 1000;
+                            ws.send(JSON.stringify({type: 'subscribe', channel: 'prices', id: 'broadcast'}));
+                        };
 
-            socket.onclose = function(event) {
-                console.log('WebSocket connection closed:', event.code, event.reason);
-            };
+                        ws.onmessage = function (event) {
+                            try {
+                                var data = JSON.parse(event.data);
+                                if (data.type === 'message' && data.channel === 'prices' && data.data && data.data.market) {
+                                    updateStockTicker(data.data.market);
+                                    updateMarketMovers(data.data.market);
+                                }
+                            } catch (e) {}
+                        };
 
-            socket.onerror = function(error) {
-                console.error('WebSocket error occurred:', error);
-            };
+                        ws.onclose = function () {
+                            setTimeout(function () {
+                                reconnectDelay = Math.min(reconnectDelay * 1.5, maxDelay);
+                                connect();
+                            }, reconnectDelay);
+                        };
 
-            // Log connection state periodically
-            setInterval(function() {
-                console.log('WebSocket ready state:', socket.readyState, '(0=CONNECTING, 1=OPEN, 2=CLOSING, 3=CLOSED)');
-            }, 10000); // Log every 10 seconds
+                        ws.onerror = function (err) {
+                            console.error('Live data error', err);
+                        };
+                    })
+                    .catch(function () {
+                        setTimeout(function () {
+                            reconnectDelay = Math.min(reconnectDelay * 1.5, maxDelay);
+                            connect();
+                        }, reconnectDelay);
+                    });
+            }
 
-        } catch (error) {
-            console.error('Failed to create WebSocket connection:', error);
-        }
+            connect();
+        })();
 
         // Function to update stock ticker with live data
         function updateStockTicker(marketData) {

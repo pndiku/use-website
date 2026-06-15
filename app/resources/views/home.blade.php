@@ -1895,7 +1895,7 @@
         // Live price feed — fetch public ticket then connect
         (function () {
             var WS_URL = 'wss://scd.use.or.ug/ws';
-            var TICKET_URL = 'https://scd.use.or.ug/ws-ticket/public';
+            var TICKET_URL = 'https://scd.use.or.ug/ws-ticket';
             var reconnectDelay = 1000;
             var maxDelay = 30000;
 

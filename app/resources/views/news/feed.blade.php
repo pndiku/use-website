@@ -12,7 +12,10 @@
       <link>{{ route('news.article', $article->slug) }}</link>
       <guid isPermaLink="true">{{ route('news.article', $article->slug) }}</guid>
       <pubDate>{{ $article->getDisplayDate()->toRssString() }}</pubDate>
-      <description><![CDATA[{!! strip_tags($article->content) !!}]]></description>
+      <description><![CDATA[{!! strip_tags($article->content) !!}@if($article->file_url)<br><br>Download: {{ $article->file_url }}@endif]]></description>
+      @if($article->image_url)
+      <enclosure url="{{ $article->image_url }}" type="image/jpeg" length="0"/>
+      @endif
     </item>
     @endforeach
   </channel>

@@ -94,6 +94,7 @@ Route::get('/securities/bonds', function () {
     return view('bonds', compact('siteContent', 'menuItems'));
 })->name('bonds');
 Route::get('/securities/{symbol}', 'App\Http\Controllers\SecurityController@showPublic')->name('security.show');
+Route::get('/news/feed', 'App\Http\Controllers\NewsController@feed')->name('news.feed');
 Route::get('/news/{slug}', 'App\Http\Controllers\NewsController@showPublic')->name('news.article');
 Route::get('/events/{id}', 'App\Http\Controllers\EventController@showPublic')->name('event.show');
 Route::get('/annual-reports', function () {

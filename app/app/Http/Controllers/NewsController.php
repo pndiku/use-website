@@ -143,6 +143,15 @@ class NewsController extends Controller
     /**
      * Display a specific news article for public viewing
      */
+    public function feed()
+    {
+        $articles = News::published()->latest()->take(20)->get();
+        $siteContent = SiteContent::all()->pluck('value', 'key')->toArray();
+        return response()
+            ->view('news.feed', compact('articles', 'siteContent'))
+            ->header('Content-Type', 'application/rss+xml; charset=utf-8');
+    }
+
     public function showPublic($slug)
     {
         $article = News::where('slug', $slug)

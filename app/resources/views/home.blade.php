@@ -1775,30 +1775,7 @@
                         </a>
                     @endforeach
                 @else
-                    <div class="event-card">
-                        <div class="event-date-icon">
-                            <i class="far fa-calendar"></i>
-                        </div>
-                        <div class="event-date">Nov 4 - 5, 2025</div>
-                        <h3 class="event-title">Red Cloud Fall Mining Showcase Life of a party</h3>
-                        <p class="event-description">Connect with industry leaders and explore investment opportunities.</p>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-date-icon">
-                            <i class="far fa-calendar"></i>
-                        </div>
-                        <div class="event-date">Nov 4 - 5, 2025</div>
-                        <h3 class="event-title">Blue Crux Fall Mining Showcase Life of a party</h3>
-                        <p class="event-description">Network with professionals at this premier mining event.</p>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-date-icon">
-                            <i class="far fa-calendar"></i>
-                        </div>
-                        <div class="event-date">Nov 4 - 5, 2025</div>
-                        <h3 class="event-title">Red Cloud Fall Mining Showcase Life of a party</h3>
-                        <p class="event-description">Discover new opportunities in Uganda's growing markets.</p>
-                    </div>
+                    <p class="event-description">No events are scheduled at the moment.</p>
                 @endif
             </div>
         </div>

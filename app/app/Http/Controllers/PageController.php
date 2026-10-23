@@ -116,7 +116,10 @@ class PageController extends Controller
     }
 
     public function subscribe(Request $request){
-        $email = $request['email'];
+        $validated = $request->validate([
+            'email' => 'required|email:filter|max:255',
+        ]);
+        $email = $validated['email'];
         $u = Subscriber::where('email', $email)->first();
         //dd($user);
         if(!$u) {

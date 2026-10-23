@@ -23,30 +23,32 @@ Route::get('/auth/google', 'App\Http\Controllers\AuthController@redirectToGoogle
 Route::get('/auth/google/callback', 'App\Http\Controllers\AuthController@handleGoogleCallback');
 
 
-Route::post('/login', 'App\Http\Controllers\AuthController@loginUser')->name('login');
+Route::post('/login', 'App\Http\Controllers\AuthController@loginUser')->name('login')->middleware('throttle:10,1');
 Route::post('/logout', 'App\Http\Controllers\AuthController@logout');
 
-Route::post('/subscribe', 'App\Http\Controllers\PageController@subscribe');
+Route::post('/subscribe', 'App\Http\Controllers\PageController@subscribe')->middleware('throttle:10,1');
 
 Route::get('/manage', 'App\Http\Controllers\PageController@manage')->name('home')->middleware(['auth', 'admin']);
 
-Route::get('/logout', 'App\Http\Controllers\AuthController@logout');
 
 // File serving routes
-Route::get('/uploads/{filename}', function ($filename) {
-    $path = base_path('../uploads/' . $filename);
-    if (!file_exists($path)) {
+$serveFromDirectory = function ($directory, $filename) {
+    // Resolve the real path and make sure it stays inside the directory (blocks ../ traversal)
+    $baseDir = realpath(base_path('../' . $directory));
+    $path = realpath($baseDir . '/' . $filename);
+    if ($baseDir === false || $path === false || !is_file($path)
+        || strpos($path, $baseDir . DIRECTORY_SEPARATOR) !== 0) {
         abort(404);
     }
-    return response()->file($path);
+    return response()->file($path, ['X-Content-Type-Options' => 'nosniff']);
+};
+
+Route::get('/uploads/{filename}', function ($filename) use ($serveFromDirectory) {
+    return $serveFromDirectory('uploads', $filename);
 })->where('filename', '.*');
 
-Route::get('/images/{filename}', function ($filename) {
-    $path = base_path('../images/' . $filename);
-    if (!file_exists($path)) {
-        abort(404);
-    }
-    return response()->file($path);
+Route::get('/images/{filename}', function ($filename) use ($serveFromDirectory) {
+    return $serveFromDirectory('images', $filename);
 })->where('filename', '.*');
 
 // Public pages
@@ -186,7 +188,10 @@ Route::get('/api/delayed-data', function () {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_ENCODING, '');
 
@@ -196,7 +201,8 @@ Route::get('/api/delayed-data', function () {
         curl_close($ch);
 
         if ($curlError) {
-            return response()->json(['error' => 'CURL error: ' . $curlError], 500);
+            \Log::error('Market data fetch error: ' . $curlError);
+            return response()->json(['error' => 'Failed to fetch data'], 500);
         }
 
         if ($httpCode === 200 && $response) {
@@ -215,7 +221,7 @@ Route::get('/api/delayed-data', function () {
         return response()->json(['error' => 'Failed to fetch data', 'http_code' => $httpCode], 500);
     } catch (\Exception $e) {
         \Log::error('Delayed data fetch error: ' . $e->getMessage());
-        return response()->json(['error' => $e->getMessage()], 500);
+        return response()->json(['error' => 'Failed to fetch data'], 500);
     }
 });
 
@@ -240,7 +246,10 @@ Route::get('/api/stock-data/{stock}', function ($stock) {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_ENCODING, ''); // Handle compression
 
@@ -250,7 +259,8 @@ Route::get('/api/stock-data/{stock}', function ($stock) {
         curl_close($ch);
 
         if ($curlError) {
-            return response()->json(['error' => 'CURL error: ' . $curlError], 500);
+            \Log::error('Market data fetch error: ' . $curlError);
+            return response()->json(['error' => 'Failed to fetch data'], 500);
         }
 
         if ($httpCode === 200 && $response) {
@@ -273,9 +283,7 @@ Route::get('/api/stock-data/{stock}', function ($stock) {
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return response()->json([
                     'error' => 'Invalid JSON received from API',
-                    'json_error' => json_last_error_msg(),
-                    'first_100' => substr($response, 0, 100),
-                    'last_100' => substr($response, -100)
+                    'json_error' => json_last_error_msg()
                 ], 500);
             }
 
@@ -286,7 +294,7 @@ Route::get('/api/stock-data/{stock}', function ($stock) {
         return response()->json(['error' => 'Failed to fetch data', 'http_code' => $httpCode], 500);
     } catch (\Exception $e) {
         \Log::error('Stock data fetch error: ' . $e->getMessage());
-        return response()->json(['error' => $e->getMessage()], 500);
+        return response()->json(['error' => 'Failed to fetch data'], 500);
     }
 });
 Route::get('/listings/how-to-list', function () {

@@ -5,6 +5,14 @@
 
     RewriteEngine On
 
+    # The web root is also the repository root: never serve the Laravel app,
+    # dependencies, logs, database dumps or dotfiles (.git, .env) directly.
+    # index.php loads app/ from disk, so nothing under app/ needs to be public.
+    RewriteRule ^app(/|$) - [F,L]
+    RewriteRule (^|/)\.(?!well-known(/|$)) - [F,L]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule \.(sql|md|lock|json|xml|yml|yaml|log|sh|dist|example)$ - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

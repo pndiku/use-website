@@ -32,10 +32,10 @@ class CouchbaseCollectionAdapter extends AbstractAdapter
     private Collection $connection;
     private MarshallerInterface $marshaller;
 
-    public function __construct(Collection $connection, string $namespace = '', int $defaultLifetime = 0, MarshallerInterface $marshaller = null)
+    public function __construct(Collection $connection, string $namespace = '', int $defaultLifetime = 0, ?MarshallerInterface $marshaller = null)
     {
         if (!static::isSupported()) {
-            throw new CacheException('Couchbase >= 3.0.0 < 4.0.0 is required.');
+            throw new CacheException('Couchbase >= 3.0.5 < 4.0.0 is required.');
         }
 
         $this->maxIdLength = static::MAX_KEY_LENGTH;
@@ -54,10 +54,10 @@ class CouchbaseCollectionAdapter extends AbstractAdapter
         }
 
         if (!static::isSupported()) {
-            throw new CacheException('Couchbase >= 3.0.0 < 4.0.0 is required.');
+            throw new CacheException('Couchbase >= 3.0.5 < 4.0.0 is required.');
         }
 
-        set_error_handler(function ($type, $msg, $file, $line): bool { throw new \ErrorException($msg, 0, $type, $file, $line); });
+        set_error_handler(static fn ($type, $msg, $file, $line) => throw new \ErrorException($msg, 0, $type, $file, $line));
 
         $dsnPattern = '/^(?<protocol>couchbase(?:s)?)\:\/\/(?:(?<username>[^\:]+)\:(?<password>[^\@]{6,})@)?'
             .'(?<host>[^\:]+(?:\:\d+)?)(?:\/(?<bucketName>[^\/\?]+))(?:(?:\/(?<scopeName>[^\/]+))'
@@ -173,7 +173,7 @@ class CouchbaseCollectionAdapter extends AbstractAdapter
             }
         }
 
-        return 0 === \count($idsErrors);
+        return !$idsErrors;
     }
 
     protected function doSave(array $values, $lifetime): array|bool
@@ -194,6 +194,6 @@ class CouchbaseCollectionAdapter extends AbstractAdapter
             }
         }
 
-        return [] === $ko ? true : $ko;
+        return !$ko ? true : $ko;
     }
 }

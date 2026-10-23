@@ -43,8 +43,10 @@ class DatabaseMigrationService extends \Google\Service
   public $projects_locations_conversionWorkspaces;
   public $projects_locations_conversionWorkspaces_mappingRules;
   public $projects_locations_migrationJobs;
+  public $projects_locations_migrationJobs_objects;
   public $projects_locations_operations;
   public $projects_locations_privateConnections;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the DatabaseMigrationService
@@ -58,6 +60,7 @@ class DatabaseMigrationService extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://datamigration.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://datamigration.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1';
@@ -77,6 +80,10 @@ class DatabaseMigrationService extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'fetchReservedPublicIps' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ],
                 'pageSize' => [
                   'location' => 'query',
@@ -105,6 +112,11 @@ class DatabaseMigrationService extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'extraLocationTypes' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
                 ],
                 'filter' => [
                   'location' => 'query',
@@ -397,6 +409,66 @@ class DatabaseMigrationService extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'fetchEntitiesStatusView' => [
+              'path' => 'v1/{+conversionWorkspace}:fetchEntitiesStatusView',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'conversionWorkspace' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'fetchView' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'tree' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'fetchIssues' => [
+              'path' => 'v1/{+conversionWorkspace}:fetchIssues',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'conversionWorkspace' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'allIssues' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'tree' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
@@ -498,6 +570,16 @@ class DatabaseMigrationService extends \Google\Service
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'setDraftEntityDdl' => [
+              'path' => 'v1/{+conversionWorkspace}:setDraftEntityDdl',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'conversionWorkspace' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -647,6 +729,26 @@ class DatabaseMigrationService extends \Google\Service
                 'requestId' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'demoteDestination' => [
+              'path' => 'v1/{+name}:demoteDestination',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'fetchSourceObjects' => [
+              'path' => 'v1/{+name}:fetchSourceObjects',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],'generateSshScript' => [
@@ -821,6 +923,88 @@ class DatabaseMigrationService extends \Google\Service
           ]
         ]
     );
+    $this->projects_locations_migrationJobs_objects = new DatabaseMigrationService\Resource\ProjectsLocationsMigrationJobsObjects(
+        $this,
+        $this->serviceName,
+        'objects',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'getIamPolicy' => [
+              'path' => 'v1/{+resource}:getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'options.requestedPolicyVersion' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/objects',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'lookup' => [
+              'path' => 'v1/{+parent}/objects:lookup',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'setIamPolicy' => [
+              'path' => 'v1/{+resource}:setIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'testIamPermissions' => [
+              'path' => 'v1/{+resource}:testIamPermissions',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->projects_locations_operations = new DatabaseMigrationService\Resource\ProjectsLocationsOperations(
         $this,
         $this->serviceName,
@@ -878,6 +1062,10 @@ class DatabaseMigrationService extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'returnPartialSuccess' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],
           ]
@@ -907,6 +1095,10 @@ class DatabaseMigrationService extends \Google\Service
                   'type' => 'string',
                 ],
                 'skipValidation' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+                'validateOnly' => [
                   'location' => 'query',
                   'type' => 'boolean',
                 ],

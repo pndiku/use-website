@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Kreait\Firebase\Factory;
 use Google_Client;
 use Google_Service_Oauth2;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-use Kreait\Firebase\Auth\CreateSessionCookie\FailedToCreateSessionCookie;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -117,52 +115,5 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
-    }
-
-    public function registerUser(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        $userProperties = [
-            'email' => $validatedData['email'],
-            'emailVerified' => false,
-            'displayName' => $validatedData['name'],
-            'password' => $validatedData['password'],
-            'disabled' => false,
-        ];
-
-        $firebaseAuth = app('firebaseauth');
-        try {
-            $userRecord = $firebaseAuth->createUser($userProperties);
-
-            if ($userRecord instanceof \Kreait\Firebase\Auth\UserRecord) {
-                $firebaseAuth->sendEmailVerificationLink($validatedData['email']);
-
-                $u = User::where('email', $validatedData['email'])->first();
-                if(!$u) {
-                    $u = new User;
-                    $u->email = $validatedData['email'];
-                    $u->type = "customer";
-                    $u->name = $validatedData['name'];
-                    $u->localId = $userRecord->uid;
-                    $u->verified = "false";
-                    $u->save();
-                }
-
-                Auth::login($u);
-
-                return redirect('/manage');
-            } else {
-                $errorMessage = 'Unexpected error occurred while creating user';
-                return redirect()->back()->with('failed', $errorMessage)->withInput();
-            }
-        } catch (\Kreait\Firebase\Exception\AuthException $e) {
-            $errorMessage = $e->getMessage();
-            return redirect()->back()->with('failed', $errorMessage)->withInput();
-        }
     }
 }

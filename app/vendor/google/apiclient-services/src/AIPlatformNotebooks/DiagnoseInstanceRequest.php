@@ -21,9 +21,17 @@ class DiagnoseInstanceRequest extends \Google\Model
 {
   protected $diagnosticConfigType = DiagnosticConfig::class;
   protected $diagnosticConfigDataType = '';
+  /**
+   * Optional. Maximum amount of time in minutes before the operation times out.
+   *
+   * @var int
+   */
+  public $timeoutMinutes;
 
   /**
-   * @param DiagnosticConfig
+   * Required. Defines flags that are used to run the diagnostic tool
+   *
+   * @param DiagnosticConfig $diagnosticConfig
    */
   public function setDiagnosticConfig(DiagnosticConfig $diagnosticConfig)
   {
@@ -35,6 +43,22 @@ class DiagnoseInstanceRequest extends \Google\Model
   public function getDiagnosticConfig()
   {
     return $this->diagnosticConfig;
+  }
+  /**
+   * Optional. Maximum amount of time in minutes before the operation times out.
+   *
+   * @param int $timeoutMinutes
+   */
+  public function setTimeoutMinutes($timeoutMinutes)
+  {
+    $this->timeoutMinutes = $timeoutMinutes;
+  }
+  /**
+   * @return int
+   */
+  public function getTimeoutMinutes()
+  {
+    return $this->timeoutMinutes;
   }
 }
 

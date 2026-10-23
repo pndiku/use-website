@@ -27,11 +27,12 @@ use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ExchangeDeviceCheckT
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ExchangePlayIntegrityTokenRequest;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ExchangeRecaptchaEnterpriseTokenRequest;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ExchangeRecaptchaV3TokenRequest;
-use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1ExchangeSafetyNetTokenRequest;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1GenerateAppAttestChallengeRequest;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1GenerateAppAttestChallengeResponse;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeRequest;
 use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeResponse;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1MintAppCheckTokenRequest;
+use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1MintAppCheckTokenResponse;
 
 /**
  * The "apps" collection of methods.
@@ -56,6 +57,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeAppAttestAssertionRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeAppAttestAssertion($app, GoogleFirebaseAppcheckV1ExchangeAppAttestAssertionRequest $postBody, $optParams = [])
   {
@@ -79,6 +81,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeAppAttestAttestationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1ExchangeAppAttestAttestationResponse
+   * @throws \Google\Service\Exception
    */
   public function exchangeAppAttestAttestation($app, GoogleFirebaseAppcheckV1ExchangeAppAttestAttestationRequest $postBody, $optParams = [])
   {
@@ -99,6 +102,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeCustomTokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeCustomToken($app, GoogleFirebaseAppcheckV1ExchangeCustomTokenRequest $postBody, $optParams = [])
   {
@@ -120,6 +124,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeDebugTokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeDebugToken($app, GoogleFirebaseAppcheckV1ExchangeDebugTokenRequest $postBody, $optParams = [])
   {
@@ -140,6 +145,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeDeviceCheckTokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeDeviceCheckToken($app, GoogleFirebaseAppcheckV1ExchangeDeviceCheckTokenRequest $postBody, $optParams = [])
   {
@@ -160,6 +166,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangePlayIntegrityTokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangePlayIntegrityToken($app, GoogleFirebaseAppcheckV1ExchangePlayIntegrityTokenRequest $postBody, $optParams = [])
   {
@@ -181,6 +188,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeRecaptchaEnterpriseTokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeRecaptchaEnterpriseToken($app, GoogleFirebaseAppcheckV1ExchangeRecaptchaEnterpriseTokenRequest $postBody, $optParams = [])
   {
@@ -201,33 +209,13 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1ExchangeRecaptchaV3TokenRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1AppCheckToken
+   * @throws \Google\Service\Exception
    */
   public function exchangeRecaptchaV3Token($app, GoogleFirebaseAppcheckV1ExchangeRecaptchaV3TokenRequest $postBody, $optParams = [])
   {
     $params = ['app' => $app, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('exchangeRecaptchaV3Token', [$params], GoogleFirebaseAppcheckV1AppCheckToken::class);
-  }
-  /**
-   * Validates a [SafetyNet
-   * token](https://developer.android.com/training/safetynet/attestation#request-
-   * attestation-step). If valid, returns an AppCheckToken.
-   * (apps.exchangeSafetyNetToken)
-   *
-   * @param string $app Required. The relative resource name of the Android app,
-   * in the format: ``` projects/{project_number}/apps/{app_id} ``` If necessary,
-   * the `project_number` element can be replaced with the project ID of the
-   * Firebase project. Learn more about using project identifiers in Google's [AIP
-   * 2510](https://google.aip.dev/cloud/2510) standard.
-   * @param GoogleFirebaseAppcheckV1ExchangeSafetyNetTokenRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return GoogleFirebaseAppcheckV1AppCheckToken
-   */
-  public function exchangeSafetyNetToken($app, GoogleFirebaseAppcheckV1ExchangeSafetyNetTokenRequest $postBody, $optParams = [])
-  {
-    $params = ['app' => $app, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('exchangeSafetyNetToken', [$params], GoogleFirebaseAppcheckV1AppCheckToken::class);
   }
   /**
    * Generates a challenge that protects the integrity of an immediately following
@@ -243,6 +231,7 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1GenerateAppAttestChallengeRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1GenerateAppAttestChallengeResponse
+   * @throws \Google\Service\Exception
    */
   public function generateAppAttestChallenge($app, GoogleFirebaseAppcheckV1GenerateAppAttestChallengeRequest $postBody, $optParams = [])
   {
@@ -265,12 +254,37 @@ class ProjectsApps extends \Google\Service\Resource
    * @param GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeResponse
+   * @throws \Google\Service\Exception
    */
   public function generatePlayIntegrityChallenge($app, GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeRequest $postBody, $optParams = [])
   {
     $params = ['app' => $app, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('generatePlayIntegrityChallenge', [$params], GoogleFirebaseAppcheckV1GeneratePlayIntegrityChallengeResponse::class);
+  }
+  /**
+   * Mints a new App Check token for the specified Firebase App. This method is
+   * intended to be called from a privileged environment where the caller can be
+   * authorized via Cloud IAM; for example, using a service account. To call this
+   * method, the caller must have the [`firebaseappcheck.googleapis.com/tokens.min
+   * t`](https://firebase.google.com/docs/projects/iam/permissions#app-check)
+   * permission. Returns a MintAppCheckTokenResponse. (apps.mintAppCheckToken)
+   *
+   * @param string $app Required. The relative resource name of the app, in the
+   * format: ``` projects/{project_number}/apps/{app_id} ``` If necessary, the
+   * `project_number` element can be replaced with the project ID of the Firebase
+   * project. Learn more about using project identifiers in Google's [AIP
+   * 2510](https://google.aip.dev/cloud/2510) standard.
+   * @param GoogleFirebaseAppcheckV1MintAppCheckTokenRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleFirebaseAppcheckV1MintAppCheckTokenResponse
+   * @throws \Google\Service\Exception
+   */
+  public function mintAppCheckToken($app, GoogleFirebaseAppcheckV1MintAppCheckTokenRequest $postBody, $optParams = [])
+  {
+    $params = ['app' => $app, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('mintAppCheckToken', [$params], GoogleFirebaseAppcheckV1MintAppCheckTokenResponse::class);
   }
 }
 

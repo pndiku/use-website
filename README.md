@@ -1,6 +1,6 @@
 # Uganda Securities Exchange Platform
 
-A modern web platform for the Uganda Securities Exchange, built with Laravel 8.x and featuring a custom dual-structure architecture for easy deployment.
+A modern web platform for the Uganda Securities Exchange, built with Laravel 13.x and featuring a custom dual-structure architecture for easy deployment.
 
 <p align="center">
   <img src="images/screenshot.png" alt="Uganda Securities Exchange Homepage" style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -12,7 +12,7 @@ This platform provides a comprehensive digital presence for the Uganda Securitie
 
 - **Public Website**: Homepage, securities listings, news articles, events, and annual reports
 - **Admin Dashboard**: Content management system for news, events, securities, carousel images, and site settings
-- **Authentication**: Dual authentication via Firebase and Google OAuth
+- **Authentication**: Email/password and Google OAuth (Google sign-in is limited to existing accounts)
 - **Dynamic Menu System**: 3-level hierarchical navigation
 - **Securities Management**: Track equities, treasury bills, and treasury bonds with detailed information
 
@@ -47,7 +47,7 @@ faangsupport/
 
 ## Requirements
 
-- PHP >= 7.3
+- PHP >= 8.3
 - MySQL/MariaDB
 - Composer (optional, if vendor directory not included)
 - Apache/Nginx web server
@@ -274,8 +274,8 @@ These routes are defined in `app/routes/web.php`.
 ### Authentication Routes
 - `/login` - User login
 - `/register` - User registration
-- `/auth/google` - Google OAuth login
-- `/logout` - Logout
+- `/auth/google` - Google OAuth login (existing accounts only)
+- `/logout` - Logout (POST only)
 
 ## Development
 
@@ -287,6 +287,17 @@ php artisan serve
 ```
 
 Visit `http://localhost:8000`
+
+### Running Tests
+
+Feature tests run against a MySQL/MariaDB database loaded from `use_db.sql`:
+
+```bash
+mysql -e "CREATE DATABASE use_test"
+mysql use_test < use_db.sql
+cd app
+DB_USERNAME=<user> DB_PASSWORD=<password> vendor/bin/phpunit
+```
 
 ### Clear Cache
 
@@ -352,7 +363,7 @@ php artisan view:clear
 - Use HTTPS (SSL certificate) for production
 - Implement admin middleware for `/admin` routes
 - Regularly update dependencies: `composer update`
-- Keep Firebase credentials secure (never commit to git)
+- Keep `APP_DEBUG=false` in production: `vendor/` includes dev tools (Ignition) that are only safe with debug off
 
 ## Contributing
 

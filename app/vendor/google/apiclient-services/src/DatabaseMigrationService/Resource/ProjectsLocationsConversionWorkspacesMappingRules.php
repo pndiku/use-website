@@ -43,12 +43,13 @@ class ProjectsLocationsConversionWorkspacesMappingRules extends \Google\Service\
    * @param array $optParams Optional parameters.
    *
    * @opt_param string mappingRuleId Required. The ID of the rule to create.
-   * @opt_param string requestId A unique ID used to identify the request. If the
-   * server receives two requests with the same ID, then the second request is
-   * ignored. It is recommended to always set this value to a UUID. The ID must
-   * contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens
-   * (-). The maximum length is 40 characters.
+   * @opt_param string requestId Optional. A unique ID used to identify the
+   * request. If the server receives two requests with the same ID, then the
+   * second request is ignored. It is recommended to always set this value to a
+   * UUID. The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+   * (_), and hyphens (-). The maximum length is 40 characters.
    * @return MappingRule
+   * @throws \Google\Service\Exception
    */
   public function create($parent, MappingRule $postBody, $optParams = [])
   {
@@ -68,6 +69,7 @@ class ProjectsLocationsConversionWorkspacesMappingRules extends \Google\Service\
    * UUID. The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
    * (_), and hyphens (-). The maximum length is 40 characters.
    * @return DatamigrationEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -84,6 +86,7 @@ class ProjectsLocationsConversionWorkspacesMappingRules extends \Google\Service\
    * conversionWorkspace/123/mappingRules/rule123@c7cfa2a8c7cfa2a8c7cfa2a8c7cfa2a8
    * @param array $optParams Optional parameters.
    * @return MappingRule
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
@@ -101,6 +104,7 @@ class ProjectsLocationsConversionWorkspacesMappingRules extends \Google\Service\
    * @param ImportMappingRulesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function import($parent, ImportMappingRulesRequest $postBody, $optParams = [])
   {
@@ -117,14 +121,15 @@ class ProjectsLocationsConversionWorkspacesMappingRules extends \Google\Service\
    * location}/conversionWorkspaces/{conversion_workspace}.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int pageSize The maximum number of rules to return. The service
-   * may return fewer than this value.
-   * @opt_param string pageToken The nextPageToken value received in the previous
-   * call to mappingRules.list, used in the subsequent request to retrieve the
-   * next page of results. On first call this should be left blank. When
-   * paginating, all other parameters provided to mappingRules.list must match the
-   * call that provided the page token.
+   * @opt_param int pageSize Optional. The maximum number of rules to return. The
+   * service may return fewer than this value.
+   * @opt_param string pageToken Optional. The nextPageToken value received in the
+   * previous call to mappingRules.list, used in the subsequent request to
+   * retrieve the next page of results. On first call this should be left blank.
+   * When paginating, all other parameters provided to mappingRules.list must
+   * match the call that provided the page token.
    * @return ListMappingRulesResponse
+   * @throws \Google\Service\Exception
    */
   public function listProjectsLocationsConversionWorkspacesMappingRules($parent, $optParams = [])
   {

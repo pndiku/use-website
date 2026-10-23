@@ -54,8 +54,8 @@ class REST
     ) {
         $runner = new Runner(
             $config,
-            sprintf('%s %s', $request->getMethod(), (string) $request->getUri()),
-            [get_class(), 'doExecute'],
+            sprintf('%s %s', $request->getMethod(), (string)$request->getUri()),
+            [self::class, 'doExecute'],
             [$client, $request, $expectedClass]
         );
 
@@ -84,23 +84,11 @@ class REST
             $response = $httpHandler($request);
         } catch (RequestException $e) {
             // if Guzzle throws an exception, catch it and handle the response
-            if (!$e->hasResponse()) {
+            // In Guzzle 7, the response is on RequestException, but in Guzzle 8
+            // it is only on its ResponseException subclass
+            $response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+            if (null === $response) {
                 throw $e;
-            }
-
-            $response = $e->getResponse();
-            // specific checking for Guzzle 5: convert to PSR7 response
-            if (
-                interface_exists('\GuzzleHttp\Message\ResponseInterface')
-                && $response instanceof \GuzzleHttp\Message\ResponseInterface
-            ) {
-                $response = new Response(
-                    $response->getStatusCode(),
-                    $response->getHeaders() ?: [],
-                    $response->getBody(),
-                    $response->getProtocolVersion(),
-                    $response->getReasonPhrase()
-                );
             }
         }
 
@@ -120,7 +108,7 @@ class REST
      */
     public static function decodeHttpResponse(
         ResponseInterface $response,
-        RequestInterface $request = null,
+        ?RequestInterface $request = null,
         $expectedClass = null
     ) {
         $code = $response->getStatusCode();
@@ -128,7 +116,7 @@ class REST
         // retry strategy
         if (intVal($code) >= 400) {
             // if we errored out, it should be safe to grab the response body
-            $body = (string) $response->getBody();
+            $body = (string)$response->getBody();
 
             // Check if we received errors, and add those to the Exception for convenience
             throw new GoogleServiceException($body, $code, null, self::getResponseErrors($body));
@@ -147,17 +135,17 @@ class REST
         return $response;
     }
 
-    private static function decodeBody(ResponseInterface $response, RequestInterface $request = null)
+    private static function decodeBody(ResponseInterface $response, ?RequestInterface $request = null)
     {
         if (self::isAltMedia($request)) {
             // don't decode the body, it's probably a really long string
             return '';
         }
 
-        return (string) $response->getBody();
+        return (string)$response->getBody();
     }
 
-    private static function determineExpectedClass($expectedClass, RequestInterface $request = null)
+    private static function determineExpectedClass($expectedClass, ?RequestInterface $request = null)
     {
         // "false" is used to explicitly prevent an expected class from being returned
         if (false === $expectedClass) {
@@ -184,7 +172,7 @@ class REST
         return null;
     }
 
-    private static function isAltMedia(RequestInterface $request = null)
+    private static function isAltMedia(?RequestInterface $request = null)
     {
         if ($request && $qs = $request->getUri()->getQuery()) {
             parse_str($qs, $query);

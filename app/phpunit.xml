@@ -19,10 +19,13 @@
     </coverage>
     <php>
         <server name="APP_ENV" value="testing"/>
+        <server name="APP_KEY" value="base64:dGVzdGluZy1vbmx5LWtleS1ub3QtZm9yLXByb2QtLS0="/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
-        <!-- <server name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <server name="DB_DATABASE" value=":memory:"/> -->
+        <!-- Feature tests run against a MySQL database loaded from use_db.sql;
+             set DB_USERNAME / DB_PASSWORD in the environment -->
+        <server name="DB_CONNECTION" value="mysql"/>
+        <server name="DB_DATABASE" value="use_test"/>
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>

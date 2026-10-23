@@ -1,366 +1,256 @@
 # Uganda Securities Exchange Platform
 
-A modern web platform for the Uganda Securities Exchange, built with Laravel 8.x and featuring a custom dual-structure architecture for easy deployment.
+The public website and content management dashboard for the Uganda Securities Exchange (USE), built on Laravel 13.
 
 <p align="center">
   <img src="images/screenshot.png" alt="Uganda Securities Exchange Homepage" style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
 </p>
 
-## Project Overview
+## Features
 
-This platform provides a comprehensive digital presence for the Uganda Securities Exchange, including:
-
-- **Public Website**: Homepage, securities listings, news articles, events, and annual reports
-- **Admin Dashboard**: Content management system for news, events, securities, carousel images, and site settings
-- **Authentication**: Dual authentication via Firebase and Google OAuth
-- **Dynamic Menu System**: 3-level hierarchical navigation
-- **Securities Management**: Track equities, treasury bills, and treasury bonds with detailed information
-
-## Project Architecture
-
-### Dual-Structure Setup
-
-This project uses a custom file structure designed for simplified deployment:
-
-```
-faangsupport/
-├── app/                    # Laravel application
-│   ├── app/               # Application logic (Models, Controllers)
-│   ├── config/            # Configuration files
-│   ├── database/          # Migrations, seeders
-│   ├── public/            # Laravel public directory
-│   ├── resources/         # Views, assets
-│   ├── routes/            # Route definitions
-│   └── vendor/            # Composer dependencies
-├── images/                # Public images (accessible via /images/)
-├── uploads/               # User uploads (accessible via /uploads/)
-├── css/                   # Static CSS files
-├── js/                    # Static JavaScript files
-└── index.php              # Static entry point
-```
-
-**Key Points:**
-- The **root directory** contains static files and serves as the web root
-- The **app/ directory** contains the full Laravel application
-- Static assets in root directory are directly accessible
-- Laravel routes handle dynamic content and admin functionality
+- **Public website**: homepage, listed securities, market statistics, news, events, annual reports, regulations, SCD forms and rules, and investor information pages
+- **Admin dashboard** (`/manage`): manage news, events, securities, carousel slides, menus, site settings, documents, file uploads and users
+- **Authentication**: email and password, or Google sign-in for existing accounts
+- **Market data**: live delayed prices proxied from `scd.use.or.ug`
 
 ## Requirements
 
-- PHP >= 7.3
-- MySQL/MariaDB
-- Composer (optional, if vendor directory not included)
-- Apache/Nginx web server
+| Component  | Version                                  |
+|------------|------------------------------------------|
+| PHP        | 8.3 or newer, with Laravel's standard extensions plus `pdo_mysql`, `curl` and `fileinfo` |
+| Database   | MySQL 8 (or MariaDB 10.6+, see [Database](#database)) |
+| Web server | Apache with `mod_rewrite`, or Nginx with PHP-FPM |
+| Composer   | Only needed to change dependencies; `app/vendor/` is committed |
 
-## Installation
+## Repository Layout
 
-### 1. Clone the Repository
+The repository root is the web root. Requests for pages go through `index.php`, which loads the Laravel application from `app/`.
+
+```
+.
+├── index.php        # Front controller: boots the Laravel app in app/
+├── .htaccess        # Apache rewrites; blocks app/, dotfiles and SQL dumps
+├── css/             # Static stylesheets
+├── images/          # Public images and image uploads
+├── uploads/         # Document uploads (PDF, Office files, ...)
+├── use_db.sql       # Full database schema and data (MySQL dump)
+├── use.sql          # Older, partial dump
+├── migrate.sql      # One-off SQL migrations
+└── app/             # Laravel application (never served directly)
+    ├── app/         # Controllers, models, middleware
+    ├── config/
+    ├── resources/   # Blade views
+    ├── routes/web.php
+    ├── tests/       # Feature tests
+    └── vendor/      # Composer dependencies (committed)
+```
+
+`images/` and `uploads/` each contain an `.htaccess` that stops scripts from running there.
+
+## Local Setup
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url> use-exchange
+   cd use-exchange
+   ```
+
+2. **Create the environment file**
+
+   ```bash
+   cp .env.example app/.env
+   cd app
+   php artisan key:generate
+   ```
+
+   Then set the database settings in `app/.env`:
+
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=use_db
+   DB_USERNAME=use_admin
+   DB_PASSWORD=your_secure_password
+   ```
+
+3. **Load the database** (see [Database](#database))
+
+4. **Create an admin user**
+
+   ```bash
+   cd app
+   php artisan tinker --execute="\App\Models\User::create(['name' => 'Site Admin', 'email' => 'you@example.com', 'password' => bcrypt('choose-a-strong-password'), 'role' => 'Admin', 'status' => 'Active']);"
+   ```
+
+5. **Serve the site** with Apache or Nginx pointed at the repository root (see [Deployment](#deployment)).
+   `php artisan serve` is not suitable: it serves `app/public/` and does not see the root `css/`, `images/` and `uploads/` folders.
+
+6. Open the site and sign in at `/login`. The admin dashboard is at `/manage`.
+
+## Database
+
+The schema lives in `use_db.sql`, a MySQL dump of the production database. The Laravel migrations in `app/database/migrations` do **not** match it (for example, the app's user table is `user`, not `users`), so load the dump instead of running `php artisan migrate`.
 
 ```bash
-git clone <repository-url>
-cd faangsupport
+mysql -u root -p -e "CREATE DATABASE use_db"
+mysql -u root -p use_db < use_db.sql
 ```
 
-### 2. Install Dependencies (Optional)
-
-If the `vendor/` directory is not included in the repository, install PHP dependencies:
+On MariaDB, convert MySQL 8's collation while loading:
 
 ```bash
-cd app
-composer install
+sed 's/utf8mb4_0900_ai_ci/utf8mb4_unicode_ci/g' use_db.sql | mysql -u root -p use_db
 ```
 
-### 3. Configure Environment
-
-```bash
-# Copy environment file
-cp app/.env.example app/.env
-
-# Generate application key
-php artisan key:generate
-```
-
-### 4. Configure Database
-
-Edit `app/.env` and set your database credentials:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=use_db
-DB_USERNAME=use_admin
-DB_PASSWORD=your_secure_password
-```
-
-Create the database:
-
-```bash
-mysql -u root -p
-CREATE DATABASE use_db;
-```
-
-### 5. Run Migrations & Seeders
-
-```bash
-cd app
-
-# Run migrations
-php artisan migrate
-
-# Seed database with sample data (optional)
-php artisan db:seed --class=SecuritySeeder
-php artisan db:seed --class=MenuItemSeeder
-```
+`use_db.sql` contains real user accounts. Keep the repository private.
 
 ## Deployment
 
-### Option 1: Shared Hosting (Recommended for this structure)
+1. Install PHP 8.3+ and point the web server's document root at the repository root.
+2. Create `app/.env` as in [Local Setup](#local-setup), with production values:
 
-This dual-structure setup is ideal for shared hosting environments:
+   ```env
+   APP_ENV=production
+   APP_DEBUG=false
+   APP_URL=https://your-domain
+   ```
 
-1. **Upload Files**:
-   - Upload all root files (`index.php`, `images/`, `css/`, `js/`, etc.) to `public_html/`
-   - Upload the `app/` directory to `public_html/app/`
+   `APP_DEBUG` must be `false`. The committed `vendor/` includes development tools (Ignition) that expose extra endpoints when debug mode is on.
 
-2. **Configure Web Server**:
-   - Point domain root to `public_html/`
-   - Ensure `mod_rewrite` is enabled (for Apache)
+3. Make the writable directories writable by the web server user:
 
-3. **Set Permissions**:
    ```bash
-   chmod -R 755 public_html/
-   chmod -R 775 public_html/app/storage
-   chmod -R 775 public_html/app/bootstrap/cache
-   chmod -R 775 public_html/uploads
+   chown -R www-data:www-data app/storage app/bootstrap/cache images uploads
+   chmod -R 775 app/storage app/bootstrap/cache images uploads
    ```
 
-4. **Configure .htaccess** (if using Apache):
+4. After each deploy, clear cached views and config:
 
-   Create/update `public_html/.htaccess`:
-   ```apache
-   <IfModule mod_rewrite.c>
-       RewriteEngine On
-
-       # Redirect to app/public for Laravel routes
-       RewriteCond %{REQUEST_URI} !^/app/public
-       RewriteRule ^(.*)$ app/public/$1 [L]
-   </IfModule>
-   ```
-
-5. **Environment Configuration**:
-   - Update `app/.env` with production settings
-   - Set `APP_ENV=production`
-   - Set `APP_DEBUG=false`
-   - Update `APP_URL` to your domain
-
-### Option 2: VPS/Cloud Server (Apache)
-
-1. **Clone Repository**:
-   ```bash
-   cd /var/www/
-   git clone <repository-url> use-exchange
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   cd /var/www/use-exchange/app
-   composer install --no-dev --optimize-autoloader
-   ```
-
-3. **Configure Apache Virtual Host**:
-   ```apache
-   <VirtualHost *:80>
-       ServerName use.ug
-       DocumentRoot /var/www/use-exchange
-
-       <Directory /var/www/use-exchange>
-           AllowOverride All
-           Require all granted
-       </Directory>
-
-       # Laravel routes
-       Alias /admin /var/www/use-exchange/app/public
-       Alias /api /var/www/use-exchange/app/public
-
-       ErrorLog ${APACHE_LOG_DIR}/use-error.log
-       CustomLog ${APACHE_LOG_DIR}/use-access.log combined
-   </VirtualHost>
-   ```
-
-4. **Set Permissions**:
-   ```bash
-   sudo chown -R www-data:www-data /var/www/use-exchange
-   sudo chmod -R 755 /var/www/use-exchange
-   sudo chmod -R 775 /var/www/use-exchange/app/storage
-   sudo chmod -R 775 /var/www/use-exchange/app/bootstrap/cache
-   ```
-
-5. **Enable Site & Restart**:
-   ```bash
-   sudo a2ensite use-exchange.conf
-   sudo a2enmod rewrite
-   sudo systemctl restart apache2
-   ```
-
-### Option 3: VPS/Cloud Server (Nginx)
-
-1. **Configure Nginx**:
-   ```nginx
-   server {
-       listen 80;
-       server_name use.ug;
-       root /var/www/use-exchange;
-       index index.php index.html;
-
-       # Static files from root
-       location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|webp)$ {
-           try_files $uri $uri/ =404;
-       }
-
-       # Admin and API routes to Laravel
-       location ~ ^/(admin|api|auth|manage|securities|news) {
-           root /var/www/use-exchange/app/public;
-           try_files $uri $uri/ /app/public/index.php?$query_string;
-
-           location ~ \.php$ {
-               fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-               fastcgi_index index.php;
-               fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-               include fastcgi_params;
-           }
-       }
-
-       # Default to static files
-       location / {
-           try_files $uri $uri/ /index.html =404;
-       }
-   }
-   ```
-
-2. **Restart Nginx**:
-   ```bash
-   sudo systemctl restart nginx
-   ```
-
-## File Serving Routes
-
-The application serves uploaded files via Laravel routes:
-
-- **Uploads**: `/uploads/{filename}` → serves from root `uploads/` directory
-- **Images**: `/images/{filename}` → serves from root `images/` directory
-
-These routes are defined in `app/routes/web.php`.
-
-## Key Features
-
-### Public Routes
-- `/` - Homepage with carousel, news, and events
-- `/securities` - Listed securities
-- `/securities/{symbol}` - Security details
-- `/news/{id}` - News article
-- `/about` - About page
-- `/annual-reports` - Annual reports listing
-
-### Admin Routes (Protected)
-- `/admin/news` - News management
-- `/admin/events` - Events management
-- `/admin/securities` - Securities management
-- `/admin/carousel-images` - Homepage carousel
-- `/admin/site-content` - Site settings
-- `/admin/menu-items` - Navigation menu management
-- `/admin/files` - File uploads
-
-### Authentication Routes
-- `/login` - User login
-- `/register` - User registration
-- `/auth/google` - Google OAuth login
-- `/logout` - Logout
-
-## Development
-
-### Local Development Server
-
-```bash
-cd app
-php artisan serve
-```
-
-Visit `http://localhost:8000`
-
-### Clear Cache
-
-```bash
-cd app
-php artisan cache:clear
-php artisan config:clear
-php artisan view:clear
-```
-
-## Database Structure
-
-### Core Tables
-- `securities` - Listed securities (equities, treasury bills, bonds)
-- `news` - News articles
-- `news_security` - Many-to-many relationship between news and securities
-- `events` - Market events and announcements
-- `carousel_images` - Homepage carousel slides
-- `site_contents` - Dynamic site settings (key-value pairs)
-- `menu_items` - Navigation menu with 3-level hierarchy
-- `files` - File uploads
-- `users` - User accounts
-- `subscribers` - Newsletter subscribers
-
-## Admin Middleware
-
-**Important**: Currently, admin routes are not protected by middleware. To add authentication protection:
-
-1. Create admin middleware:
    ```bash
    cd app
-   php artisan make:middleware AdminMiddleware
+   php artisan config:clear
+   php artisan view:clear
    ```
 
-2. Register in `app/Http/Kernel.php`
+### Apache
 
-3. Apply to admin routes in `app/routes/web.php`
+The root `.htaccess` handles routing and access rules. The virtual host only needs to allow it:
 
-## Troubleshooting
+```apache
+<VirtualHost *:80>
+    ServerName example.org
+    DocumentRoot /var/www/use-exchange
 
-### Images Not Loading
+    <Directory /var/www/use-exchange>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
 
-- Verify file paths: `/images/` and `/uploads/` should map to root directories
-- Check file permissions: `chmod 755 images/ uploads/`
-- Confirm web server configuration allows directory access
+```bash
+sudo a2enmod rewrite headers
+sudo systemctl reload apache2
+```
 
-### Laravel Routes Not Working
+### Nginx
 
-- Enable `mod_rewrite` (Apache)
-- Verify `.htaccess` exists in `app/public/`
-- Check web server error logs
+Nginx ignores `.htaccess`, so the same rules are repeated here:
 
-### Database Connection Failed
+```nginx
+server {
+    listen 80;
+    server_name example.org;
+    root /var/www/use-exchange;
+    index index.php;
 
-- Verify database credentials in `app/.env`
-- Ensure MySQL/MariaDB is running
-- Check database exists: `SHOW DATABASES;`
+    # Never serve the Laravel app, dotfiles or database dumps
+    location ^~ /app/ { deny all; }
+    location ~ /\.(?!well-known) { deny all; }
+    location ~* \.(sql|md|lock|json|log|example)$ { deny all; }
 
-## Security Notes
+    # Uploaded files are served as static files only
+    location ~* ^/(uploads|images)/.*\.(php\d?|phtml|phar|html?|svg)$ { deny all; }
 
-- Change all default credentials in production
-- Set `APP_DEBUG=false` in production
-- Use HTTPS (SSL certificate) for production
-- Implement admin middleware for `/admin` routes
-- Regularly update dependencies: `composer update`
-- Keep Firebase credentials secure (never commit to git)
+    location / {
+        try_files $uri /index.php?$query_string;
+    }
 
-## Contributing
+    location = /index.php {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+    # No other PHP file is an entry point
+    location ~ \.php$ { return 404; }
+}
+```
+
+### Check the deployment
+
+These should all return **403**:
+
+```bash
+for path in /use_db.sql /app/.env /app/storage/logs/laravel.log /.git/config; do
+  curl -s -o /dev/null -w "%{http_code} $path\n" "https://your-domain$path"
+done
+```
+
+## Authentication and Access
+
+- **Admins**: users with `role = 'Admin'` in the `user` table can open `/manage` and every `/admin/*` route. Other signed-in users get a 403.
+- **Accounts**: there is no public sign-up. Admins create users from the dashboard (or with the command in [Local Setup](#local-setup)).
+- **Google sign-in** (`/auth/google`): only works for an email address that already has an account. Configure it in `app/.env`:
+
+  ```env
+  GOOGLE_CLIENT_ID=...
+  GOOGLE_CLIENT_SECRET=...
+  GOOGLE_REDIRECT_URI=https://your-domain/auth/google/callback
+  ```
+
+- **Logout**: `POST /logout` (the dashboard's logout button).
+- **Rate limits**: `/login` and `/subscribe` allow 10 requests per minute per client.
+
+## File Uploads
+
+Admins upload files at `/admin/files`. Images are saved to `images/`, everything else to `uploads/`, under random file names.
+
+- **Allowed types**: jpg, jpeg, png, gif, webp, ico, pdf, doc, docx, xls, xlsx, ppt, pptx, csv, txt, mp4, mp3, zip. The list is `ALLOWED_EXTENSIONS` in `app/app/Http/Controllers/FileController.php`. Never add script or HTML types (php, phtml, html, svg): uploads are served from the web root.
+- **Size limit**: 70 MB.
+
+## Running Tests
+
+The feature tests cover every public page, sign-in and logout, admin access rules, create/edit/delete for each admin section, and file uploads. They run against a MySQL or MariaDB database loaded from `use_db.sql`, inside transactions, so they leave no data behind.
+
+```bash
+mysql -u root -p -e "CREATE DATABASE use_test"
+mysql -u root -p use_test < use_db.sql
+cd app
+DB_USERNAME=<user> DB_PASSWORD=<password> vendor/bin/phpunit
+```
+
+The test database name (`use_test`) is set in `app/phpunit.xml`.
+
+## Updating Dependencies
+
+`app/vendor/` is committed so the site can be deployed by copying files. After changing dependencies, commit `composer.json`, `composer.lock` and `vendor/` together:
+
+```bash
+cd app
+composer update
+composer audit
+vendor/bin/phpunit
+```
+
+`composer.json` pins the PHP platform to 8.3 (`config.platform.php`) so that updates never pull in packages that need a newer PHP than production runs. Change it when the server's PHP version changes.
+
+## Known Issues
+
+- `/next` returns a server error: its view expects menu data that the route does not provide.
+- `/subscribe` writes to a `subscriptions` table that does not exist in `use_db.sql`, so newsletter sign-ups fail.
 
 ## License
 

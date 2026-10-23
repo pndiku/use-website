@@ -41,6 +41,7 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * @param GoogleCloudApigeeV1AppGroupApp $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroupApp
+   * @throws \Google\Service\Exception
    */
   public function create($parent, GoogleCloudApigeeV1AppGroupApp $postBody, $optParams = [])
   {
@@ -59,6 +60,7 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * `organizations/{org}/appgroups/{app_group_name}/apps/{app}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroupApp
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -74,6 +76,7 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * `organizations/{org}/appgroups/{app_group_name}/apps/{app}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroupApp
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
@@ -98,6 +101,7 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * valid AppGroup app returned from a previous call that can be used to retrieve
    * the next page.
    * @return GoogleCloudApigeeV1ListAppGroupAppsResponse
+   * @throws \Google\Service\Exception
    */
   public function listOrganizationsAppgroupsApps($parent, $optParams = [])
   {
@@ -114,7 +118,10 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * it is the primary key used to identify the app and cannot be changed. This
    * API replaces the existing attributes with those specified in the request.
    * Include or exclude any existing attributes that you want to retain or delete,
-   * respectively. (apps.update)
+   * respectively. **Note:** We recommend that you avoid making concurrent update
+   * requests for the same resource. Near-simultaneous writes to the same entity
+   * can result in conflicts and unexpected behavior. Ensure operations are
+   * sequential when modifying a single resource. (apps.update)
    *
    * @param string $name Required. Name of the AppGroup app. Use the following
    * structure in your request:
@@ -126,6 +133,7 @@ class OrganizationsAppgroupsApps extends \Google\Service\Resource
    * value to `approve` or `revoke`. The `Content-Type` header must be set to
    * `application/octet-stream`, with empty body.
    * @return GoogleCloudApigeeV1AppGroupApp
+   * @throws \Google\Service\Exception
    */
   public function update($name, GoogleCloudApigeeV1AppGroupApp $postBody, $optParams = [])
   {

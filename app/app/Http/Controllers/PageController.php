@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Kreait\Firebase\Factory;
 use Illuminate\Http\Request;
-
-use Kreait\Firebase\Exception\Auth\FailedToVerifySessionCookie;
 
 use App\Models\Subscriber;
 use App\Models\Event;
@@ -116,7 +113,10 @@ class PageController extends Controller
     }
 
     public function subscribe(Request $request){
-        $email = $request['email'];
+        $validated = $request->validate([
+            'email' => 'required|email:filter|max:255',
+        ]);
+        $email = $validated['email'];
         $u = Subscriber::where('email', $email)->first();
         //dd($user);
         if(!$u) {

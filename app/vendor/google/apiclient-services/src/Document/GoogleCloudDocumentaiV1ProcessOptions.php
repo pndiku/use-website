@@ -19,11 +19,99 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1ProcessOptions extends \Google\Model
 {
+  /**
+   * Only process certain pages from the end, same as above.
+   *
+   * @var int
+   */
+  public $fromEnd;
+  /**
+   * Only process certain pages from the start. Process all if the document has
+   * fewer pages.
+   *
+   * @var int
+   */
+  public $fromStart;
+  protected $individualPageSelectorType = GoogleCloudDocumentaiV1ProcessOptionsIndividualPageSelector::class;
+  protected $individualPageSelectorDataType = '';
+  protected $layoutConfigType = GoogleCloudDocumentaiV1ProcessOptionsLayoutConfig::class;
+  protected $layoutConfigDataType = '';
   protected $ocrConfigType = GoogleCloudDocumentaiV1OcrConfig::class;
   protected $ocrConfigDataType = '';
+  protected $schemaOverrideType = GoogleCloudDocumentaiV1DocumentSchema::class;
+  protected $schemaOverrideDataType = '';
 
   /**
-   * @param GoogleCloudDocumentaiV1OcrConfig
+   * Only process certain pages from the end, same as above.
+   *
+   * @param int $fromEnd
+   */
+  public function setFromEnd($fromEnd)
+  {
+    $this->fromEnd = $fromEnd;
+  }
+  /**
+   * @return int
+   */
+  public function getFromEnd()
+  {
+    return $this->fromEnd;
+  }
+  /**
+   * Only process certain pages from the start. Process all if the document has
+   * fewer pages.
+   *
+   * @param int $fromStart
+   */
+  public function setFromStart($fromStart)
+  {
+    $this->fromStart = $fromStart;
+  }
+  /**
+   * @return int
+   */
+  public function getFromStart()
+  {
+    return $this->fromStart;
+  }
+  /**
+   * Which pages to process (1-indexed).
+   *
+   * @param GoogleCloudDocumentaiV1ProcessOptionsIndividualPageSelector $individualPageSelector
+   */
+  public function setIndividualPageSelector(GoogleCloudDocumentaiV1ProcessOptionsIndividualPageSelector $individualPageSelector)
+  {
+    $this->individualPageSelector = $individualPageSelector;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1ProcessOptionsIndividualPageSelector
+   */
+  public function getIndividualPageSelector()
+  {
+    return $this->individualPageSelector;
+  }
+  /**
+   * Optional. Only applicable to `LAYOUT_PARSER_PROCESSOR`. Returns error if
+   * set on other processor types.
+   *
+   * @param GoogleCloudDocumentaiV1ProcessOptionsLayoutConfig $layoutConfig
+   */
+  public function setLayoutConfig(GoogleCloudDocumentaiV1ProcessOptionsLayoutConfig $layoutConfig)
+  {
+    $this->layoutConfig = $layoutConfig;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1ProcessOptionsLayoutConfig
+   */
+  public function getLayoutConfig()
+  {
+    return $this->layoutConfig;
+  }
+  /**
+   * Only applicable to `OCR_PROCESSOR` and `FORM_PARSER_PROCESSOR`. Returns
+   * error if set on other processor types.
+   *
+   * @param GoogleCloudDocumentaiV1OcrConfig $ocrConfig
    */
   public function setOcrConfig(GoogleCloudDocumentaiV1OcrConfig $ocrConfig)
   {
@@ -35,6 +123,24 @@ class GoogleCloudDocumentaiV1ProcessOptions extends \Google\Model
   public function getOcrConfig()
   {
     return $this->ocrConfig;
+  }
+  /**
+   * Optional. Override the schema of the ProcessorVersion. Will return an
+   * Invalid Argument error if this field is set when the underlying
+   * ProcessorVersion doesn't support schema override.
+   *
+   * @param GoogleCloudDocumentaiV1DocumentSchema $schemaOverride
+   */
+  public function setSchemaOverride(GoogleCloudDocumentaiV1DocumentSchema $schemaOverride)
+  {
+    $this->schemaOverride = $schemaOverride;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1DocumentSchema
+   */
+  public function getSchemaOverride()
+  {
+    return $this->schemaOverride;
   }
 }
 

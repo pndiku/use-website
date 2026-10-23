@@ -25,7 +25,6 @@ use Google\Service\DisplayVideo\BulkUpdateLineItemsResponse;
 use Google\Service\DisplayVideo\DisplayvideoEmpty;
 use Google\Service\DisplayVideo\DuplicateLineItemRequest;
 use Google\Service\DisplayVideo\DuplicateLineItemResponse;
-use Google\Service\DisplayVideo\GenerateDefaultLineItemRequest;
 use Google\Service\DisplayVideo\LineItem;
 use Google\Service\DisplayVideo\ListLineItemsResponse;
 
@@ -46,8 +45,9 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * assigned targeting options provided in
    * BulkEditAssignedTargetingOptionsRequest.create_requests. Requests to this
    * endpoint cannot be made concurrently with the following requests updating the
-   * same line item: * BulkUpdate * UpdateLineItem *
-   * CreateLineItemAssignedTargetingOption * DeleteLineItemAssignedTargetingOption
+   * same line item: * lineItems.bulkUpdate * lineItems.patch *
+   * assignedTargetingOptions.create * assignedTargetingOptions.delete YouTube &
+   * Partners line items cannot be created or updated using the API.
    * (lineItems.bulkEditAssignedTargetingOptions)
    *
    * @param string $advertiserId Required. The ID of the advertiser the line items
@@ -55,6 +55,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @param BulkEditAssignedTargetingOptionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return BulkEditAssignedTargetingOptionsResponse
+   * @throws \Google\Service\Exception
    */
   public function bulkEditAssignedTargetingOptions($advertiserId, BulkEditAssignedTargetingOptionsRequest $postBody, $optParams = [])
   {
@@ -100,6 +101,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * previous call to the `BulkListAssignedTargetingOptions` method. If not
    * specified, the first page of results will be returned.
    * @return BulkListAssignedTargetingOptionsResponse
+   * @throws \Google\Service\Exception
    */
   public function bulkListAssignedTargetingOptions($advertiserId, $optParams = [])
   {
@@ -111,7 +113,8 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * Updates multiple line items. Requests to this endpoint cannot be made
    * concurrently with the following requests updating the same line item: *
    * BulkEditAssignedTargetingOptions * UpdateLineItem *
-   * CreateLineItemAssignedTargetingOption * DeleteLineItemAssignedTargetingOption
+   * assignedTargetingOptions.create * assignedTargetingOptions.delete YouTube &
+   * Partners line items cannot be created or updated using the API.
    * (lineItems.bulkUpdate)
    *
    * @param string $advertiserId Required. The ID of the advertiser this line item
@@ -119,6 +122,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @param BulkUpdateLineItemsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return BulkUpdateLineItemsResponse
+   * @throws \Google\Service\Exception
    */
   public function bulkUpdate($advertiserId, BulkUpdateLineItemsRequest $postBody, $optParams = [])
   {
@@ -128,6 +132,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
   }
   /**
    * Creates a new line item. Returns the newly created line item if successful.
+   * YouTube & Partners line items cannot be created or updated using the API.
    * (lineItems.create)
    *
    * @param string $advertiserId Output only. The unique ID of the advertiser the
@@ -135,6 +140,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @param LineItem $postBody
    * @param array $optParams Optional parameters.
    * @return LineItem
+   * @throws \Google\Service\Exception
    */
   public function create($advertiserId, LineItem $postBody, $optParams = [])
   {
@@ -145,13 +151,15 @@ class AdvertisersLineItems extends \Google\Service\Resource
   /**
    * Deletes a line item. Returns error code `NOT_FOUND` if the line item does not
    * exist. The line item should be archived first, i.e. set entity_status to
-   * `ENTITY_STATUS_ARCHIVED`, to be able to delete it. (lineItems.delete)
+   * `ENTITY_STATUS_ARCHIVED`, to be able to delete it. YouTube & Partners line
+   * items cannot be created or updated using the API. (lineItems.delete)
    *
    * @param string $advertiserId The ID of the advertiser this line item belongs
    * to.
    * @param string $lineItemId The ID of the line item to delete.
    * @param array $optParams Optional parameters.
    * @return DisplayvideoEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($advertiserId, $lineItemId, $optParams = [])
   {
@@ -161,7 +169,11 @@ class AdvertisersLineItems extends \Google\Service\Resource
   }
   /**
    * Duplicates a line item. Returns the ID of the created line item if
-   * successful. (lineItems.duplicate)
+   * successful. YouTube & Partners line items cannot be created or updated using
+   * the API. **This method regularly experiences high latency.** We recommend
+   * [increasing your default timeout](/display-video/api/guides/best-
+   * practices/timeouts#client_library_timeout) to avoid errors.
+   * (lineItems.duplicate)
    *
    * @param string $advertiserId Required. The ID of the advertiser this line item
    * belongs to.
@@ -169,32 +181,13 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @param DuplicateLineItemRequest $postBody
    * @param array $optParams Optional parameters.
    * @return DuplicateLineItemResponse
+   * @throws \Google\Service\Exception
    */
   public function duplicate($advertiserId, $lineItemId, DuplicateLineItemRequest $postBody, $optParams = [])
   {
     $params = ['advertiserId' => $advertiserId, 'lineItemId' => $lineItemId, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('duplicate', [$params], DuplicateLineItemResponse::class);
-  }
-  /**
-   * Creates a new line item with settings (including targeting) inherited from
-   * the insertion order and an `ENTITY_STATUS_DRAFT` entity_status. Returns the
-   * newly created line item if successful. There are default values based on the
-   * three fields: * The insertion order's insertion_order_type * The insertion
-   * order's automation_type * The given line_item_type
-   * (lineItems.generateDefault)
-   *
-   * @param string $advertiserId Required. The ID of the advertiser this line item
-   * belongs to.
-   * @param GenerateDefaultLineItemRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return LineItem
-   */
-  public function generateDefault($advertiserId, GenerateDefaultLineItemRequest $postBody, $optParams = [])
-  {
-    $params = ['advertiserId' => $advertiserId, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('generateDefault', [$params], LineItem::class);
   }
   /**
    * Gets a line item. (lineItems.get)
@@ -204,6 +197,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @param string $lineItemId Required. The ID of the line item to fetch.
    * @param array $optParams Optional parameters.
    * @return LineItem
+   * @throws \Google\Service\Exception
    */
   public function get($advertiserId, $lineItemId, $optParams = [])
   {
@@ -254,6 +248,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * the previous call to `ListLineItems` method. If not specified, the first page
    * of results will be returned.
    * @return ListLineItemsResponse
+   * @throws \Google\Service\Exception
    */
   public function listAdvertisersLineItems($advertiserId, $optParams = [])
   {
@@ -265,8 +260,12 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * Updates an existing line item. Returns the updated line item if successful.
    * Requests to this endpoint cannot be made concurrently with the following
    * requests updating the same line item: * BulkEditAssignedTargetingOptions *
-   * BulkUpdateLineItems * CreateLineItemAssignedTargetingOption *
-   * DeleteLineItemAssignedTargetingOption (lineItems.patch)
+   * BulkUpdateLineItems * assignedTargetingOptions.create *
+   * assignedTargetingOptions.delete YouTube & Partners line items cannot be
+   * created or updated using the API. **This method regularly experiences high
+   * latency.** We recommend [increasing your default timeout](/display-
+   * video/api/guides/best-practices/timeouts#client_library_timeout) to avoid
+   * errors. (lineItems.patch)
    *
    * @param string $advertiserId Output only. The unique ID of the advertiser the
    * line item belongs to.
@@ -278,6 +277,7 @@ class AdvertisersLineItems extends \Google\Service\Resource
    * @opt_param string updateMask Required. The mask to control which fields to
    * update.
    * @return LineItem
+   * @throws \Google\Service\Exception
    */
   public function patch($advertiserId, $lineItemId, LineItem $postBody, $optParams = [])
   {

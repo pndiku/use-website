@@ -38,6 +38,12 @@ class OrgPolicyAPI extends \Google\Service
   /** See, edit, configure, and delete your Google Cloud data and see the email address for your Google Account.. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
+  /** See, edit, configure, and delete your Google Cloud Organization Policy data and see the email address for your Google Account. */
+  const ORGANIZATIONPOLICY =
+      "https://www.googleapis.com/auth/organizationpolicy";
+  /** See your Google Cloud Organization Policy data and the email address of your Google Account. */
+  const ORGANIZATIONPOLICY_READONLY =
+      "https://www.googleapis.com/auth/organizationpolicy.readonly";
 
   public $folders_constraints;
   public $folders_policies;
@@ -46,6 +52,7 @@ class OrgPolicyAPI extends \Google\Service
   public $organizations_policies;
   public $projects_constraints;
   public $projects_policies;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the OrgPolicyAPI service.
@@ -58,6 +65,7 @@ class OrgPolicyAPI extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://orgpolicy.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://orgpolicy.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v2';
@@ -115,6 +123,10 @@ class OrgPolicyAPI extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'etag' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],'get' => [
@@ -294,6 +306,10 @@ class OrgPolicyAPI extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'etag' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],'get' => [
               'path' => 'v2/{+name}',
@@ -403,6 +419,10 @@ class OrgPolicyAPI extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'etag' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],'get' => [

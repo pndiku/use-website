@@ -44,6 +44,7 @@ class OrganizationsLocationsWorkloadsViolations extends \Google\Service\Resource
    * @param GoogleCloudAssuredworkloadsV1AcknowledgeViolationRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudAssuredworkloadsV1AcknowledgeViolationResponse
+   * @throws \Google\Service\Exception
    */
   public function acknowledge($name, GoogleCloudAssuredworkloadsV1AcknowledgeViolationRequest $postBody, $optParams = [])
   {
@@ -58,7 +59,11 @@ class OrganizationsLocationsWorkloadsViolations extends \Google\Service\Resource
    * (ie. Violation.name). Format: organizations/{organization}/locations/{locatio
    * n}/workloads/{workload}/violations/{violation}
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string view Optional. Specifies the violation view
+   * (`AssuredWorkloads` or `DataBoundary`) for fetching violations.
    * @return GoogleCloudAssuredworkloadsV1Violation
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
@@ -82,10 +87,14 @@ class OrganizationsLocationsWorkloadsViolations extends \Google\Service\Resource
    * Violations properties.
    * @opt_param string interval.endTime The end of the time window.
    * @opt_param string interval.startTime The start of the time window.
+   * @opt_param string orderBy Optional. Actionable sorting delegation.
    * @opt_param int pageSize Optional. Page size.
    * @opt_param string pageToken Optional. Page token returned from previous
    * request.
+   * @opt_param string view Optional. Specifies the violation
+   * view(AssuredWorkloads or DataBoundary) for fetching violations.
    * @return GoogleCloudAssuredworkloadsV1ListViolationsResponse
+   * @throws \Google\Service\Exception
    */
   public function listOrganizationsLocationsWorkloadsViolations($parent, $optParams = [])
   {

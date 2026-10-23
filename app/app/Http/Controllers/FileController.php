@@ -9,6 +9,16 @@ use Illuminate\Support\Str;
 class FileController extends Controller
 {
     /**
+     * File extensions that may be uploaded. Uploads are served from the web root,
+     * so executable/scriptable types (php, phtml, html, svg, ...) must never be added here.
+     */
+    private const ALLOWED_EXTENSIONS = [
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'ico',
+        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'csv', 'txt',
+        'mp4', 'mp3', 'zip',
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -51,7 +61,8 @@ class FileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:71680', // 70MB max
+            // 70MB max; extension and detected content type must both be in the allow-list
+            'file' => 'required|file|max:71680|mimes:' . implode(',', self::ALLOWED_EXTENSIONS),
             'category' => 'nullable|string|max:50',
             'description' => 'nullable|string|max:500',
             'alt_text' => 'nullable|string|max:255'
@@ -62,8 +73,12 @@ class FileController extends Controller
         $mimeType = $uploadedFile->getMimeType();
         $fileSize = $uploadedFile->getSize();
 
-        // Generate unique filename
-        $filename = Str::uuid() . '.' . $uploadedFile->getClientOriginalExtension();
+        // Generate unique filename; never trust a client-supplied extension that isn't allow-listed
+        $extension = strtolower($uploadedFile->getClientOriginalExtension());
+        if (!in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
+            abort(422, 'File type not allowed.');
+        }
+        $filename = Str::uuid() . '.' . $extension;
 
         // Determine file type
         $fileType = $this->determineFileType($mimeType);
@@ -83,13 +98,15 @@ class FileController extends Controller
         }
 
         if (!is_writable($uploadsPath)) {
-            throw new \Exception('Upload directory is not writable: ' . $uploadsPath);
+            \Log::error('Upload directory is not writable: ' . $uploadsPath);
+            abort(500, 'Upload failed.');
         }
 
         try {
             $uploadedFile->move($uploadsPath, $filename);
         } catch (\Exception $e) {
-            throw new \Exception('Failed to move uploaded file: ' . $e->getMessage());
+            \Log::error('Failed to move uploaded file: ' . $e->getMessage());
+            abort(500, 'Upload failed.');
         }
 
         $filePath = $relativePath;
@@ -160,8 +177,10 @@ class FileController extends Controller
         $file = File::findOrFail($id);
 
         // Delete file from appropriate directory (images or uploads)
-        $fullPath = base_path('../' . $file->file_path);
-        if (file_exists($fullPath)) {
+        $fullPath = realpath(base_path('../' . $file->file_path));
+        $allowedDirs = [realpath(base_path('../images')), realpath(base_path('../uploads'))];
+        if ($fullPath !== false && is_file($fullPath)
+            && in_array(dirname($fullPath), $allowedDirs, true)) {
             unlink($fullPath);
         }
 

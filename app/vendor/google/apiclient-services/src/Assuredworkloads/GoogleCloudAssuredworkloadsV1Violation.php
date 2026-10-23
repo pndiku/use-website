@@ -19,62 +19,198 @@ namespace Google\Service\Assuredworkloads;
 
 class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
 {
+  /**
+   * Unspecified state.
+   */
+  public const STATE_STATE_UNSPECIFIED = 'STATE_UNSPECIFIED';
+  /**
+   * Violation is resolved.
+   */
+  public const STATE_RESOLVED = 'RESOLVED';
+  /**
+   * Violation is Unresolved
+   */
+  public const STATE_UNRESOLVED = 'UNRESOLVED';
+  /**
+   * Violation is Exception
+   */
+  public const STATE_EXCEPTION = 'EXCEPTION';
+  /**
+   * Unspecified type.
+   */
+  public const VIOLATION_TYPE_VIOLATION_TYPE_UNSPECIFIED = 'VIOLATION_TYPE_UNSPECIFIED';
+  /**
+   * Org Policy Violation.
+   */
+  public const VIOLATION_TYPE_ORG_POLICY = 'ORG_POLICY';
+  /**
+   * Resource Violation.
+   */
+  public const VIOLATION_TYPE_RESOURCE = 'RESOURCE';
   protected $collection_key = 'exceptionContexts';
   /**
+   * A boolean that indicates if the violation is acknowledged
+   *
    * @var bool
    */
   public $acknowledged;
   /**
+   * Optional. Timestamp when this violation was acknowledged first. Check
+   * exception_contexts to find the last time the violation was acknowledged
+   * when there are more than one violations. This field will be absent when
+   * acknowledged field is marked as false.
+   *
    * @var string
    */
   public $acknowledgementTime;
   /**
+   * Output only. List of compliance frameworks that are affected by this
+   * violation. This field is only populated when using
+   * `VIOLATION_VIEW_DATA_BOUNDARY`. e.g. "FedRAMP High", "NIST 800-53".
+   *
+   * @var string[]
+   */
+  public $affectedFrameworks;
+  /**
+   * Optional. Output only. Violation Id of the org-policy violation due to
+   * which the resource violation is caused. Empty for org-policy violations.
+   *
+   * @var string
+   */
+  public $associatedOrgPolicyViolationId;
+  /**
+   * Output only. Immutable. Audit Log Link for violated resource Format: https:
+   * //console.cloud.google.com/logs/query;query={logName}{protoPayload.resource
+   * Name}{timeRange}{folder}
+   *
    * @var string
    */
   public $auditLogLink;
   /**
+   * Output only. Time of the event which triggered the Violation.
+   *
    * @var string
    */
   public $beginTime;
   /**
+   * Output only. Category under which this violation is mapped. e.g. Location,
+   * Service Usage, Access, Encryption, etc.
+   *
    * @var string
    */
   public $category;
   /**
+   * Optional. Output only. The number of resource violations for particular org
+   * policy violation. This will be 0 in case of resource violation.
+   *
+   * @var int
+   */
+  public $childResourceViolationCount;
+  /**
+   * Output only. Description for the Violation. e.g. OrgPolicy
+   * gcp.resourceLocations has non compliant value.
+   *
    * @var string
    */
   public $description;
   /**
+   * Output only. Immutable. Audit Log link to find business justification
+   * provided for violation exception. Format: https://console.cloud.google.com/
+   * logs/query;query={logName}{protoPayload.resourceName}{protoPayload.methodNa
+   * me}{timeRange}{organization}
+   *
    * @var string
    */
   public $exceptionAuditLogLink;
   protected $exceptionContextsType = GoogleCloudAssuredworkloadsV1ViolationExceptionContext::class;
   protected $exceptionContextsDataType = 'array';
   /**
+   * Output only. Immutable. Name of the Violation. Format: organizations/{organ
+   * ization}/locations/{location}/workloads/{workload_id}/violations/{violation
+   * s_id}
+   *
    * @var string
    */
   public $name;
   /**
+   * Output only. Immutable. Name of the OrgPolicy which was modified with non-
+   * compliant change and resulted this violation. Format:
+   * projects/{project_number}/policies/{constraint_name}
+   * folders/{folder_id}/policies/{constraint_name}
+   * organizations/{organization_id}/policies/{constraint_name}
+   *
    * @var string
    */
   public $nonCompliantOrgPolicy;
+  /**
+   * Output only. Immutable. The org-policy-constraint that was incorrectly
+   * changed, which resulted in this violation.
+   *
+   * @deprecated
+   * @var string
+   */
+  public $orgPolicyConstraint;
+  /**
+   * Optional. Output only. Parent project number where resource is present.
+   * Empty for org-policy violations.
+   *
+   * @var string
+   */
+  public $parentProjectNumber;
   protected $remediationType = GoogleCloudAssuredworkloadsV1ViolationRemediation::class;
   protected $remediationDataType = '';
   /**
+   * Output only. Contains the remediation instructions for the violation in
+   * markdown format.
+   *
+   * @var string
+   */
+  public $remediationMarkdown;
+  /**
+   * Output only. Time of the event which fixed the Violation. If the violation
+   * is ACTIVE this will be empty.
+   *
    * @var string
    */
   public $resolveTime;
   /**
+   * Optional. Output only. Name of the resource like
+   * //storage.googleapis.com/myprojectxyz-testbucket. Empty for org-policy
+   * violations.
+   *
+   * @var string
+   */
+  public $resourceName;
+  /**
+   * Optional. Output only. Type of the resource like
+   * compute.googleapis.com/Disk, etc. Empty for org-policy violations.
+   *
+   * @var string
+   */
+  public $resourceType;
+  /**
+   * Output only. State of the violation
+   *
    * @var string
    */
   public $state;
   /**
+   * Output only. The last time when the Violation record was updated.
+   *
    * @var string
    */
   public $updateTime;
+  /**
+   * Output only. Type of the violation
+   *
+   * @var string
+   */
+  public $violationType;
 
   /**
-   * @param bool
+   * A boolean that indicates if the violation is acknowledged
+   *
+   * @param bool $acknowledged
    */
   public function setAcknowledged($acknowledged)
   {
@@ -88,7 +224,12 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->acknowledged;
   }
   /**
-   * @param string
+   * Optional. Timestamp when this violation was acknowledged first. Check
+   * exception_contexts to find the last time the violation was acknowledged
+   * when there are more than one violations. This field will be absent when
+   * acknowledged field is marked as false.
+   *
+   * @param string $acknowledgementTime
    */
   public function setAcknowledgementTime($acknowledgementTime)
   {
@@ -102,7 +243,46 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->acknowledgementTime;
   }
   /**
-   * @param string
+   * Output only. List of compliance frameworks that are affected by this
+   * violation. This field is only populated when using
+   * `VIOLATION_VIEW_DATA_BOUNDARY`. e.g. "FedRAMP High", "NIST 800-53".
+   *
+   * @param string[] $affectedFrameworks
+   */
+  public function setAffectedFrameworks($affectedFrameworks)
+  {
+    $this->affectedFrameworks = $affectedFrameworks;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAffectedFrameworks()
+  {
+    return $this->affectedFrameworks;
+  }
+  /**
+   * Optional. Output only. Violation Id of the org-policy violation due to
+   * which the resource violation is caused. Empty for org-policy violations.
+   *
+   * @param string $associatedOrgPolicyViolationId
+   */
+  public function setAssociatedOrgPolicyViolationId($associatedOrgPolicyViolationId)
+  {
+    $this->associatedOrgPolicyViolationId = $associatedOrgPolicyViolationId;
+  }
+  /**
+   * @return string
+   */
+  public function getAssociatedOrgPolicyViolationId()
+  {
+    return $this->associatedOrgPolicyViolationId;
+  }
+  /**
+   * Output only. Immutable. Audit Log Link for violated resource Format: https:
+   * //console.cloud.google.com/logs/query;query={logName}{protoPayload.resource
+   * Name}{timeRange}{folder}
+   *
+   * @param string $auditLogLink
    */
   public function setAuditLogLink($auditLogLink)
   {
@@ -116,7 +296,9 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->auditLogLink;
   }
   /**
-   * @param string
+   * Output only. Time of the event which triggered the Violation.
+   *
+   * @param string $beginTime
    */
   public function setBeginTime($beginTime)
   {
@@ -130,7 +312,10 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->beginTime;
   }
   /**
-   * @param string
+   * Output only. Category under which this violation is mapped. e.g. Location,
+   * Service Usage, Access, Encryption, etc.
+   *
+   * @param string $category
    */
   public function setCategory($category)
   {
@@ -144,7 +329,27 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->category;
   }
   /**
-   * @param string
+   * Optional. Output only. The number of resource violations for particular org
+   * policy violation. This will be 0 in case of resource violation.
+   *
+   * @param int $childResourceViolationCount
+   */
+  public function setChildResourceViolationCount($childResourceViolationCount)
+  {
+    $this->childResourceViolationCount = $childResourceViolationCount;
+  }
+  /**
+   * @return int
+   */
+  public function getChildResourceViolationCount()
+  {
+    return $this->childResourceViolationCount;
+  }
+  /**
+   * Output only. Description for the Violation. e.g. OrgPolicy
+   * gcp.resourceLocations has non compliant value.
+   *
+   * @param string $description
    */
   public function setDescription($description)
   {
@@ -158,7 +363,12 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->description;
   }
   /**
-   * @param string
+   * Output only. Immutable. Audit Log link to find business justification
+   * provided for violation exception. Format: https://console.cloud.google.com/
+   * logs/query;query={logName}{protoPayload.resourceName}{protoPayload.methodNa
+   * me}{timeRange}{organization}
+   *
+   * @param string $exceptionAuditLogLink
    */
   public function setExceptionAuditLogLink($exceptionAuditLogLink)
   {
@@ -172,7 +382,9 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->exceptionAuditLogLink;
   }
   /**
-   * @param GoogleCloudAssuredworkloadsV1ViolationExceptionContext[]
+   * Output only. List of all the exception detail added for the violation.
+   *
+   * @param GoogleCloudAssuredworkloadsV1ViolationExceptionContext[] $exceptionContexts
    */
   public function setExceptionContexts($exceptionContexts)
   {
@@ -186,7 +398,11 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->exceptionContexts;
   }
   /**
-   * @param string
+   * Output only. Immutable. Name of the Violation. Format: organizations/{organ
+   * ization}/locations/{location}/workloads/{workload_id}/violations/{violation
+   * s_id}
+   *
+   * @param string $name
    */
   public function setName($name)
   {
@@ -200,7 +416,13 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->name;
   }
   /**
-   * @param string
+   * Output only. Immutable. Name of the OrgPolicy which was modified with non-
+   * compliant change and resulted this violation. Format:
+   * projects/{project_number}/policies/{constraint_name}
+   * folders/{folder_id}/policies/{constraint_name}
+   * organizations/{organization_id}/policies/{constraint_name}
+   *
+   * @param string $nonCompliantOrgPolicy
    */
   public function setNonCompliantOrgPolicy($nonCompliantOrgPolicy)
   {
@@ -214,7 +436,45 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->nonCompliantOrgPolicy;
   }
   /**
-   * @param GoogleCloudAssuredworkloadsV1ViolationRemediation
+   * Output only. Immutable. The org-policy-constraint that was incorrectly
+   * changed, which resulted in this violation.
+   *
+   * @deprecated
+   * @param string $orgPolicyConstraint
+   */
+  public function setOrgPolicyConstraint($orgPolicyConstraint)
+  {
+    $this->orgPolicyConstraint = $orgPolicyConstraint;
+  }
+  /**
+   * @deprecated
+   * @return string
+   */
+  public function getOrgPolicyConstraint()
+  {
+    return $this->orgPolicyConstraint;
+  }
+  /**
+   * Optional. Output only. Parent project number where resource is present.
+   * Empty for org-policy violations.
+   *
+   * @param string $parentProjectNumber
+   */
+  public function setParentProjectNumber($parentProjectNumber)
+  {
+    $this->parentProjectNumber = $parentProjectNumber;
+  }
+  /**
+   * @return string
+   */
+  public function getParentProjectNumber()
+  {
+    return $this->parentProjectNumber;
+  }
+  /**
+   * Output only. Compliance violation remediation
+   *
+   * @param GoogleCloudAssuredworkloadsV1ViolationRemediation $remediation
    */
   public function setRemediation(GoogleCloudAssuredworkloadsV1ViolationRemediation $remediation)
   {
@@ -228,7 +488,27 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->remediation;
   }
   /**
-   * @param string
+   * Output only. Contains the remediation instructions for the violation in
+   * markdown format.
+   *
+   * @param string $remediationMarkdown
+   */
+  public function setRemediationMarkdown($remediationMarkdown)
+  {
+    $this->remediationMarkdown = $remediationMarkdown;
+  }
+  /**
+   * @return string
+   */
+  public function getRemediationMarkdown()
+  {
+    return $this->remediationMarkdown;
+  }
+  /**
+   * Output only. Time of the event which fixed the Violation. If the violation
+   * is ACTIVE this will be empty.
+   *
+   * @param string $resolveTime
    */
   public function setResolveTime($resolveTime)
   {
@@ -242,21 +522,62 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
     return $this->resolveTime;
   }
   /**
-   * @param string
+   * Optional. Output only. Name of the resource like
+   * //storage.googleapis.com/myprojectxyz-testbucket. Empty for org-policy
+   * violations.
+   *
+   * @param string $resourceName
+   */
+  public function setResourceName($resourceName)
+  {
+    $this->resourceName = $resourceName;
+  }
+  /**
+   * @return string
+   */
+  public function getResourceName()
+  {
+    return $this->resourceName;
+  }
+  /**
+   * Optional. Output only. Type of the resource like
+   * compute.googleapis.com/Disk, etc. Empty for org-policy violations.
+   *
+   * @param string $resourceType
+   */
+  public function setResourceType($resourceType)
+  {
+    $this->resourceType = $resourceType;
+  }
+  /**
+   * @return string
+   */
+  public function getResourceType()
+  {
+    return $this->resourceType;
+  }
+  /**
+   * Output only. State of the violation
+   *
+   * Accepted values: STATE_UNSPECIFIED, RESOLVED, UNRESOLVED, EXCEPTION
+   *
+   * @param self::STATE_* $state
    */
   public function setState($state)
   {
     $this->state = $state;
   }
   /**
-   * @return string
+   * @return self::STATE_*
    */
   public function getState()
   {
     return $this->state;
   }
   /**
-   * @param string
+   * Output only. The last time when the Violation record was updated.
+   *
+   * @param string $updateTime
    */
   public function setUpdateTime($updateTime)
   {
@@ -268,6 +589,24 @@ class GoogleCloudAssuredworkloadsV1Violation extends \Google\Collection
   public function getUpdateTime()
   {
     return $this->updateTime;
+  }
+  /**
+   * Output only. Type of the violation
+   *
+   * Accepted values: VIOLATION_TYPE_UNSPECIFIED, ORG_POLICY, RESOURCE
+   *
+   * @param self::VIOLATION_TYPE_* $violationType
+   */
+  public function setViolationType($violationType)
+  {
+    $this->violationType = $violationType;
+  }
+  /**
+   * @return self::VIOLATION_TYPE_*
+   */
+  public function getViolationType()
+  {
+    return $this->violationType;
   }
 }
 

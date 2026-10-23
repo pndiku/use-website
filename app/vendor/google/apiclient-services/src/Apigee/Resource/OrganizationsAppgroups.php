@@ -18,6 +18,8 @@
 namespace Google\Service\Apigee\Resource;
 
 use Google\Service\Apigee\GoogleCloudApigeeV1AppGroup;
+use Google\Service\Apigee\GoogleCloudApigeeV1AppGroupBalance;
+use Google\Service\Apigee\GoogleCloudApigeeV1AppGroupMonetizationConfig;
 use Google\Service\Apigee\GoogleCloudApigeeV1ListAppGroupsResponse;
 
 /**
@@ -33,13 +35,7 @@ class OrganizationsAppgroups extends \Google\Service\Resource
   /**
    * Creates an AppGroup. Once created, user can register apps under the AppGroup
    * to obtain secret key and password. At creation time, the AppGroup's state is
-   * set as `active`. The attribute `Attribute` with key `attribute_name` as
-   * `__apigee_reserved__developer_details` can be used to store developers and
-   * their roles. The JSON format expected is: [ { "developer_id":"", "roles":[ ""
-   * ] } ] and is dealt in base64encoded format. Etag will be available in
-   * attribute `Attribute` with key `attribute_name` as
-   * `__apigee_reserved__developer_details_etag` for that AppGroup.
-   * (appgroups.create)
+   * set as `active`. (appgroups.create)
    *
    * @param string $parent Required. Name of the Apigee organization in which the
    * AppGroup is created. Use the following structure in your request:
@@ -47,6 +43,7 @@ class OrganizationsAppgroups extends \Google\Service\Resource
    * @param GoogleCloudApigeeV1AppGroup $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroup
+   * @throws \Google\Service\Exception
    */
   public function create($parent, GoogleCloudApigeeV1AppGroup $postBody, $optParams = [])
   {
@@ -58,14 +55,15 @@ class OrganizationsAppgroups extends \Google\Service\Resource
    * Deletes an AppGroup. All app and API keys associations with the AppGroup are
    * also removed. **Warning**: This API will permanently delete the AppGroup and
    * related artifacts. **Note**: The delete operation is asynchronous. The
-   * AppGroup app is deleted immediately, but its associated resources, such as
-   * apps and API keys, may take anywhere from a few seconds to a few minutes to
-   * be deleted. (appgroups.delete)
+   * AppGroup is deleted immediately, but its associated resources, such as apps
+   * and API keys, may take anywhere from a few seconds to a few minutes to be
+   * deleted. (appgroups.delete)
    *
    * @param string $name Required. Name of the AppGroup. Use the following
    * structure in your request: `organizations/{org}/appgroups/{app_group_name}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroup
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -81,12 +79,46 @@ class OrganizationsAppgroups extends \Google\Service\Resource
    * structure in your request: `organizations/{org}/appgroups/{app_group_name}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1AppGroup
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], GoogleCloudApigeeV1AppGroup::class);
+  }
+  /**
+   * Gets the account balance for the AppGroup. (appgroups.getBalance)
+   *
+   * @param string $name Required. Account balance for the AppGroup. Use the
+   * following structure in your request:
+   * `organizations/{org}/appgroups/{app_group}/balance`
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1AppGroupBalance
+   * @throws \Google\Service\Exception
+   */
+  public function getBalance($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getBalance', [$params], GoogleCloudApigeeV1AppGroupBalance::class);
+  }
+  /**
+   * Gets the monetization configuration for the AppGroup.
+   * (appgroups.getMonetizationConfig)
+   *
+   * @param string $name Required. Monetization configuration for the AppGroup.
+   * Use the following structure in your request:
+   * `organizations/{org}/appgroups/{app_group}/monetizationConfig`
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1AppGroupMonetizationConfig
+   * @throws \Google\Service\Exception
+   */
+  public function getMonetizationConfig($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getMonetizationConfig', [$params], GoogleCloudApigeeV1AppGroupMonetizationConfig::class);
   }
   /**
    * Lists all AppGroups in an organization. A maximum of 1000 AppGroups are
@@ -98,14 +130,16 @@ class OrganizationsAppgroups extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter The filter expression to be used to get the list of
-   * AppGroups, where filtering can be done on name, correlationID or channelID of
-   * the app group. Example: filter = "name = foobar"
+   * AppGroups, where filtering can be done on status, channelId or channelUri of
+   * the app group. Examples: filter=status=active", filter=channelId=,
+   * filter=channelUri=
    * @opt_param int pageSize Count of AppGroups a single page can have in the
    * response. If unspecified, at most 1000 AppGroups will be returned. The
    * maximum value is 1000; values above 1000 will be coerced to 1000.
    * @opt_param string pageToken The starting index record for listing the
    * AppGroups.
    * @return GoogleCloudApigeeV1ListAppGroupsResponse
+   * @throws \Google\Service\Exception
    */
   public function listOrganizationsAppgroups($parent, $optParams = [])
   {
@@ -114,33 +148,52 @@ class OrganizationsAppgroups extends \Google\Service\Resource
     return $this->call('list', [$params], GoogleCloudApigeeV1ListAppGroupsResponse::class);
   }
   /**
-   * Updates an appGroup. This API replaces the existing appGroup details with
+   * Updates an AppGroup. This API replaces the existing AppGroup details with
    * those specified in the request. Include or exclude any existing details that
    * you want to retain or delete, respectively. Note that the state of the
-   * AppGroup should be updated using `action`, and not via AppGroup. The custom
-   * attribute limit is 1000, and is how `__apigee_reserved__developer_details`
-   * can be updated. **Note**: OAuth access tokens and Key Management Service
-   * (KMS) entities (apps, developers, and API products) are cached for 180
-   * seconds (current default). Any custom attributes associated with these
-   * entities are cached for at least 180 seconds after the entity is accessed at
-   * runtime. Therefore, an `ExpiresIn` element on the OAuthV2 policy won't be
-   * able to expire an access token in less than 180 seconds. (appgroups.update)
+   * AppGroup should be updated using `action`, and not via AppGroup. **Note:** We
+   * recommend that you avoid making concurrent update requests for the same
+   * resource. Near-simultaneous writes to the same entity can result in conflicts
+   * and unexpected behavior. Ensure operations are sequential when modifying a
+   * single resource. (appgroups.update)
    *
    * @param string $name Required. Name of the AppGroup. Use the following
    * structure in your request: `organizations/{org}/appgroups/{app_group_name}`
    * @param GoogleCloudApigeeV1AppGroup $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string action Activate or de-activate the appGroup by setting the
+   * @opt_param string action Activate or de-activate the AppGroup by setting the
    * action as `active` or `inactive`. The `Content-Type` header must be set to
    * `application/octet-stream`, with empty body.
    * @return GoogleCloudApigeeV1AppGroup
+   * @throws \Google\Service\Exception
    */
   public function update($name, GoogleCloudApigeeV1AppGroup $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('update', [$params], GoogleCloudApigeeV1AppGroup::class);
+  }
+  /**
+   * Updates the monetization configuration for the AppGroup. **Note:** We
+   * recommend that you avoid making concurrent update requests for the same
+   * resource. Near-simultaneous writes to the same entity can result in conflicts
+   * and unexpected behavior. Ensure operations are sequential when modifying a
+   * single resource. (appgroups.updateMonetizationConfig)
+   *
+   * @param string $name Required. Monetization configuration for the AppGroup.
+   * Use the following structure in your request:
+   * `organizations/{org}/appgroups/{app_group}/monetizationConfig`
+   * @param GoogleCloudApigeeV1AppGroupMonetizationConfig $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1AppGroupMonetizationConfig
+   * @throws \Google\Service\Exception
+   */
+  public function updateMonetizationConfig($name, GoogleCloudApigeeV1AppGroupMonetizationConfig $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateMonetizationConfig', [$params], GoogleCloudApigeeV1AppGroupMonetizationConfig::class);
   }
 }
 

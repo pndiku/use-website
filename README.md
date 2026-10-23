@@ -126,13 +126,16 @@ sed 's/utf8mb4_0900_ai_ci/utf8mb4_unicode_ci/g' use_db.sql | mysql -u root -p us
    chmod -R 775 app/storage app/bootstrap/cache images uploads
    ```
 
-4. After each deploy, clear cached views and config:
+4. After each deploy, rebuild Laravel's caches. `app/bootstrap/cache/` is not in git, so a deploy leaves the old files in place, and after a dependency change they point at packages that no longer exist (for example `Class "Facade\Ignition\IgnitionServiceProvider" not found`). `artisan` fails with the same error until they are deleted, so remove them first:
 
    ```bash
+   rm -f app/bootstrap/cache/*.php
    cd app
-   php artisan config:clear
-   php artisan view:clear
+   php artisan package:discover
+   php artisan optimize:clear
    ```
+
+   Without shell access, delete the `.php` files in `app/bootstrap/cache/` (keep `.gitignore`); Laravel recreates them on the next request.
 
 ### Apache
 
